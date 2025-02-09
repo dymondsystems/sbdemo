@@ -4133,7 +4133,7 @@ $("#show-sidebar").click(function() {
 
   // Keyboard shortcut (Ctrl + /)
   $(document).keydown(function(e) {
-    if (e.ctrlKey && e.shiftKey && e.which === 83) { // 191 is the key code for /
+    if (e.ctrlKey && e.altKey && e.which === 83) { // 191 is the key code for /
       e.preventDefault(); // Prevent default browser action (like search)
       openModal();
     }
