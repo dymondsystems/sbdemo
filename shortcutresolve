@@ -1,0 +1,160 @@
+  <script>
+// List of browser default shortcuts (add more if needed)
+const restrictedShortcuts = [
+  "Ctrl+t", "Ctrl+T", "Ctrl+w", "Ctrl+W", "Ctrl+r", "Ctrl+R",
+  "Ctrl+shift+i", "Ctrl+Shift+I", "Ctrl+l", "Ctrl+L", "Alt+d", "Alt+D", "Ctrl+Shift+n"
+];
+
+// Global variables
+let currentButton = null; // Store the button being edited
+let currentShortcut = []; // Store the current shortcut keys
+
+// Check if shortcut is restricted
+function isRestrictedShortcut(shortcut) {
+  return restrictedShortcuts.includes(shortcut);
+}
+
+// Open the shortcut builder modal
+function openShortcutBuilder(button) {
+  currentButton = button;
+  currentShortcut = [];
+  $('#shortcutModal').modal('show');
+  updateShortcutDisplay();
+
+  // Load existing shortcut from localStorage
+  const allShortcuts = JSON.parse(localStorage.getItem('shortcuts')) || {};
+  const shortcutData = allShortcuts[currentButton.dataset.url];
+
+  // Display the current shortcut if available
+  const currentShortcutDisplay = document.getElementById('currentShortcutDisplay');
+  if (shortcutData) {
+    currentShortcutDisplay.textContent = shortcutData.shortcut;
+  } else {
+    currentShortcutDisplay.textContent = 'None';
+  }
+
+  // Hide any previous alerts
+  document.getElementById('shortcutConflictAlert').style.display = 'none';
+}
+
+// Update the new shortcut display in the modal
+function updateShortcutDisplay() {
+  const shortcutDisplay = document.getElementById('shortcutDisplay');
+  shortcutDisplay.textContent = currentShortcut.length ? currentShortcut.join(' + ') : 'Press any key';
+}
+
+// Add modifier keys to the shortcut
+document.querySelectorAll('.modifier-keys button').forEach((button) => {
+  button.addEventListener('click', () => {
+    const key = button.dataset.key;
+    if (!currentShortcut.includes(key)) {
+      currentShortcut.push(key);
+      updateShortcutDisplay();
+    }
+  });
+});
+
+// Listen for key presses to add the final key
+document.addEventListener('keydown', (event) => {
+  if ($('#shortcutModal').is(':visible')) {
+    event.preventDefault();
+    const key = event.key === ' ' ? 'Space' : event.key;
+    if (!currentShortcut.includes(key)) {
+      currentShortcut.push(key);
+      updateShortcutDisplay();
+    }
+  }
+});
+
+// Save the shortcut
+document.getElementById('saveShortcut').addEventListener('click', () => {
+  const shortcut = currentShortcut.join('+');
+
+  // Check for conflicts first
+  const conflictData = checkShortcutConflict(shortcut);
+  if (conflictData) {
+    // Show conflict alert inside the modal
+    document.getElementById('conflictingButtonName').textContent = conflictData.name;
+    document.getElementById('shortcutConflictAlert').style.display = 'block';
+    return; // Exit the function if there's a conflict
+  }
+
+  // Check if the shortcut is restricted
+  if (isRestrictedShortcut(shortcut)) {
+    alert(`ATTENTION!"${shortcut}" is a reserved browser shortcut and cannot be used. Please select another key combination`);
+    return; // Exit the function if the shortcut is restricted
+  }
+
+  // Save shortcut normally
+  saveShortcut(shortcut);
+});
+
+// Check if the shortcut already exists and return the conflicting shortcut data
+function checkShortcutConflict(shortcut) {
+  const allShortcuts = JSON.parse(localStorage.getItem('shortcuts')) || {};
+
+  for (const [storedShortcut, data] of Object.entries(allShortcuts)) {
+    if (storedShortcut === shortcut && data.url !== currentButton.dataset.url) {
+      return data; // Returns the conflicting shortcut’s stored data
+    }
+  }
+  return null; // No conflict
+}
+
+// Save the shortcut to localStorage
+function saveShortcut(shortcut) {
+  if (!currentButton) return;
+
+  const url = currentButton.dataset.url;
+  const name = currentButton.dataset.name;
+  const openType = currentButton.dataset.openType;
+  const size = currentButton.dataset.size;
+
+  // Load shortcuts from localStorage
+  let shortcuts = JSON.parse(localStorage.getItem('shortcuts')) || {};
+
+  // Remove the old shortcut if it exists (avoids duplicate shortcuts)
+  Object.keys(shortcuts).forEach((key) => {
+    if (shortcuts[key].url === url) {
+      delete shortcuts[key]; // Remove old shortcut before saving
+    }
+  });
+
+  // Save the new shortcut with opening settings
+  shortcuts[shortcut] = { url, name, openType, size };
+  localStorage.setItem('shortcuts', JSON.stringify(shortcuts));
+
+  // Update the current shortcut display
+  document.getElementById('currentShortcutDisplay').textContent = shortcut;
+
+  // Hide the modal & reset conflict alert
+  $('#shortcutModal').modal('hide');
+  document.getElementById('shortcutConflictAlert').style.display = 'none';
+}
+
+// Handle override confirmation
+document.getElementById('confirmOverride').addEventListener('click', () => {
+  const shortcut = currentShortcut.join('+');
+  saveShortcut(shortcut);
+});
+
+// Handle cancel override
+document.getElementById('cancelOverride').addEventListener('click', () => {
+  document.getElementById('shortcutConflictAlert').style.display = 'none';
+});
+
+// Reset the modal when closed
+$('#shortcutModal').on('hidden.bs.modal', () => {
+  currentButton = null;
+  currentShortcut = [];
+  document.getElementById('shortcutConflictAlert').style.display = 'none';
+});
+
+// Update the dropdown to use the new shortcut builder
+function setShortcut(element) {
+  const buttonDiv = element.closest('.btn-group');
+  const button = buttonDiv.querySelector('.launch-button');
+  openShortcutBuilder(button);
+}
+    
+      </script>
