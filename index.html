@@ -3480,35 +3480,6 @@ function setShortcut(element) {
       </script>    
       
       
-       <script>
-// List of browser default shortcuts (add more if needed)
-const restrictedShortcuts = [
-    "Ctrl+t", "Ctrl+T", "Ctrl+w", "Ctrl+W", "Ctrl+r", "Ctrl+R",
-    "Ctrl+shift+i", "Ctrl+Shift+I", "Ctrl+l", "Ctrl+L", "Alt+d", "Alt+D","Ctrl+Shift+n"
-];
-
-// Check if shortcut is restricted
-function isRestrictedShortcut(shortcut) {
-    return restrictedShortcuts.includes(shortcut);
-}
-
-// Handle saving the shortcut
-document.getElementById('saveShortcut').addEventListener('click', () => {
-    const shortcut = currentShortcut.join('+');
-
-    if (isRestrictedShortcut(shortcut)) {
-        alert(`ATTENTION!"${shortcut}" is a reserved browser shortcut and cannot be used. Please select another key combination`);
-        return;
-    }
-
-    // Save shortcut normally
-    saveShortcut(shortcut);
-});
-
-
-
-
-      </script>
       
 
 <script>
