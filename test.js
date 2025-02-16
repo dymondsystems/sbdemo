@@ -3,7 +3,8 @@ const contentDiv = document.getElementById('content');
 
 // Create the HTML content as a string
 const htmlContent = `
-    <div class="page-wrapper chiller-theme toggled">
+
+<div class="page-wrapper chiller-theme toggled">
   <a id="show-sidebar" class="btn btn-sm btn-dark" href="#show-sidebar">
     <i class="fa fa-chevron-right"></i>
   </a>
@@ -250,10 +251,10 @@ const htmlContent = `
         
       
       <li class="nav-item">
-        <a class="nav-link" href="#" data-toggle="modal" data-target="#team">Log in</a>
+        <a class="nav-link" href="#">Log in</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#" data-toggle="modal" data-target="#team">Sign up</a>
+        <a class="nav-link" href="#">Sign up</a>
       </li>    
     </ul>
   </div>  
@@ -437,8 +438,6 @@ const htmlContent = `
     <strong>Auto-close windows when modal is closed</strong>
     <br>(Close all attached windows opened from a card whenever the card is closed)
     <br>
-    <button id="clearShortcutsBtn" class="btn btn-warning">Clear All Shortcuts</button>
-
   </label>
 </div>
 
@@ -613,30 +612,22 @@ const htmlContent = `
                 <label for="buttonName">Button Name:</label>
                 <input type="text" class="form-control" id="buttonName" required>
               </div>
-              <button type="submit" id="saveButton" class="btn btn-primary"><i class="fas fa-plus"></i> Add</button>
-              <button type="button" class="btn btn-secondary" data-toggle="collapse" data-target="#linksettings"><i class="fas fa-cog"></i> Settings</button>
-              <div id="linksettings" class="collapse">
-                <br>
-                <h5>Control how links are opened</h5>
-               
               <div class="form-group">
-                <label>Open Link in:</label><br>
-                
+                <label>Open Link:</label><br>
                 <div class="form-check">
-                  <input class="form-check-input" type="radio" name="openType" id="openNewWindow" value="newWindow" checked>
-                  <label class="form-check-label" for="openNewWindow">New Window</label>
+                  <input class="form-check-input" type="radio" name="openType" id="openNewTab" value="newTab" checked>
+                  <label class="form-check-label" for="openNewTab">In New Tab</label>
                 </div>
                 <div class="form-check">
-                  <input class="form-check-input" type="radio" name="openType" id="openNewTab" value="newTab">
-                  <label class="form-check-label" for="openNewTab">New Tab</label>
+                  <input class="form-check-input" type="radio" name="openType" id="openNewWindow" value="newWindow">
+                  <label class="form-check-label" for="openNewWindow">In New Window</label>
                 </div>
-            
               </div>
               <div id="windowSizeOptions" style="display:none;">
                 <div class="form-group">
-                  <label>New window Size:</label><br>
+                  <label>Window Size:</label><br>
                   <div class="form-check">
-                    <input class="form-check-input" type="radio" name="windowSize" id="sizeSmall" value="small">
+                    <input class="form-check-input" type="radio" name="windowSize" id="sizeSmall" value="small" checked>
                     <label class="form-check-label" for="sizeSmall">Small (600x400)</label>
                   </div>
                   <div class="form-check">
@@ -644,7 +635,7 @@ const htmlContent = `
                     <label class="form-check-label" for="sizeMedium">Medium</label>
                   </div>
                   <div class="form-check">
-                    <input class="form-check-input" type="radio" name="windowSize" id="sizeLarge" value="large" checked>
+                    <input class="form-check-input" type="radio" name="windowSize" id="sizeLarge" value="large">
                     <label class="form-check-label" for="sizeLarge">Large</label>
                   </div>
                   <div class="form-check">
@@ -654,12 +645,11 @@ const htmlContent = `
                 </div>
               </div>
               <div class="form-group">
-                <button type="submit" data-target="#linksettings" data-toggle="collapse" id="saveButton" class="btn btn-primary">Apply settings</button>
-                <button type="button" data-target="#linksettings" data-toggle="collapse" id="cancelButton" class="btn btn-secondary">Cancel</button>
+                <button type="submit" id="saveButton" class="btn btn-primary">Add</button>
+                <button type="button" id="cancelButton" class="btn btn-secondary">Cancel</button>
               </div>
             </form>
           </div>
-        </div>
         </div>
 
         <!-- Modal Footer -->
@@ -818,6 +808,10 @@ const htmlContent = `
            
                 <!--end of container-->
             </footer>
+
+
+
+    
 `;
 
 // Render the HTML content inside the container
