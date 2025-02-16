@@ -1,10 +1,7 @@
-// Select the container where you want to render the HTML
 const contentDiv = document.getElementById('content');
 
-// Create the HTML content as a string
 const htmlContent = `
-
-<div class="page-wrapper chiller-theme toggled">
+   <div class="page-wrapper chiller-theme toggled">
   <a id="show-sidebar" class="btn btn-sm btn-dark" href="#show-sidebar">
     <i class="fa fa-chevron-right"></i>
   </a>
@@ -808,11 +805,6 @@ const htmlContent = `
            
                 <!--end of container-->
             </footer>
-
-
-
-    
 `;
 
-// Render the HTML content inside the container
 contentDiv.innerHTML = htmlContent;
