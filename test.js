@@ -1,6 +1,8 @@
 const contentDiv = document.getElementById('content');
 
 const htmlContent = `
+<link href="https://dymond.systems/sbdemo/test.css" rel="stylesheet"> 
+
    <div class="page-wrapper chiller-theme toggled">
   <a id="show-sidebar" class="btn btn-sm btn-dark" href="#show-sidebar">
     <i class="fa fa-chevron-right"></i>
