@@ -74,7 +74,8 @@
               </div>
             </div>
             <div id="projectContent"></div>
-            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="submit" id-"projectButton" class="btn btn-primary">Save</button>
+            <button class="btn btn-secondary" data-dismiss="modal">Cancel</button>
           </form>
         </div>
       </div>
@@ -115,11 +116,11 @@
   </div> 
   <div class="form-group">
     <label for="taskTitle">Task Title</label>
-    <input type="text" class="form-control" id="taskTitle" required>
+    <input type="text" class="form-control" id="taskTitle" >
   </div>
   <div class="form-group">
     <label for="taskDescription">Description</label>
-    <textarea class="form-control" id="taskDescription" rows="3" required></textarea>
+    <textarea class="form-control" id="taskDescription" rows="3" ></textarea>
   </div>
   
   <div class="dropup mb-3">
@@ -135,7 +136,7 @@
     </div>
   </div>
   <div id="taskContent" class="mb-3"></div>
-  <button type="submit" class="btn btn-success" data-toggle="collapse" data-target="#addTaskForm">Save Task</button>
+  <button type="submit" id="taskButton" class="btn btn-success" data-toggle="collapse" data-target="#addTaskForm">Add Task</button>
         <button class="btn btn-secondary" data-toggle="collapse" data-target="#addTaskForm">Cancel</button>
 </form>
           </div>
@@ -165,11 +166,11 @@
            <form id="noteForm">
   <div class="form-group">
     <label for="noteTitle">Note Title</label>
-    <input type="text" class="form-control" id="noteTitle" required>
+    <input type="text" class="form-control" id="noteTitle" >
   </div>
   <div class="form-group">
     <label for="noteDescription">Description</label>
-    <textarea class="form-control" id="noteDescription" rows="3" required></textarea>
+    <textarea class="form-control" id="noteDescription" rows="3" ></textarea>
   </div>
   <div class="dropup mb-3">
     <button class="btn btn-secondary" type="button" data-toggle="dropdown">
@@ -184,7 +185,7 @@
     </div>
   </div>
   <div id="noteContent" class="mb-3"></div>
-  <button type="submit" data-toggle="collapse" data-target="#addNoteForm" class="btn btn-success">Save Note</button>
+  <button type="submit" data-toggle="collapse" id="noteButton" data-target="#addNoteForm" class="btn btn-success">Add Note</button>
              <button data-dismiss="modal" data-toggle="collapse" data-target="#addNoteForm" class="btn btn-secondary">Cancel</button>
 </form>
           </div>
@@ -276,6 +277,7 @@ document.addEventListener('DOMContentLoaded', function () {
   addProjectBtn.addEventListener('click', () => {
     document.getElementById('projectTitle').value = '';
     document.getElementById('projectDescription').value = '';
+    
     delete projectForm.dataset.editIndex;
     projectModal.show();
   });
@@ -285,6 +287,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const project = projects[index];
     document.getElementById('projectTitle').value = project.title;
     document.getElementById('projectDescription').value = project.description;
+      
     projectForm.dataset.editIndex = index;
     projectModal.show();
   };
@@ -365,8 +368,12 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('taskTitle').value = task.title;
     document.getElementById('taskDescription').value = task.description;
     document.getElementById('taskStatus').value = task.status;
+      // Change the button text
+    document.getElementById('taskButton').textContent = "Update task";
     taskContent.innerHTML = task.content || '';
     taskForm.dataset.editIndex = taskIndex;
+      // Change the button text
+   
   };
 
   // Delete a task
@@ -431,6 +438,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const note = projects[currentProjectIndex].tasks[currentTaskIndex].notes[noteIndex];
     document.getElementById('noteTitle').value = note.title;
     document.getElementById('noteDescription').value = note.description;
+    document.getElementById('noteButton').textContent = "Update note";
     noteContent.innerHTML = note.content || '';
     noteForm.dataset.editIndex = noteIndex;
   };
