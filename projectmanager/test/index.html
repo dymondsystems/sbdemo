@@ -62,18 +62,7 @@
               <label for="projectDescription">Description</label>
               <textarea class="form-control" id="projectDescription" rows="3" required></textarea>
             </div>
-            <div class="dropup mb-3">
-              <button class="btn btn-secondary" type="button" data-toggle="dropdown">
-                <i class="fas fa-plus"></i> 
-              </button>
-              <div class="dropdown-menu">
-               
-                <button class="dropdown-item" type="button" onclick="addImage('project')">Image</button>
-                <button class="dropdown-item" type="button" onclick="addFile('project')">File</button>
-                <button class="dropdown-item" type="button" onclick="addLink('project')">Link</button>
-                <button class="dropdown-item" type="button" onclick="addCodeBlock('project')">Code Block</button>
-              </div>
-            </div>
+           
             <div id="projectContent"></div>
             <button type="submit" id-"projectButton" class="btn btn-primary">Save</button>
             <button class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -130,10 +119,10 @@
     </button>
     <div class="dropdown-menu">
       
-      <button class="dropdown-item" type="button" onclick="addImage('task')"><i class="fas fa-image"></i> Image</button>
-      <button class="dropdown-item" type="button" onclick="addFile('task')"><i class="fas fa-file"></i> File</button>
-      <button class="dropdown-item" type="button" onclick="addLink('task')"><i class="fas fa-link"></i> Link</button>
-      <button class="dropdown-item" type="button" onclick="addCodeBlock('task')"><i class="fas fa-code"></i> Code </button>
+      <button class="dropdown-item" type="button" onclick="addImage('task')"> <i class="fas fa-image"></i> Image</button>
+      <button class="dropdown-item" type="button" onclick="addFile('task')"> <i class="fas fa-file"></i> File</button>
+      <button class="dropdown-item" type="button" onclick="addLink('task')"> <i class="fas fa-link"></i> Link</button>
+      <button class="dropdown-item" type="button" onclick="addCodeBlock('task')"> <i class="fas fa-code"></i> Code </button>
     </div>
   </div>
   <div id="taskContent" class="mb-3"></div>
@@ -179,10 +168,10 @@
     </button>
     <div class="dropdown-menu">
       
-      <button class="dropdown-item" type="button" onclick="addImage('note')">Image</button>
-      <button class="dropdown-item" type="button" onclick="addFile('note')">File</button>
-      <button class="dropdown-item" type="button" onclick="addLink('note')">Link</button>
-      <button class="dropdown-item" type="button" onclick="addCodeBlock('note')">Code Block</button>
+     <button class="dropdown-item" type="button" onclick="addImage('note')"> <i class="fas fa-image"></i> Image</button>
+      <button class="dropdown-item" type="button" onclick="addFile('note')"> <i class="fas fa-file"></i> File</button>
+      <button class="dropdown-item" type="button" onclick="addLink('note')"> <i class="fas fa-link"></i> Link</button>
+      <button class="dropdown-item" type="button" onclick="addCodeBlock('note')"> <i class="fas fa-code"></i> Code </button>
     </div>
   </div>
   <div id="noteContent" class="mb-3"></div>
@@ -240,9 +229,9 @@ document.addEventListener('DOMContentLoaded', function () {
             </div>
             <h5 class="card-title text-truncate">${project.title}</h5>
             <p class="card-text text-truncate">${project.description}</p>
-            Status
+            Project Status
             <div class="progress mb-2">
-              <div class="progress-bar" style="width:${project.progress}%">${project.progress}% Complete</div>
+              <div class="progress-bar" style="width:${project.progress}%">${project.progress}%</div>
             </div>
             <button class="btn btn-primary btn-block" onclick="viewProject(${index})">View Project</button>
           </div>
