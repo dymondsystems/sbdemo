@@ -21,6 +21,10 @@
 #tasklist .card-body{
   background-color: black;
     }
+    
+    
+
+
 
 :root {
       --bg-color: #e0e0e0;
@@ -773,6 +777,7 @@ window.addLink = function (type) {
   // Create a modal for code input
   const modal = document.createElement('div');
   modal.className = 'modal fade';
+    modal.style.zIndex = '9999'; // Set a high z-index
   modal.innerHTML = `
     <div class="modal-dialog">
       <div class="modal-content">
