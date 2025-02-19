@@ -90,7 +90,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="projectModalLabel">Add Project</h5>
+          <h5 class="modal-title" id="projectModalLabel">Project</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -329,8 +329,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 <i class="fas fa-ellipsis-v"></i>
               </button>
               <div class="dropdown-menu dropdown-menu-right">
-                <button class="dropdown-item" onclick="editProject(${index})">Edit</button>
-                <button class="dropdown-item" onclick="deleteProject(${index})">Delete</button>
+                <button class="dropdown-item" onclick="editProject(${index})"><i class="fas fa-edit"></i> Edit</button>
+                <button class="dropdown-item" onclick="deleteProject(${index})"><i class="fas fa-trash"></i> Delete</button>
               </div>
             </div>
             <h5 class="card-title text-truncate">${project.title}</h5>
@@ -344,7 +344,8 @@ document.addEventListener('DOMContentLoaded', function () {
         </div>
       `;
       projectCards.appendChild(card);
-    });
+   
+        });
   }
   
   
@@ -440,15 +441,27 @@ document.addEventListener('DOMContentLoaded', function () {
           </button>
          </div>
           <div class="col text-center">
-          <button type="button" class="btn btn-sm btn-secondary dropdown-toggle" data-toggle="collapse" data-target="#${task.id}">Open task</button>
+          <button type="button" class="btn btn-sm btn-secondary " data-toggle="collapse" data-target="#${task.id}" aria-expanded="false">Open task</button>
         </div>
         </div>
         </div>
         
       `;
-      taskList.appendChild(taskItem);
+         taskList.appendChild(taskItem);
+   // Add event listener to the button *after* it's added to the DOM
+        const button = taskItem.querySelector(`button[data-target="#${task.id}"]`); // Select the button within the current taskItem
+        button.addEventListener('click', function() {
+            if (this.getAttribute('aria-expanded') === 'true') {
+                this.textContent = 'Open task'; // Text when closed
+            } else {
+                this.textContent = 'Close'; // Text when open
+            }
+        });
     });
-  }
+}     
+   
+
+ 
 
 // Handle task form submission
 taskForm.addEventListener('submit', (e) => {
@@ -554,11 +567,22 @@ taskForm.addEventListener('submit', (e) => {
           <button class="btn btn-sm btn-danger float-right" style="margin-left:5px;" onclick="deleteNote(${noteIndex})">Delete</button>
           <button class="btn btn-sm btn-light float-right"  data-toggle="modal" data-target="#myModal2" onclick="editNote(${noteIndex})">Edit</button></div>
           
-           <button type="button" class="btn btn-sm btn-secondary dropdown-toggle" data-toggle="collapse" data-target="#${note.id}" >View note</button>
+           <button type="button" class="btn btn-sm btn-secondary" data-toggle="collapse" data-target="#${note.id}" aria-expanded="false" >View note</button>
         </div>
         </div>
       `;
       notesList.appendChild(noteElement);
+      // Add event listener to the button
+    const button = noteElement.querySelector(`button[data-target="#${note.id}"]`);
+    button.addEventListener('click', function() {
+        if (this.getAttribute('aria-expanded') === 'true') {
+            this.textContent = 'View note'; // Text when closed
+        } else {
+            this.textContent = 'Close'; // Text when open
+                }
+    });
+
+        
     });
 
     notesModal.show();
