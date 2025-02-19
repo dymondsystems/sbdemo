@@ -87,13 +87,301 @@
   color: black; /* Example: Change text color on click */
 }
    
+  
     
+    
+  /* General styles for open buttons */
+    .open-btn {
+      position: fixed;
+      bottom: 20px;
+      z-index: 1030;
+      transform: translateX(-50%);
+    }
+
+    /* Position each open button */
+    #open-btn1 { left: 20%; }
+    #open-btn2 { left: 40%; }
+    #open-btn3 { left: 60%; }
+    #open-btn4 { left: 80%; }
+
+    /* Sticky container for animated buttons */
+    .button-container {
+      position: fixed;
+      top: 0;
+      display: flex;
+      justify-content: flex-start;
+      gap: 10px;
+      z-index: 1030;
+      padding: 10px;
+      
+      flex-wrap: nowrap; /* Ensure the buttons don't wrap onto new lines */
+      overflow-x: auto; /* Allow horizontal scroll if needed */
+    }
+
+    /* Collapsible container styles */
+    #collapsible-container {
+      display: none; /* Initially collapsed */
+      width: 100%;
+      background-color:#f8f9fa;
+      padding: 10px;
+      margin-top: 10px;
+      transition: max-height 0.5s ease-in-out;
+      max-height: 0;
+      overflow: hidden;
+    }
+
+    /* Button styles */
+    .animated-btn {
+      width: 100px;
+      height: 50px;
+      transition: all 0.5s ease-in-out;
+      text-align: left;
+      font-size: 14px;
+      font-weight: bold;
+      color: white;
+      cursor: pointer;
+      position: relative;
+      padding: 5px;
+      display: flex;
+      align-items: center;
+      border-radius: 10px;
+      justify-content: flex-start;
+      flex-direction: column;
+      background-color: grey;
+      overflow: hidden;
+      /* Default size */
+    }
+
+    /* Layout for image and text inside buttons */
+    .animated-btn img {
+      width: 25px;
+      height: 25px;
+      margin-right: 5px;
+      transition: all 0.3s ease-in-out;
+    }
+
+    /* Button expand on hover */
+.animated-btn:hover {
+  width: 200px; /* Make the button 200px wide when hovered */
+  height: 180px; /* Make the button 150px tall when hovered */
+  transition: all 0.3s ease-in-out; /* Smooth transition */
+  flex-direction: column; /* Stack the image and text vertically */
+  justify-content: center; /* Center the content */
+  align-items: center; /* Align content in the center */
+  min-width: 200px;
+}
+
+/* Image grows when button expands */
+.animated-btn:hover img {
+  width: 100px; /* Image becomes bigger when the button expands */
+  height: 80px; /* Maintain aspect ratio */
+}
+
+
+    /* Close button styles */
+    .close-btn {
+  display: none;
+  padding: 5px 10px;
+  background: white;
+  color: black;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  font-size: 12px;
+  margin-bottom: 5px; /* Space between buttons */
+  
+}
+    
+
+    /* Link button styles */
+    .link-btn {
+      display: none;
+      margin-bottom: 10px;
+      padding: 5px 10px;
+      background-color: #007bff;
+      color: white;
+      text-decoration: none;
+      border-radius: 3px;
+      font-size: 12px;
+    }
+
+    /* Show close button and link button when expanded */
+    .animated-btn:hover .close-btn,
+    .animated-btn:hover .link-btn {
+      display: inline-block; /* Change to inline-block so they're side-by-side */
+    }
+
+    /* Background colors for each button */
+    .animated-btn-1 { background-color: #007bff; }
+    .animated-btn-2 { background-color: #28a745; }
+    .animated-btn-3 { background-color: #ffc107; }
+    .animated-btn-4 { background-color: #dc3545; }
+
+    /* Container for close and link buttons */
+    .btn-container {
+      display: flex;
+      gap: 10px; /* Space between buttons */
+      margin-top: 10px;
+    }
+
+    /* Hide the toggle button when the container has enough space */
+    #toggle-btn {
+      display: none;
+    }
+    .card{
+    min-height: 275px;
+    min-height: 275px;
+    }
+    
+    .launch-button{
+    min-width: 100px;
+    }
+    
+.footer-buttons i{
+padding:10px;
+}
+      
+      
+           
+      
+      
+      
+      
+      
+        #popUpSidebar {
+      position: fixed;
+      width: 200px; /* Sidebar width */
+      background-color: #424949;
+      color: white;
+      z-index: 9999;
+      transition: all 0.2s ease; /* Smooth transition for sidebar movement */
+      opacity: 0; /* Initially invisible */
+      visibility: hidden; /* Sidebar hidden initially */
+      pointer-events: none; /* Disable interactions when hidden */
+      padding:20px;
+    }
+
+    #popUpSidebar.show {
+      opacity: 1; /* Fully visible */
+      visibility: visible; /* Make visible */
+      pointer-events: auto; /* Enable interactions */
+    }
+    #popUpSidebar button {
+      display: block;
+      width: 100%;
+      
+      border: none;
+      padding: 10px;
+      margin: 5px 0;
+      cursor: pointer;
+      position: relative;
+    }
+    
+
+    #popUpSidebar button:hover {
+      background-color: #003f7f;
+    }
+
+    #popUpSidebar button .remove-btn {
+      display: none;
+      position: absolute;
+      top: 40%;
+      right: 15px;
+      transform: translate(50%,-50%);
+      
+      color: white;
+      border: none;
+      border-radius: 0%;
+      width: 5px;
+      height: 0px;
+      cursor: pointer;
+      text-align: center;
+      line-height: 0px;
+      
+      
+      font-size: 12px;
+    }
+
+    #popUpSidebar button:hover .remove-btn {
+      display: block;
+    }
+
+    .content input {
+      margin-bottom: 10px;
+    }
+    add{
+    font-size: 20px;
+    font-weight: bold;
+    float: left;
+  
+    }
+      
+      /* Add these styles to your CSS */
+.btn-warning {
+  background-color: #ffc107;
+  border-color: #ffc107;
+  color: #000;
+}
+
+.sticky-btn.untrackable {
+  position: relative;
+}
+
+.untrackable-indicator {
+  position: absolute;
+  top: 5px;
+  right: 25px;
+  background: #ffc107;
+  color: #000;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: help;
+}
+      
+      
+      /* Previous styles remain the same, add/update these styles */
+
+/* Fullscreen Toggle Container */
+.fullscreen-toggle-container {
+  position: fixed;
+  bottom: 10px;
+  width: 200px;
+  padding: 15px;
+  
+  
+  z-index: 1001;
+}
+
+/* Custom Switch Styles */
+.custom-switch {
+  padding-left: 2.25rem;
+}
+
+.custom-control-input:checked ~ .custom-control-label::before {
+  background-color: #17a2b8;
+  border-color: #17a2b8;
+}
+
+.custom-control-input:focus ~ .custom-control-label::before {
+  box-shadow: 0 0 0 0.2rem rgba(23, 162, 184, 0.25);
+}
+
+/* Update window-buttons padding to account for fixed toggle */
+.window-buttons {
+  padding: 0 10px;
+  margin-bottom: 70px; /* Increased to make room for toggle switch */
+}
  
   </style>
 </head>
 <body>
   <div class="container py-4">
     <h1 class="text-center mb-4">Project Management</h1>
+    <div id="stickyButtonsContainer" class="button-container"></div>
     
     <div class="form-check form-switch">
   <input class="form-check-input" type="checkbox" id="darkModeToggle">
@@ -111,6 +399,27 @@
       <!-- Dynamic project cards will be inserted here -->
     </div>
   </div>
+  
+       <div id="popUpSidebar" class="sidebar">
+   
+          
+         
+  <div id="sidebarButtonsContainer"></div>
+          <div class="side" style="position: fixed; right:30px;
+                                   bottom: 40px;">
+            <center><a href="#" data-toggle="modal" data-target="#help"><i class="fas fa-question-circle fa-lg"></i></a></center>
+            <br>
+            <p>Go back: <strong>ALT + </strong><i class="fas fa-arrow-left"></i></p>
+            
+          </div>
+</div>
+  
+  
+  
+  
+  
+  
+  
 
   <!-- Add/Edit Project Modal -->
   <div class="modal fade" id="projectModal" tabindex="-1" role="dialog" aria-labelledby="projectModalLabel" aria-hidden="true">
