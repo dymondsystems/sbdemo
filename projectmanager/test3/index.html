@@ -431,14 +431,14 @@ document.addEventListener('DOMContentLoaded', function () {
   <div id="${task.id}" class="collapse">
           <p class="card-text">${task.description}</p>
           <div class="mb-2">${task.content}</div>
-          </div>
+          
          
            <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#myModal" onclick="editTask(${projectIndex}, ${taskIndex})">Edit</button>
           <button class="btn btn-danger btn-sm" onclick="deleteTask(${projectIndex}, ${taskIndex})">Delete</button>
           <button class="btn btn-light btn-sm" onclick="viewNotes(${taskIndex})">
             <i class="fas fa-sticky-note"></i> Notes (${task.notes ? task.notes.length : 0})
           </button>
-         
+         </div>
           <div class="col text-center">
           <button type="button" class="btn btn-sm btn-secondary dropdown-toggle" data-toggle="collapse" data-target="#${task.id}">Open task</button>
         </div>
@@ -550,11 +550,11 @@ taskForm.addEventListener('submit', (e) => {
            
   <div id="${note.id}" class="collapse">
           <p>${note.description}</p>
-          <div>${note.content}</div></div>
+          <div>${note.content}</div>
           <button class="btn btn-sm btn-danger float-right" style="margin-left:5px;" onclick="deleteNote(${noteIndex})">Delete</button>
-          <button class="btn btn-sm btn-light float-right"  data-toggle="modal" data-target="#myModal2" onclick="editNote(${noteIndex})">Edit</button>
+          <button class="btn btn-sm btn-light float-right"  data-toggle="modal" data-target="#myModal2" onclick="editNote(${noteIndex})">Edit</button></div>
           
-           <button type="button" class="btn btn-sm btn-secondary dropdown-toggle" data-toggle="collapse" data-target="#${note.id}">View note</button>
+           <button type="button" class="btn btn-sm btn-secondary dropdown-toggle" data-toggle="collapse" data-target="#${note.id}" >View note</button>
         </div>
         </div>
       `;
@@ -691,25 +691,44 @@ projects.forEach(project => {
     }
   };
 
-  window.addImage = function (type) {
-    const container = type === 'task' ? taskContent : noteContent;
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = 'image/*';
-    input.onchange = (e) => {
-      const file = e.target.files[0];
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const base64 = event.target.result;
-        const imgElement = document.createElement('img');
-        imgElement.src = base64;
-        imgElement.className = 'img-fluid';
-        container.appendChild(imgElement);
-      };
-      reader.readAsDataURL(file);
+window.addImage = function (type) {
+  const container = type === 'task' ? taskContent : noteContent;
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'image/*';
+  input.onchange = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const base64 = event.target.result;
+
+      // Create a card for the image
+      const imageCard = document.createElement('div');
+      imageCard.className = 'card mb-2';
+      imageCard.innerHTML = `
+        <div class="card-body" style="display: flex; flex-direction: column; align-items: center;">
+          <img src="${base64}" class="img-fluid mb-2" alt="Uploaded Image">
+          <button class="btn btn-danger btn-sm" onclick="deleteImageCard(this)">
+            <i class="fas fa-trash"></i> Delete
+          </button>
+        </div>
+      `;
+
+      // Append the card to the container
+      container.appendChild(imageCard);
     };
-    input.click();
+    reader.readAsDataURL(file);
   };
+  input.click();
+};
+
+// Function to delete the image card
+window.deleteImageCard = function (button) {
+  const imageCard = button.closest('.card'); // Find the closest parent card element
+  if (imageCard) {
+    imageCard.remove(); // Remove the card from the DOM
+  }
+};
 
  window.addFile = function (type) {
   const container = type === 'task' ? taskContent : noteContent;
@@ -1007,5 +1026,6 @@ document.addEventListener('DOMContentLoaded', loadTheme);
 
    
   </script>
+
 </body>
 </html>
