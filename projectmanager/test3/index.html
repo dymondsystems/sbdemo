@@ -307,9 +307,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Render projects on page load
   renderProjects();
-  document.getElementById('darkModeToggle').addEventListener('change', function () {
-  document.body.setAttribute('data-theme', this.checked ? 'dark' : 'light');
-});
+ 
+
+  
   
  function generateId() {
   return 'task-' + Math.random().toString(36).substr(2, 9); // Generates a random ID like "task-abc123"
@@ -928,7 +928,36 @@ window.saveCodeBlock = function (type) {
 
 
 
+// Dark Mode Toggle
+const darkModeToggle = document.getElementById('darkModeToggle');
 
+// Function to apply the theme
+function applyTheme(theme) {
+  document.body.setAttribute('data-theme', theme);
+  localStorage.setItem('darkMode', theme);
+}
+
+// Function to toggle dark mode
+function toggleDarkMode() {
+  if (darkModeToggle.checked) {
+    applyTheme('dark');
+  } else {
+    applyTheme('light');
+  }
+}
+
+// Load saved theme on page load
+function loadTheme() {
+  const savedTheme = localStorage.getItem('darkMode') || 'light';
+  document.body.setAttribute('data-theme', savedTheme);
+  darkModeToggle.checked = savedTheme === 'dark';
+}
+
+// Event listener for dark mode toggle
+darkModeToggle.addEventListener('change', toggleDarkMode);
+
+// Load theme when the page loads
+document.addEventListener('DOMContentLoaded', loadTheme);
 
    
   </script>
