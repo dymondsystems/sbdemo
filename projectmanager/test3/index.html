@@ -123,7 +123,7 @@
       
         <!-- Modal Header -->
         <div class="modal-header">
-          <h4 class="modal-title">Modal Heading</h4>
+          <h4 class="modal-title">Task</h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         
@@ -216,7 +216,7 @@
       
         <!-- Modal Header -->
         <div class="modal-header">
-          <h4 class="modal-title">Modal Heading</h4>
+          <h4 class="modal-title">Add notes</h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         
@@ -793,7 +793,7 @@ window.addLink = function (type) {
   modal.className = 'modal fade';
     modal.style.zIndex = '9999'; // Set a high z-index
   modal.innerHTML = `
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">Add Code Block</h5>
@@ -802,7 +802,7 @@ window.addLink = function (type) {
           </button>
         </div>
         <div class="modal-body">
-          <textarea id="codeInput" class="form-control" rows="10" placeholder="Enter your code here..."></textarea>
+          <textarea id="codeInput" class="form-control" rows="20" placeholder="Enter your code here..."></textarea>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
