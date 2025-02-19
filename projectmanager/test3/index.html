@@ -263,7 +263,7 @@
   
 
   <!-- Notes Modal -->
-  <div class="modal fade" id="notesModal">
+  <div class="modal fade" id="notesModal" style="top: 50px;">
     <div class="modal-dialog modal-md">
       <div class="modal-content bg-dark">
         <div class="modal-header">
@@ -422,6 +422,10 @@ document.addEventListener('DOMContentLoaded', function () {
       taskItem.innerHTML = `
       
         <div class="card-body" style=" background-color: #313131; color: gray;" >
+
+        <div class="mb-2 float-right"> Status
+            <span class="badge ${getStatusClass(task.status)}">${task.status}</span>
+          </div>
           <h6 class="card-title">${task.title}</h6>
             
   <div id="${task.id}" class="collapse">
@@ -429,15 +433,15 @@ document.addEventListener('DOMContentLoaded', function () {
           <div class="mb-2">${task.content}</div>
           </div>
          
-          <div class="mb-2">
-            <span class="badge ${getStatusClass(task.status)}">${task.status}</span>
-          </div>
-          <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#myModal" onclick="editTask(${projectIndex}, ${taskIndex})">Edit</button>
+           <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#myModal" onclick="editTask(${projectIndex}, ${taskIndex})">Edit</button>
           <button class="btn btn-danger btn-sm" onclick="deleteTask(${projectIndex}, ${taskIndex})">Delete</button>
           <button class="btn btn-light btn-sm" onclick="viewNotes(${taskIndex})">
             <i class="fas fa-sticky-note"></i> Notes (${task.notes ? task.notes.length : 0})
           </button>
-          <button type="button" class="btn btn-sm btn-secondary dropdown-toggle float-right" data-toggle="collapse" data-target="#${task.id}">Expand</button>
+         
+          <div class="col text-center">
+          <button type="button" class="btn btn-sm btn-secondary dropdown-toggle" data-toggle="collapse" data-target="#${task.id}">Open task</button>
+        </div>
         </div>
         </div>
         
@@ -498,12 +502,14 @@ taskForm.addEventListener('submit', (e) => {
   window.editTask = function (projectIndex, taskIndex) {
     const task = projects[projectIndex].tasks[taskIndex];
     document.getElementById('taskTitle').value = task.title;
+    document.getElementById('taskDescription').value = task.description;
     document.getElementById('taskStatus').value = task.status;
     document.getElementById('taskButton').textContent = "Update task";
     taskForm.dataset.editIndex = taskIndex;
     taskForm.onsubmit = function (e) {
       e.preventDefault();
       task.title = document.getElementById('taskTitle').value;
+      task.description = document.getElementById('taskDescription').value;
       task.status = document.getElementById('taskStatus').value;
       
       localStorage.setItem('projects', JSON.stringify(projects));
@@ -545,9 +551,10 @@ taskForm.addEventListener('submit', (e) => {
   <div id="${note.id}" class="collapse">
           <p>${note.description}</p>
           <div>${note.content}</div></div>
-          <button class="btn btn-sm btn-light float-right" data-toggle="modal" data-target="#myModal2" onclick="editNote(${noteIndex})">Edit</button>
-          <button class="btn btn-sm btn-light float-right" onclick="deleteNote(${noteIndex})">Delete</button>
-           <button type="button" class="btn btn-sm btn-secondary dropdown-toggle" data-toggle="collapse" data-target="#${note.id}">Expand</button>
+          <button class="btn btn-sm btn-danger float-right" style="margin-left:5px;" onclick="deleteNote(${noteIndex})">Delete</button>
+          <button class="btn btn-sm btn-light float-right"  data-toggle="modal" data-target="#myModal2" onclick="editNote(${noteIndex})">Edit</button>
+          
+           <button type="button" class="btn btn-sm btn-secondary dropdown-toggle" data-toggle="collapse" data-target="#${note.id}">View note</button>
         </div>
         </div>
       `;
@@ -704,29 +711,58 @@ projects.forEach(project => {
     input.click();
   };
 
-  window.addFile = function (type) {
-    const container = type === 'task' ? taskContent : noteContent;
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.onchange = (e) => {
-      const file = e.target.files[0];
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const base64 = event.target.result;
-        const fileElement = document.createElement('div');
-        fileElement.className = 'card mb-2';
-        fileElement.innerHTML = `
-          <div class="card-body" style="background-color: #fc8e89;">
+ window.addFile = function (type) {
+  const container = type === 'task' ? taskContent : noteContent;
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.onchange = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const base64 = event.target.result;
+
+      // Create a card for the file
+      const fileElement = document.createElement('div');
+      fileElement.className = 'card mb-2';
+      fileElement.innerHTML = `
+        <div class="card-body" style="background-color: #fc8e89; display: flex; justify-content: space-between; align-items: center;">
+          <div>
             <i class="fas fa-file"></i> ${file.name}
-            <button class="btn btn-sm btn-light float-right" onclick="downloadFile('${base64}', '${file.name}')">Download</button>
           </div>
-        `;
-        container.appendChild(fileElement);
-      };
-      reader.readAsDataURL(file);
+          <div>
+            <button class="btn btn-sm btn-light" onclick="downloadFile('${base64}', '${file.name}')">
+              <i class="fas fa-download"></i> Download
+            </button>
+            <button class="btn btn-sm btn-danger" onclick="deleteFileCard(this)">
+              <i class="fas fa-trash"></i> Delete
+            </button>
+          </div>
+        </div>
+      `;
+
+      // Append the card to the container
+      container.appendChild(fileElement);
     };
-    input.click();
+    reader.readAsDataURL(file);
   };
+  input.click();
+};
+
+// Function to delete the file card
+window.deleteFileCard = function (button) {
+  const fileCard = button.closest('.card'); // Find the closest parent card element
+  if (fileCard) {
+    fileCard.remove(); // Remove the card from the DOM
+  }
+};
+
+// Function to download the file
+window.downloadFile = function (base64, fileName) {
+  const link = document.createElement('a');
+  link.href = base64;
+  link.download = fileName;
+  link.click();
+};
 
 window.addLink = function (type) {
   const container = type === 'task' ? taskContent : noteContent;
@@ -736,8 +772,8 @@ window.addLink = function (type) {
   modal.className = 'modal fade';
   modal.style.zIndex = '9999'; // Set a high z-index
   modal.innerHTML = `
-    <div class="modal-dialog modal-sm" " style="top: 100px;">
-      <div class="modal-content" style=" background-color: #313131; color: gray;">
+    <div class="modal-dialog modal-sm" style="top: 100px;">
+      <div class="modal-content" style="background-color: #313131; color: gray;">
         <div class="modal-header">
           <h5 class="modal-title">Add Link</h5>
           <button type="button" class="close" data-dismiss="modal">
@@ -769,11 +805,13 @@ window.addLink = function (type) {
       const linkCard = document.createElement('div');
       linkCard.className = 'card mb-2';
       linkCard.innerHTML = `
-        <div class="card-body" style=" background-color: #ddfcfc;">
+        <div class="card-body" style="background-color: #ddfcfc; display: flex; justify-content: space-between; align-items: center;">
           <a href="${url}" target="_blank" class="card-link">
-            <i class="fas fa-external-link-alt"></i>${url}
+            <i class="fas fa-external-link-alt"></i> ${url}
           </a>
-           
+          <button class="btn btn-danger btn-sm" onclick="deleteLinkCard(this)">
+            <i class="fas fa-trash"></i> Delete
+          </button>
         </div>
       `;
 
@@ -783,6 +821,14 @@ window.addLink = function (type) {
     $(modal).modal('hide'); // Hide the modal
     modal.remove(); // Remove the modal from the DOM
   };
+};
+
+// Function to delete the link card
+window.deleteLinkCard = function (button) {
+  const linkCard = button.closest('.card'); // Find the closest parent card element
+  if (linkCard) {
+    linkCard.remove(); // Remove the card from the DOM
+  }
 };
 
   window.addCodeBlock = function (type) {
