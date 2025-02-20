@@ -2781,14 +2781,14 @@ window.deleteImageCard = function (button) {
       fileElement.innerHTML = `
         <div class="card-body" style="background-color: #fc8e89; display: flex; justify-content: space-between; align-items: center;">
           <div>
-            <i class="fas fa-file"></i> ${file.name}
+            <i class="fas fa-file fa-lg"></i> ${file.name}
           </div>
           <div>
             <button class="btn btn-sm btn-light" onclick="downloadFile('${base64}', '${file.name}')">
               <i class="fas fa-download"></i> Download
             </button>
             <button class="btn btn-sm btn-danger" onclick="deleteFileCard(this)">
-              <i class="fas fa-trash"></i> Delete
+              <i class="fas fa-trash"></i>
             </button>
           </div>
         </div>
@@ -2868,7 +2868,7 @@ if (url) {
       // Create a card for the link
       const linkCard = document.createElement('div');
       linkCard.className = 'card mb-2';
-      const linkText = `<i class="fas fa-external-link-alt"></i> ${url}`;
+      const linkText = `<i class="fas fa-external-link-alt fa-lg"></i> ${url}`;
 const truncatedLink = truncateText(linkText, 80); // 50 is the maximum length
       linkCard.innerHTML = `
         <div class="card-body" style="background-color: #ddfcfc; display: flex; justify-content: space-between; align-items: center;">
@@ -2972,8 +2972,8 @@ window.addCodeBlock = function (type) {
     codeCard.innerHTML = `
       
         
-        <div class="card-body" style="background-color: #a4a2a2; display: flex; justify-content: space-between; align-items: center; color: black;">
-        <span class="card-text"><i class="fas fa-code"></i> ${name}</span>
+        <div class="card-body bg-dark" style="display: flex; justify-content: space-between; align-items: center;">
+        <span class="card-text"><i class="fas fa-code fa-lg"></i> ${name}</span>
         
 
         <div class="mt-2">
