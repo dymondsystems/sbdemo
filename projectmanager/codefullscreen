@@ -3019,7 +3019,7 @@ window.createCodeModal = function (button) {
   modal.className = 'modal fade';
   modal.style.zIndex = '9999';
   modal.innerHTML = `
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">Full Code</h5>
@@ -3027,31 +3027,31 @@ window.createCodeModal = function (button) {
             <span>&times;</span>
           </button>
         </div>
-        <div class="modal-body">
-        
-         <div class="modal-body" style="max-height: calc(100vh - 200px); overflow-y: auto;">
-          <pre><code style="white-space: pre-wrap; word-wrap: break-word;">${escapeHTML(code)}</code></pre>
-        
+        <div class="modal-body" style="max-height: calc(100vh - 200px); overflow-y: auto;">
+          <pre><code class="language-javascript" style="white-space: pre-wrap; word-wrap: break-word;">${escapeHTML(code)}</code></pre>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <!-- Add the Copy Button here -->
+            <!-- Add the Copy Button here -->
           <button class="btn btn-primary copy-btn">Copy</button>
-          
         </div>
       </div>
     </div>
   `;
-
-  // Append modal to the body and show it
+  
   document.body.appendChild(modal);
   $(modal).modal('show');
+
+  // Wait until the modal is shown before applying Prism highlighting
+  $(modal).on('shown.bs.modal', function () {
+    Prism.highlightElement(modal.querySelector('code'));
+  });
 
   // Add copy functionality
   const copyBtn = modal.querySelector('.copy-btn');
   copyBtn.addEventListener('click', async () => {
     try {
-      // Get the raw code from the hidden textarea
+      // Get the unescaped raw code from the hidden textarea
       const rawCode = button.closest('.modal').querySelector('.hidden-code').value;
 
       await navigator.clipboard.writeText(rawCode);
@@ -3068,9 +3068,6 @@ window.createCodeModal = function (button) {
   $(modal).on('hidden.bs.modal', function () {
     modal.remove();
   });
-
-  // Apply syntax highlighting
-  Prism.highlightElement(modal.querySelector('code'));
 };
 
 
