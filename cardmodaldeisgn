@@ -1,0 +1,119 @@
+<!-- The Modal -->
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+       <div class="modal-header d-flex align-items-center">
+  <img id="modalImage" src="" alt="Card Image" class="rounded-circle mr-2" style="width: 40px; height: 40px; display: none;">
+  <h4 class="modal-title mb-0" id="modalTitle">Title</h4>
+          
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <!-- Modal Body -->
+        <div class="modal-body" id="modalBody">
+          <!-- Dynamically added buttons will appear here -->
+          <div id="launch-buttons" class="mb-3">
+            <!-- Buttons content will go here -->
+          </div>
+
+          
+          
+          
+
+<div id="demo" class="collapse">
+  <hr>
+  <button data-toggle="collapse" class="btn btn-outline-secondary float-right" data-target="#demo"><i class="fas fa-minus"></i></button>
+  <h3>Link folder</h3>
+  <p>Drag buttons here...</p>
+  
+    <div class="card-body" id="collapsibleContainer">
+      <!-- Buttons will be dragged here -->
+    </div>
+  </div>
+
+          
+          
+          
+          
+          
+
+          <!-- Add/Edit Button Form -->
+           <!-- Modal Footer -->
+        <div class="modal-footer" >
+          <button data-toggle="collapse" class="btn btn-outline-secondary" data-target="#demo"><i class="fas fa-folder"></i></button>
+          <button data-toggle="collapse" class="btn btn-outline-secondary" data-target="#demo2"><i class="fas fa-sticky-note"></i></button>
+          <button data-toggle="collapse" class="btn btn-outline-secondary" data-target="#demo3"><i class="fas fa-thumbtack"></i></button>
+          <button id="toggleFormButton" class="btn btn-outline-secondary" data-toggle="collapse" data-target="#addEditButton"><i class="fas fa-plus"></i></button>
+         
+          <button type="button" id="closeWindowButton" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          
+          
+          
+          <div id="addEditButton" class="collapse mt-3" style="width:100%;">
+            <form id="newButtonForm">
+              <div class="form-group">
+                <label for="buttonURL">Button URL:</label>
+                <input type="url" class="form-control" id="buttonURL" required>
+              </div>
+              <div class="form-group">
+                <label for="buttonName">Button Name:</label>
+                <input type="text" class="form-control" id="buttonName" required>
+              </div>
+              
+              <button type="submit" id="saveButton" class="btn btn-primary">Save</button>
+               <button type="button" id="toggleFormButton" class="btn btn-secondary" data-toggle="collapse" data-target="#demo"><i class="fas fa-cog"></i></button>
+              <button type="button" id="cancelButton" class="btn btn-secondary">Cancel</button>
+  <div id="demo" class="collapse">
+              <div class="form-group">
+                <label>Open Link:</label><br>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="openType" id="openNewTab" value="newTab" checked>
+                  <label class="form-check-label" for="openNewTab">In New Tab</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="openType" id="openNewWindow" value="newWindow">
+                  <label class="form-check-label" for="openNewWindow">In New Window</label>
+                </div>
+              </div>
+              <div id="windowSizeOptions" style="display:none;">
+                <div class="form-group">
+                  <label>Window Size:</label><br>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="windowSize" id="sizeSmall" value="small" checked>
+                    <label class="form-check-label" for="sizeSmall">Small (600x400)</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="windowSize" id="sizeMedium" value="medium">
+                    <label class="form-check-label" for="sizeMedium">Medium</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="windowSize" id="sizeLarge" value="large">
+                    <label class="form-check-label" for="sizeLarge">Large</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="windowSize" id="sizeFull" value="full">
+                    <label class="form-check-label" for="sizeFull">Full Screen</label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <button type="submit" id="saveButton" class="btn btn-primary">save settings</button>
+                <button type="button" id="cancelButton" class="btn btn-secondary">Cancel</button>
+            </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+       
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
