@@ -1,0 +1,4003 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stackboard demo</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+  
+  <link rel="stylesheet" 
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  
+  <!-- jQuery and Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet"> 
+    
+    
+    
+    <style>
+
+
+.progress{margin: 100px;}
+
+
+#calculator {
+  width: 450px;
+  height: 270px;;
+  margin: 50px auto 0 auto;
+  background-color: #191970;
+  padding: 10px 10px 260px 10px;
+  border-radius: 5px;
+  border-bottom: 5px solid #42729B;
+}
+
+.result {
+  width: 305px;
+  height: 40px;
+  float: left;
+  line-height: 40px;
+  background-color: #fff;
+  color: #000;
+  margin: 5px;
+}
+
+.result > p {
+  margin-left: 10px;
+}
+.clear, span1 {
+  height: 40px;
+  border-bottom: 3px solid grey;
+  border-radius: 10px;
+  text-align: center;
+  line-height: 40px;
+  cursor: pointer;
+  background-color: #ecf0f1;
+  color: #2c3e50;
+  margin: 5px;
+}
+
+.clear {
+  width: 95px;
+  float: left;
+  background-color: #c0392b;
+  color: #fff;
+    border-color: #A63125;
+}
+
+
+span1 {
+  float: left;
+  width: 95px;
+}
+span1:hover{
+    
+	background-color:#00BFFF;
+}
+
+
+
+
+
+
+
+span.b {
+  display: inline-block;
+  
+  padding: 5px;
+  }
+ 
+
+html body {
+    background-color: #e0e0e0;
+
+}
+
+nav{
+color: white;
+z-index: 999;
+overflow-y: visible;
+
+}
+
+
+body {
+   
+    background: #ecf0f1;
+
+
+
+
+
+
+
+
+
+
+
+}
+
+#preloader {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: #fda56b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+#loader {
+    border: 8px solid #f3f3f3;
+    border-top: 8px solid #3498db;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+#splash {
+    height: 100vh;
+    display: flex;
+    align-items: flex-end;
+}
+.curtain {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    bottom: 0;
+    overflow: hidden;
+    animation: curtainAnimation 4s ease-out forwards, gradientAnimation 3s ease-out forwards;
+}
+
+
+.splash-content {
+    text-align: center;
+    padding: 20px;
+    color: #fff;
+    position: relative;
+    z-index: 2;
+}
+
+.splash-content i {
+    font-size: 2em;
+}
+
+.additional-splash-effects {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #ff6b6b, #8e44ad, #3498db, #e74c3c);
+    animation: backgroundAnimation 20s infinite alternate;
+    z-index: 1;
+}
+
+#content {
+    text-align: center;
+    position: relative;
+}
+
+
+
+
+
+.animated-emoji {
+    font-size: 2em;
+    margin-top: 10px;
+    animation: bounce 1s infinite;
+}
+
+.animated-title {
+    animation: fadeInDown 1.5s ease-out;
+}
+
+.animated-subtitle {
+    animation: fadeInUp 1.5s ease-out;
+}
+
+@keyframes curtainAnimation {
+    0% {
+        transform: translateY(100%);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+@keyframes gradientAnimation {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes backgroundAnimation {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    100% {
+        background-position: 100% 50%;
+    }
+}
+
+@keyframes cardAnimation {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes bounce {
+
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
+        transform: translateY(0);
+    }
+
+    40% {
+        transform: translateY(-20px);
+    }
+
+    60% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes fadeInDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+
+
+
+
+
+#sidebar {
+    overflow: hidden;
+    z-index: 3;
+}
+#sidebar .list-group {
+    min-width: 400px;
+    background-color: #333;
+    min-height: 100vh;
+}
+#sidebar i {
+    margin-right: 6px;
+}
+
+#sidebar .list-group-item {
+    border-radius: 0;
+    background-color: #333;
+    color: #ccc;
+    border-left: 0;
+    border-right: 0;
+    border-color: #2c2c2c;
+    white-space: nowrap;
+}
+
+/* highlight active menu */
+#sidebar .list-group-item:not(.collapsed) {
+    background-color: #222;
+}
+
+/* closed state */
+#sidebar .list-group .list-group-item[aria-expanded="false"]::after {
+  content: " \f0d7";
+  font-family: FontAwesome;
+  display: inline;
+  text-align: right;
+  padding-left: 5px;
+}
+
+/* open state */
+#sidebar .list-group .list-group-item[aria-expanded="true"] {
+  background-color: #222;
+}
+#sidebar .list-group .list-group-item[aria-expanded="true"]::after {
+  content: " \f0da";
+  font-family: FontAwesome;
+  display: inline;
+  text-align: right;
+  padding-left: 5px;
+}
+
+/* level 1*/
+#sidebar .list-group .collapse .list-group-item,
+#sidebar .list-group .collapsing .list-group-item  {
+  padding-left: 20px;
+}
+
+/* level 2*/
+#sidebar .list-group .collapse > .collapse .list-group-item,
+#sidebar .list-group .collapse > .collapsing .list-group-item {
+  padding-left: 30px;
+}
+
+/* level 3*/
+#sidebar .list-group .collapse > .collapse > .collapse .list-group-item {
+  padding-left: 40px;
+}
+
+@media (max-width:768px) {
+    #sidebar {
+        min-width: 35px;
+        max-width: 40px;
+        overflow-y: auto;
+        overflow-x: visible;
+        transition: all 0.25s ease;
+        transform: translateX(-45px);
+        position: fixed;
+    }
+    
+    #sidebar.show {
+        transform: translateX(0);
+    }
+
+    #sidebar::-webkit-scrollbar{ width: 0px; }
+    
+    #sidebar, #sidebar .list-group {
+        min-width: 1px;
+        overflow: visible;
+    }
+    /* overlay sub levels on small screens */
+    #sidebar .list-group .collapse.show, #sidebar .list-group .collapsing {
+        position: relative;
+        z-index: 1;
+        width: 190px;
+        top: 0;
+        }
+    
+    #sidebar .list-group > .list-group-item {
+        text-align: center;
+        padding: .75rem .5rem;
+    }
+    /* hide caret icons of top level when collapsed */
+    #sidebar .list-group > .list-group-item[aria-expanded="true"]::after,
+    #sidebar .list-group > .list-group-item[aria-expanded="false"]::after {
+        display:none;
+    }
+}
+
+.collapse.show {
+  visibility: visible;
+}
+.collapsing {
+  visibility: visible;
+  height: 0;
+  -webkit-transition-property: height, visibility;
+  transition-property: height, visibility;
+  -webkit-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
+}
+.collapsing.width {
+  -webkit-transition-property: width, visibility;
+  transition-property: width, visibility;
+  width: 0;
+  height: 100%;
+  -webkit-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
+}
+
+
+.fa-ellipsis-v{
+
+
+  cursor: pointer;
+}
+
+.dropdown-menu {
+max-width: px;
+}
+
+.container{
+margin-top: 50px;
+}
+
+.form-group{
+margin-bottom:60px;
+}
+
+
+
+
+#sidebar {
+    overflow: hidden;
+    z-index: 1000;
+}
+#sidebar .list-group {
+    min-width: 400px;
+    background-color: #333;
+    min-height: 100vh;
+}
+#sidebar i {
+    margin-right: 6px;
+}
+
+#sidebar .list-group-item {
+    border-radius: 0;
+    background-color: #333;
+    color: #ccc;
+    border-left: 0;
+    border-right: 0;
+    border-color: #2c2c2c;
+    white-space: nowrap;
+}
+
+/* highlight active menu */
+#sidebar .list-group-item:not(.collapsed) {
+    background-color: #222;
+}
+
+/* closed state */
+#sidebar .list-group .list-group-item[aria-expanded="false"]::after {
+  content: " \f0d7";
+  font-family: FontAwesome;
+  display: inline;
+  text-align: right;
+  padding-left: 5px;
+}
+
+/* open state */
+#sidebar .list-group .list-group-item[aria-expanded="true"] {
+  background-color: #222;
+}
+#sidebar .list-group .list-group-item[aria-expanded="true"]::after {
+  content: " \f0da";
+  font-family: FontAwesome;
+  display: inline;
+  text-align: right;
+  padding-left: 5px;
+}
+
+/* level 1*/
+#sidebar .list-group .collapse .list-group-item,
+#sidebar .list-group .collapsing .list-group-item  {
+  padding-left: 20px;
+}
+
+/* level 2*/
+#sidebar .list-group .collapse > .collapse .list-group-item,
+#sidebar .list-group .collapse > .collapsing .list-group-item {
+  padding-left: 30px;
+}
+
+/* level 3*/
+#sidebar .list-group .collapse > .collapse > .collapse .list-group-item {
+  padding-left: 40px;
+}
+
+@media (max-width:768px) {
+    #sidebar {
+        min-width: 35px;
+        max-width: 40px;
+        overflow-y: auto;
+        overflow-x: visible;
+        transition: all 0.25s ease;
+        transform: translateX(-45px);
+        position: fixed;
+    }
+    
+    #sidebar.show {
+        transform: translateX(0);
+    }
+
+    #sidebar::-webkit-scrollbar{ width: 0px; }
+    
+    #sidebar, #sidebar .list-group {
+        min-width: 1px;
+        overflow: visible;
+    }
+    /* overlay sub levels on small screens */
+    #sidebar .list-group .collapse.show, #sidebar .list-group .collapsing {
+        position: relative;
+        z-index: 1;
+        width: 190px;
+        top: 0;
+        }
+    
+    #sidebar .list-group > .list-group-item {
+        text-align: center;
+        padding: .75rem .5rem;
+    }
+    /* hide caret icons of top level when collapsed */
+    #sidebar .list-group > .list-group-item[aria-expanded="true"]::after,
+    #sidebar .list-group > .list-group-item[aria-expanded="false"]::after {
+        display:none;
+    }
+}
+
+.collapse.show {
+  visibility: visible;
+}
+.collapsing {
+  visibility: visible;
+  height: 0;
+  -webkit-transition-property: height, visibility;
+  transition-property: height, visibility;
+  -webkit-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
+}
+.collapsing.width {
+  -webkit-transition-property: width, visibility;
+  transition-property: width, visibility;
+  width: 0;
+  height: 100%;
+  -webkit-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
+}
+
+
+.fa-ellipsis-v{
+
+
+  cursor: pointer;
+}
+
+.dropdown-menu {
+max-width: px;
+}
+
+@keyframes swing {
+  0% {
+    transform: rotate(0deg);
+  }
+  10% {
+    transform: rotate(10deg);
+  }
+  30% {
+    transform: rotate(0deg);
+  }
+  40% {
+    transform: rotate(-10deg);
+  }
+  50% {
+    transform: rotate(0deg);
+  }
+  60% {
+    transform: rotate(5deg);
+  }
+  70% {
+    transform: rotate(0deg);
+  }
+  80% {
+    transform: rotate(-5deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes sonar {
+  0% {
+    transform: scale(0.9);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+body {
+  font-size: 0.9rem;
+}
+.page-wrapper .sidebar-wrapper,
+.sidebar-wrapper .sidebar-brand > a,
+.sidebar-wrapper .sidebar-dropdown > a:after,
+.sidebar-wrapper .sidebar-menu .sidebar-dropdown .sidebar-submenu li a:before,
+.sidebar-wrapper ul li a i,
+.page-wrapper .page-content,
+.sidebar-wrapper .sidebar-search input.search-menu,
+.sidebar-wrapper .sidebar-search .input-group-text,
+.sidebar-wrapper .sidebar-menu ul li a,
+#show-sidebar,
+#close-sidebar {
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+  -ms-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+}
+
+/*----------------page-wrapper----------------*/
+
+.page-wrapper {
+  height: 100vh;
+}
+
+.page-wrapper .theme {
+  width: 40px;
+  height: 40px;
+  display: inline-block;
+  border-radius: 4px;
+  margin: 2px;
+}
+
+.page-wrapper .theme.chiller-theme {
+  background: #1e2229;
+}
+
+/*----------------toggeled sidebar----------------*/
+
+.page-wrapper.toggled .sidebar-wrapper {
+  left: 0px;
+}
+
+@media screen and (min-width: 768px) {
+  .page-wrapper.toggled .page-content {
+    padding-left: 300px;
+  }
+}
+/*----------------show sidebar button----------------*/
+#show-sidebar {
+  position: fixed;
+  left: 0;
+  top: 65px;
+  border-radius: 0 4px 4px 0px;
+  width: 35px;
+  transition-delay: 0.3s;
+  
+}
+.page-wrapper.toggled #show-sidebar {
+  left: -40px;
+}
+/*----------------sidebar-wrapper----------------*/
+
+.sidebar-wrapper {
+  width: 260px;
+  height: 100%;
+  max-height: 100%;
+  position: fixed;
+  top: 0;
+  left: -300px;
+  z-index: 999;
+}
+
+.sidebar-wrapper ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-wrapper a {
+  text-decoration: none;
+}
+
+/*----------------sidebar-content----------------*/
+
+.sidebar-content {
+  max-height: calc(100% - 30px);
+  height: calc(100% - 30px);
+  overflow-y: auto;
+  position: relative;
+}
+
+.sidebar-content.desktop {
+  overflow-y: hidden;
+}
+
+/*--------------------sidebar-brand----------------------*/
+
+.sidebar-wrapper .sidebar-brand {
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+}
+
+.sidebar-wrapper .sidebar-brand > a {
+  text-transform: uppercase;
+  font-weight: bold;
+  flex-grow: 1;
+}
+
+.sidebar-wrapper .sidebar-brand #close-sidebar {
+  cursor: pointer;
+  font-size: 20px;
+}
+/*--------------------sidebar-header----------------------*/
+
+.sidebar-wrapper .sidebar-header {
+  padding: 20px;
+  overflow: hidden;
+}
+
+.sidebar-wrapper .sidebar-header .user-pic {
+  float: left;
+  width: 60px;
+  padding: 2px;
+  border-radius: 12px;
+  margin-right: 15px;
+  overflow: hidden;
+}
+
+.sidebar-wrapper .sidebar-header .user-pic img {
+  object-fit: cover;
+  height: 100%;
+  width: 100%;
+}
+
+.sidebar-wrapper .sidebar-header .user-info {
+  float: left;
+}
+
+.sidebar-wrapper .sidebar-header .user-info > span {
+  display: block;
+}
+
+.sidebar-wrapper .sidebar-header .user-info .user-role {
+  font-size: 12px;
+}
+
+.sidebar-wrapper .sidebar-header .user-info .user-status {
+  font-size: 11px;
+  margin-top: 4px;
+}
+
+.sidebar-wrapper .sidebar-header .user-info .user-status i {
+  font-size: 8px;
+  margin-right: 4px;
+  color: #5cb85c;
+}
+
+/*-----------------------sidebar-search------------------------*/
+
+.sidebar-wrapper .sidebar-search > div {
+  padding: 10px 20px;
+}
+
+/*----------------------sidebar-menu-------------------------*/
+
+.sidebar-wrapper .sidebar-menu {
+  padding-bottom: 10px;
+}
+
+.sidebar-wrapper .sidebar-menu .header-menu span {
+  font-weight: bold;
+  font-size: 14px;
+  padding: 15px 20px 5px 20px;
+  display: inline-block;
+}
+
+.sidebar-wrapper .sidebar-menu ul li a {
+  display: inline-block;
+  width: 100%;
+  text-decoration: none;
+  position: relative;
+  padding: 8px 30px 8px 20px;
+}
+
+.sidebar-wrapper .sidebar-menu ul li a i {
+  margin-right: 10px;
+  font-size: 12px;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  border-radius: 4px;
+}
+
+.sidebar-wrapper .sidebar-menu ul li a:hover > i::before {
+  display: inline-block;
+  animation: swing ease-in-out 0.5s 1 alternate;
+}
+
+.sidebar-wrapper .sidebar-menu .sidebar-dropdown > a:after {
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  content: "\f105";
+  font-style: normal;
+  display: inline-block;
+  font-style: normal;
+  font-variant: normal;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  background: 0 0;
+  position: absolute;
+  right: 15px;
+  top: 14px;
+}
+
+.sidebar-wrapper .sidebar-menu .sidebar-dropdown .sidebar-submenu ul {
+  padding: 5px 0;
+}
+
+.sidebar-wrapper .sidebar-menu .sidebar-dropdown .sidebar-submenu li {
+  padding-left: 25px;
+  font-size: 13px;
+}
+
+.sidebar-wrapper .sidebar-menu .sidebar-dropdown .sidebar-submenu li a:before {
+  content: "\f111";
+  font-family: "Font Awesome 5 Free";
+  font-weight: 400;
+  font-style: normal;
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin-right: 10px;
+  font-size: 8px;
+}
+
+.sidebar-wrapper .sidebar-menu ul li a span.label,
+.sidebar-wrapper .sidebar-menu ul li a span.badge {
+  float: right;
+  margin-top: 8px;
+  margin-left: 5px;
+}
+
+.sidebar-wrapper .sidebar-menu .sidebar-dropdown .sidebar-submenu li a .badge,
+.sidebar-wrapper .sidebar-menu .sidebar-dropdown .sidebar-submenu li a .label {
+  float: right;
+  margin-top: 0px;
+}
+
+.sidebar-wrapper .sidebar-menu .sidebar-submenu {
+  display: none;
+}
+
+.sidebar-wrapper .sidebar-menu .sidebar-dropdown.active > a:after {
+  transform: rotate(90deg);
+  right: 17px;
+}
+
+/*--------------------------side-footer------------------------------*/
+
+.sidebar-footer {
+  position: absolute;
+  width: 100%;
+  height:40px;
+  bottom: 0;
+  display: flex;
+}
+
+.sidebar-footer > a {
+  flex-grow: 1;
+  text-align: center;
+  height: 30px;
+  line-height: 30px;
+  position: relative;
+ 
+}
+
+.sidebar-footer > a .notification {
+  position: absolute;
+  top: 0;
+}
+
+.badge-sonar {
+  display: inline-block;
+  background: #980303;
+  border-radius: 50%;
+  height: 8px;
+  width: 8px;
+  position: absolute;
+  top: 0;
+}
+
+.badge-sonar:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 2px solid #980303;
+  opacity: 0;
+  border-radius: 50%;
+  width: 100%;
+  height: 100%;
+  animation: sonar 1.5s infinite;
+}
+
+/*--------------------------page-content-----------------------------*/
+
+.page-wrapper .page-content {
+  display: inline-block;
+  width: 100%;
+  padding-left: 0px;
+  padding-top: 20px;
+}
+
+.page-wrapper .page-content > div {
+  padding: 20px 40px;
+}
+
+.page-wrapper .page-content {
+  overflow-x: hidden;
+}
+
+/*------scroll bar---------------------*/
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 7px;
+}
+::-webkit-scrollbar-button {
+  width: 0px;
+  height: 0px;
+}
+::-webkit-scrollbar-thumb {
+  background: #525965;
+  border: 0px none #ffffff;
+  border-radius: 0px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #525965;
+}
+::-webkit-scrollbar-thumb:active {
+  background: #525965;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+  border: 0px none #ffffff;
+  border-radius: 50px;
+}
+::-webkit-scrollbar-track:hover {
+  background: transparent;
+}
+::-webkit-scrollbar-track:active {
+  background: transparent;
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+
+/*-----------------------------chiller-theme-------------------------------------------------*/
+
+.chiller-theme .sidebar-wrapper {
+    background: #31353D;
+}
+
+.chiller-theme .sidebar-wrapper .sidebar-header,
+.chiller-theme .sidebar-wrapper .sidebar-search,
+.chiller-theme .sidebar-wrapper .sidebar-menu {
+    border-top: 1px solid #3a3f48;
+}
+
+.chiller-theme .sidebar-wrapper .sidebar-search input.search-menu,
+.chiller-theme .sidebar-wrapper .sidebar-search .input-group-text {
+    border-color: transparent;
+    box-shadow: none;
+}
+
+.chiller-theme .sidebar-wrapper .sidebar-header .user-info .user-role,
+.chiller-theme .sidebar-wrapper .sidebar-header .user-info .user-status,
+.chiller-theme .sidebar-wrapper .sidebar-search input.search-menu,
+.chiller-theme .sidebar-wrapper .sidebar-search .input-group-text,
+.chiller-theme .sidebar-wrapper .sidebar-brand>a,
+.chiller-theme .sidebar-wrapper .sidebar-menu ul li a,
+.chiller-theme .sidebar-footer>a {
+    color: #818896;
+}
+
+.chiller-theme .sidebar-wrapper .sidebar-menu ul li:hover>a,
+.chiller-theme .sidebar-wrapper .sidebar-menu .sidebar-dropdown.active>a,
+.chiller-theme .sidebar-wrapper .sidebar-header .user-info,
+.chiller-theme .sidebar-wrapper .sidebar-brand>a:hover,
+.chiller-theme .sidebar-footer>a:hover i {
+    color: #b8bfce;
+}
+
+.page-wrapper.chiller-theme.toggled #close-sidebar {
+    color: #bdbdbd;
+}
+
+.page-wrapper.chiller-theme.toggled #close-sidebar:hover {
+    color: #ffffff;
+}
+
+.chiller-theme .sidebar-wrapper ul li:hover a i,
+.chiller-theme .sidebar-wrapper .sidebar-dropdown .sidebar-submenu li a:hover:before,
+.chiller-theme .sidebar-wrapper .sidebar-search input.search-menu:focus+span,
+.chiller-theme .sidebar-wrapper .sidebar-menu .sidebar-dropdown.active a i {
+    color: #16c7ff;
+    text-shadow:0px 0px 10px rgba(22, 199, 255, 0.5);
+}
+
+.chiller-theme .sidebar-wrapper .sidebar-menu ul li a i,
+.chiller-theme .sidebar-wrapper .sidebar-menu .sidebar-dropdown div,
+.chiller-theme .sidebar-wrapper .sidebar-search input.search-menu,
+.chiller-theme .sidebar-wrapper .sidebar-search .input-group-text {
+    background: #3a3f48;
+}
+
+.chiller-theme .sidebar-wrapper .sidebar-menu .header-menu span {
+    color: #6c7b88;
+}
+
+.chiller-theme .sidebar-footer {
+    background: #3a3f48;
+    box-shadow: 0px -1px 5px #282c33;
+    border-top: 1px solid #464a52;
+}
+
+.chiller-theme .sidebar-footer>a:first-child {
+    border-left: none;
+}
+
+.chiller-theme .sidebar-footer>a:last-child {
+    border-right: none;
+}
+
+  /* General styles for open buttons */
+    .open-btn {
+      position: fixed;
+      bottom: 20px;
+      z-index: 1030;
+      transform: translateX(-50%);
+    }
+
+    /* Position each open button */
+    #open-btn1 { left: 20%; }
+    #open-btn2 { left: 40%; }
+    #open-btn3 { left: 60%; }
+    #open-btn4 { left: 80%; }
+
+    /* Sticky container for animated buttons */
+    .button-container {
+      position: fixed;
+      top: 0;
+      display: flex;
+      justify-content: flex-start;
+      gap: 10px;
+      z-index: 1030;
+      padding: 10px;
+      
+      flex-wrap: nowrap; /* Ensure the buttons don't wrap onto new lines */
+      overflow-x: auto; /* Allow horizontal scroll if needed */
+    }
+
+    /* Collapsible container styles */
+    #collapsible-container {
+      display: none; /* Initially collapsed */
+      width: 100%;
+      background-color:#f8f9fa;
+      padding: 10px;
+      margin-top: 10px;
+      transition: max-height 0.5s ease-in-out;
+      max-height: 0;
+      overflow: hidden;
+    }
+
+    /* Button styles */
+    .animated-btn {
+      width: 100px;
+      height: 50px;
+      transition: all 0.5s ease-in-out;
+      text-align: left;
+      font-size: 14px;
+      font-weight: bold;
+      color: white;
+      cursor: pointer;
+      position: relative;
+      padding: 5px;
+      display: flex;
+      align-items: center;
+      border-radius: 10px;
+      justify-content: flex-start;
+      flex-direction: column;
+      background-color: grey;
+      overflow: hidden;
+      /* Default size */
+    }
+
+    /* Layout for image and text inside buttons */
+    .animated-btn img {
+      width: 25px;
+      height: 25px;
+      margin-right: 5px;
+      transition: all 0.3s ease-in-out;
+    }
+
+    /* Button expand on hover */
+.animated-btn:hover {
+  width: 200px; /* Make the button 200px wide when hovered */
+  height: 180px; /* Make the button 150px tall when hovered */
+  transition: all 0.3s ease-in-out; /* Smooth transition */
+  flex-direction: column; /* Stack the image and text vertically */
+  justify-content: center; /* Center the content */
+  align-items: center; /* Align content in the center */
+  min-width: 200px;
+}
+
+/* Image grows when button expands */
+.animated-btn:hover img {
+  width: 100px; /* Image becomes bigger when the button expands */
+  height: 80px; /* Maintain aspect ratio */
+}
+
+
+    /* Close button styles */
+    .close-btn {
+  display: none;
+  padding: 5px 10px;
+  background: white;
+  color: black;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  font-size: 12px;
+  margin-bottom: 5px; /* Space between buttons */
+  
+}
+    
+
+    /* Link button styles */
+    .link-btn {
+      display: none;
+      margin-bottom: 10px;
+      padding: 5px 10px;
+      background-color: #007bff;
+      color: white;
+      text-decoration: none;
+      border-radius: 3px;
+      font-size: 12px;
+    }
+
+    /* Show close button and link button when expanded */
+    .animated-btn:hover .close-btn,
+    .animated-btn:hover .link-btn {
+      display: inline-block; /* Change to inline-block so they're side-by-side */
+    }
+
+    /* Background colors for each button */
+    .animated-btn-1 { background-color: #007bff; }
+    .animated-btn-2 { background-color: #28a745; }
+    .animated-btn-3 { background-color: #ffc107; }
+    .animated-btn-4 { background-color: #dc3545; }
+
+    /* Container for close and link buttons */
+    .btn-container {
+      display: flex;
+      gap: 10px; /* Space between buttons */
+      margin-top: 10px;
+    }
+
+    /* Hide the toggle button when the container has enough space */
+    #toggle-btn {
+      display: none;
+    }
+    .card{
+    min-height: 275px;
+    min-height: 275px;
+    }
+    
+    .launch-button{
+    min-width: 100px;
+    }
+    
+.footer-buttons i{
+padding:10px;
+}
+      
+      
+           
+      
+      
+      
+      
+      
+        #popUpSidebar {
+      position: fixed;
+      width: 200px; /* Sidebar width */
+      background-color: #424949;
+      color: white;
+      z-index: 9999;
+      transition: all 0.2s ease; /* Smooth transition for sidebar movement */
+      opacity: 0; /* Initially invisible */
+      visibility: hidden; /* Sidebar hidden initially */
+      pointer-events: none; /* Disable interactions when hidden */
+      padding:20px;
+    }
+
+    #popUpSidebar.show {
+      opacity: 1; /* Fully visible */
+      visibility: visible; /* Make visible */
+      pointer-events: auto; /* Enable interactions */
+    }
+    #popUpSidebar button {
+      display: block;
+      width: 100%;
+      
+      border: none;
+      padding: 10px;
+      margin: 5px 0;
+      cursor: pointer;
+      position: relative;
+    }
+    
+
+    #popUpSidebar button:hover {
+      background-color: #003f7f;
+    }
+
+    #popUpSidebar button .remove-btn {
+      display: none;
+      position: absolute;
+      top: 40%;
+      right: 15px;
+      transform: translate(50%,-50%);
+      
+      color: white;
+      border: none;
+      border-radius: 0%;
+      width: 5px;
+      height: 0px;
+      cursor: pointer;
+      text-align: center;
+      line-height: 0px;
+      
+      
+      font-size: 12px;
+    }
+
+    #popUpSidebar button:hover .remove-btn {
+      display: block;
+    }
+
+    .content input {
+      margin-bottom: 10px;
+    }
+    add{
+    font-size: 20px;
+    font-weight: bold;
+    float: left;
+  
+    }
+      
+      /* Add these styles to your CSS */
+.btn-warning {
+  background-color: #ffc107;
+  border-color: #ffc107;
+  color: #000;
+}
+
+.sticky-btn.untrackable {
+  position: relative;
+}
+
+.untrackable-indicator {
+  position: absolute;
+  top: 5px;
+  right: 25px;
+  background: #ffc107;
+  color: #000;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: help;
+}
+      
+      
+      /* Previous styles remain the same, add/update these styles */
+
+/* Fullscreen Toggle Container */
+.fullscreen-toggle-container {
+  position: fixed;
+  bottom: 10px;
+  width: 200px;
+  padding: 15px;
+  
+  
+  z-index: 1001;
+}
+
+/* Custom Switch Styles */
+.custom-switch {
+  padding-left: 2.25rem;
+}
+
+.custom-control-input:checked ~ .custom-control-label::before {
+  background-color: #17a2b8;
+  border-color: #17a2b8;
+}
+
+.custom-control-input:focus ~ .custom-control-label::before {
+  box-shadow: 0 0 0 0.2rem rgba(23, 162, 184, 0.25);
+}
+
+/* Update window-buttons padding to account for fixed toggle */
+.window-buttons {
+  padding: 0 10px;
+  margin-bottom: 70px; /* Increased to make room for toggle switch */
+}
+      
+      
+           .tooltip {
+  z-index: 9999 !important; /* Increase the z-index */
+}
+    </style>
+    
+    
+    
+    
+    
+<div class="page-wrapper chiller-theme toggled">
+  <a id="show-sidebar" class="btn btn-sm btn-dark" href="#show-sidebar">
+    <i class="fa fa-chevron-right"></i>
+  </a>
+  
+  
+  
+  <nav id="sidebar" class="sidebar-wrapper">
+    <div class="sidebar-content">
+      <div class="sidebar-brand">
+       <i class="fa fa-th"></i> 
+        <a href="/cardbetav1/boardv4" style= "color: white; text-transform: lowercase;">stack board</a>
+        
+        <div id="close-sidebar">
+          <i class="fa fa-times"></i>
+        </div>
+      </div>
+      <div class="sidebar-header">
+        <div class="user-pic">
+  
+          <img class="img-responsive img-rounded" src="https://pbs.twimg.com/profile_images/1237550450/mstom_400x400.jpg"
+            alt="User picture">
+               
+        </div>
+        <div class="user-info">
+          <span class="user-name">Demo
+            <strong>User</strong>
+          </span>
+          <span class="user-status">
+        <i class="fa fa-circle"></i>  online</span>
+          <span class="user-statu">
+            <i class="fa fa-edit"></i>
+            <span>Edit</span>
+          </span>
+        </div>
+        </div>
+     
+  
+      
+      <div class="sidebar-menu">
+        <ul>
+          <li class="header-menu">
+            <span>General</span>
+          </li>
+          <li class="sidebar-dropdown">
+            <a href="#">
+              <i class="fa fa-th"></i>
+              <span>Stacks</span>
+              
+            </a>
+           <!-- Sidebar Links Section -->
+<div class="sidebar-submenu">
+  <ul id="sidebarLinksContainer">
+    <!-- Dynamically added links will appear here -->
+  </ul>
+</div>
+            
+          </li>
+          <li class="sidebar-dropdown">
+            <a href="#">
+              <i class="far fa-square"></i>
+              <span>Boards</span>
+              
+            </a>
+            <div class="sidebar-submenu">
+              <ul>
+                
+                <li>
+                  <a href="#" data-toggle="modal" data-target="#board">+ New board</a>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li class="sidebar-dropdown">
+            <a href="#">
+              <i class="fas fa-tasks"></i>
+              <span>Projects</span>
+            </a>
+            <div class="sidebar-submenu">
+              <ul>
+                <li>
+                  <a href="/cardbetav1/projects2">+ New project</a>
+                </li>
+               
+                
+              </ul>
+            </div>
+          </li>
+          <li class="sidebar-dropdown">
+            <a href="#">
+              <i class="fas fa-users"></i>
+              <span>Team</span>
+            </a>
+            <div class="sidebar-submenu">
+              <ul>
+                <li>
+                  <a href="#" data-toggle="modal" data-target="#team">Create a team</a>
+                </li>
+                <li>
+                  <a href="#" data-toggle="modal" data-target="#team">Join a team</a>
+                </li>
+                
+                <li>
+                  <a href="#" data-toggle="modal" data-target="#team">Send invites</a>
+                </li>
+              </ul>
+            </div>
+          </li>
+         <li>
+            <a href="/cardbetav1/addcard">
+              <i class="fa fa-fire"></i>
+              <span>Discover</span>
+            </a>
+           
+          </li>
+          <li class="header-menu">
+            <span>More</span>
+          </li>
+          <li>
+            <a href="#">
+              <i class="fa fa-wrench"></i>
+              <span>Tools</span>
+              <span class="badge badge-pill badge-primary">Beta</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" data-toggle="modal" data-target="#settings" data-toggle="tooltip" data-placement="top" title="Ctrl+Shift+S">
+              <i class="fa fa-cog"></i>
+              <span>Settings</span>
+            </a>
+          </li>
+          <li>
+            <button data-toggle="tooltip" title="Hooray!">
+              <i class="fa fa-share-alt"></i>
+              <span>Share</span>
+            </button>
+          </li>
+        </ul>
+      </div>
+      <!-- sidebar-menu  -->
+    </div>
+   
+    <!-- sidebar-content  -->
+    <div class="sidebar-footer">
+    <a href="#"><i class="fa fa-users"></i> Create a team </a>
+    
+    </div>
+    
+  </nav>
+  
+                 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+  <a class="navbar-brand" href="#">
+  
+ 
+  <h3><i class="fa fa-th"></i> stack board</h3></a>
+  
+
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse justify-content-end" id="collapsibleNavbar">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+  
+       <li class="nav-item">
+        <a  class="nav-link btn btn-sm btn-primary text-white" style="margin-right: 20px;" role="button" href="/chatapp"><i class="fa fa-users"></i> Connect</a>
+        
+        
+    
+      </li>
+      
+      
+       <a class="nav-link" href="#" data-toggle="dropdown"><i class="fa fa-bell"></i><span class="badge badge-danger"> 3</span></a>
+
+     
+    <div class="dropdown">
+    <div class="dropdown-menu" style="right:0; left: auto; font-size:12px;">
+    
+    
+    
+   
+    
+    
+    <a class="dropdown-item" style="color:; font-size:20px;" data-toggle="modal" href="#createaccount"><i class="fa fa-bell"></i> Alert center</a>
+      
+      <hr>
+    
+    
+    
+    
+      <a class="dropdown-item" data-toggle="modal" href="#accountinfo">
+     
+      <img class="lib-img-show" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/1200px-Google_%22G%22_logo.svg.png" alt="HTML tutorial" style="width:25px;height:25px; margin-right: 10px;"> <strong>Welcome to stack board!</strong>
+      <br>
+      Thank you for trying stack board! <br>Take and tour and find out...</a>
+     
+     
+     <hr>
+    
+    
+    
+    
+      <a class="dropdown-item" data-toggle="modal" href="#accountinfo">
+     
+      <img class="lib-img-show" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/1200px-Google_%22G%22_logo.svg.png" alt="HTML tutorial" style="width:25px;height:25px; margin-right: 10px;"> <strong>Welcome to stack board!</strong>
+      <br>
+      Thank you for trying stack board!<br> Take and tour and find out...</a>
+     
+     
+     
+     
+     <hr>
+    
+    
+    
+    
+      <a class="dropdown-item" data-toggle="modal" href="#accountinfo">
+     
+      <img class="lib-img-show" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/1200px-Google_%22G%22_logo.svg.png" alt="HTML tutorial" style="width:25px;height:25px; margin-right: 10px;"> <strong>Welcome to stack board!</strong>
+      <br>
+      Thank you for trying stack board!<br> Take and tour and find out...</a>
+      
+      
+       <hr>
+      <center><a class="dropdown-item" style="color:blue;" data-toggle="modal" href="#createaccount">View all alerts</a></center>
+    </div>
+</div>
+      
+      </li>
+      
+    
+        
+        
+      
+      <li class="nav-item">
+        <a class="nav-link" href="#">Log in</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Sign up</a>
+      </li>    
+    </ul>
+  </div>  
+</nav>
+      
+    <main class="page-content">
+    <div class="container-fluid">
+  
+      <div class="protected content bg-indigo">
+
+	  <main role="main">
+
+	    <div class="container">
+    
+   
+  
+        
+   
+	
+
+
+
+ 
+<div id="noSectionsPlaceholder" class="text-center" style="display: none; margin-top: 100px; margin-bottom: 100px;">
+	<h4>Welcome to your board!</h4>
+	<br>
+	<h5>Your board manages your stacks, like (marketing, social media, development, etc.)</h5><br><br>
+  Please name and create a stack to get started. (you can always rename or delete later)
+	
+	<br><br><button type="button" class="btn btn-success" data-toggle="modal" data-target="#addsection">
+  Create a stack
+</button>
+</div>
+
+
+ 
+
+<div id="stickyButtonsContainer" class="button-container"></div>
+
+  
+  
+ 
+  
+  <div id="noCardsPlaceholder" class="alert  text-center" style="display: none;">
+  Search stacks
+
+
+   
+  <!-- Filter Input -->
+<input id="filterInput" type="text" class="form-control" placeholder="Type / to search... ">
+</div>
+<!-- No Results Message -->
+<div id="noResultsMessage" class="alert alert-warning d-none">No results found.</div>
+
+<!-- Filtered Cards Container -->
+<div id="searchResultsContainer" class="row d-none">
+</div>
+
+
+<div class="container mt-4">
+  <div class="row align-items-center"> 
+    <div class="col"> 
+      <h2 class="mb-4">Board 1</h2>
+      
+    </div>
+    <div class="col-auto"> 
+      <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addsection">
+        New stack
+      </button>
+     
+    </div>
+  </div>
+</div>
+<div id="sectionsContainer">
+      <!-- Dynamic sections and cards will load here -->
+    </div>
+      
+          
+             <div id="popUpSidebar" class="sidebar">
+   
+          
+         
+  <div id="sidebarButtonsContainer"></div>
+          <div class="side" style="position: fixed; right:30px;
+                                   bottom: 40px;">
+            <center><a href="#" data-toggle="modal" data-target="#help"><i class="fas fa-question-circle fa-lg"></i></a></center>
+            <br>
+            <p>Go back: <strong>ALT + </strong><i class="fas fa-arrow-left"></i></p>
+            
+          </div>
+</div>
+          
+      <!-- Shortcut Builder Modal -->
+<div id="shortcutModal" class="modal fade" tabindex="-1" style="z-index: 9999;">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Set Keyboard Shortcut</h5>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>Select modifier keys and press any key to set the shortcut.</p>
+        <div class="modifier-keys mb-3">
+          <button class="btn btn-outline-secondary" data-key="Ctrl">Ctrl</button>
+          <button class="btn btn-outline-secondary" data-key="Alt">Alt</button>
+          <button class="btn btn-outline-secondary" data-key="Shift">Shift</button>
+          <button class="btn btn-outline-secondary" data-key="Meta">Meta (Cmd)</button>
+        </div>
+        <div class="shortcut-preview mb-3">
+          <strong>Current Shortcut:</strong> <span id="currentShortcutDisplay"></span>
+          <button class="btn btn-sm btn-outline-primary ml-2" id="editShortcut">Edit</button>
+        </div>
+        <div class="shortcut-preview mb-3">
+          <strong>New Shortcut:</strong> <span id="shortcutDisplay"></span>
+        </div>
+        <div class="alert alert-danger" id="shortcutConflictAlert" style="display: none;">
+          This shortcut is already in use by the button: <strong id="conflictingButtonName"></strong>.
+          <div class="mt-2">
+            <button type="button" class="btn btn-danger btn-sm" id="confirmOverride">Yes, Override</button>
+            <button type="button" class="btn btn-secondary btn-sm" id="cancelOverride">Cancel</button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" id="saveShortcut">Save</button>
+      </div>
+    </div>
+  </div>
+</div>      
+          
+          
+          
+          
+          
+          
+          
+          
+  <!-- settings modal -->
+
+<div class="modal fade" id="settings" tabindex="-1" role="dialog" aria-labelledby="settingsLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="settingsLabel">Settings</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p style="margin-bottom: 50px; margin-left: 130px;">Access settings (Ctrl+Shift+S)</p>
+        
+        
+        <div class="custom-control custom-switch">
+  <input type="checkbox" class="custom-control-input" id="settingsFullscreenToggle">
+  <label class="custom-control-label" for="settingsFullscreenToggle">
+    <strong>Enable sidebar Fullscreen Mode</strong>
+    <br>(All windows opened from the sidebar will open in fullscreen)
+  </label>
+</div>
+
+ <div class="custom-control custom-switch">
+  <input type="checkbox" class="custom-control-input" id="windowBehaviorToggle">
+  <label class="custom-control-label" for="windowBehaviorToggle">
+    <strong>Refocus Existing Windows</strong>
+    <br>(Existing trackable windows will be brought to front instead of opening new windows)
+  </label>
+</div>
+        
+    <div class="custom-control custom-switch">
+  <input type="checkbox" class="custom-control-input" id="shortcutBehaviorToggle">
+  <label class="custom-control-label" for="shortcutBehaviorToggle">
+    <strong>Refocus Existing Windows for Shortcuts</strong>
+    <br>(When using shortcuts, existing trackable windows will be brought back up instead of opening new windows)
+  </label>
+</div>   
+        
+        <div class="custom-control custom-switch">
+  <input type="checkbox" class="custom-control-input" id="autoCloseWindowsToggle">
+  <label class="custom-control-label" for="autoCloseWindowsToggle">
+    <strong>Auto-close windows when modal is closed</strong>
+    <br>(Close all attached windows opened from a card whenever the card is closed)
+    <br>
+  </label>
+</div>
+
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" >Save changes</button>
+      </div>
+    </div>
+  </div>
+          </div>    
+          
+          
+          
+          
+          
+          
+          
+    <!-- Account Info Modal -->
+  <div class="modal fade" id="addsection" tabindex="-1" role="dialog" aria-labelledby="accountinfoLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="accountinfoLabel">Create a new stack</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- Add Section Form -->
+    <div class="my-4">
+      <input type="text" id="sectionTitle" class="form-control" placeholder="Name of stack">
+      <button id="addSectionBtn" class="btn btn-success mt-2" data-dismiss="modal">Add Stack</button>
+    </div>
+ 
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+    
+    
+    
+    <!-- help modal -->
+
+<div class="modal fade" id="help" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="myModalLabel">Help</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Buttons in yellow cannot be tracked
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        
+      </div>
+    </div>
+  </div>
+</div>
+          
+          <!-- projects modal -->
+
+<div class="modal fade" id="team" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="myModalLabel">Team</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Team features are not active in this demo
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        
+      </div>
+    </div>
+  </div>
+</div>
+          
+          
+ <!-- new boards -->
+
+<div class="modal fade" id="board" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="myModalLabel">Create new board</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Multiple boards are not supported in this demo
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        
+      </div>
+    </div>
+  </div>
+</div>         
+    
+    
+    
+    
+
+
+
+  <!-- Account Info Modal -->
+  <div class="modal fade" id="accountinfo" tabindex="-1" role="dialog" aria-labelledby="accountinfoLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+         
+          <h5 class="modal-title" id="accountinfoLabel">Account Info</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- Dynamic content will be inserted here -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- The Modal -->
+  <div class="modal fade" id="myModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+       <div class="modal-header d-flex align-items-center">
+  <img id="modalImage" src="" alt="Card Image" class="rounded-circle mr-2" style="width: 40px; height: 40px; display: none;">
+  <h4 class="modal-title mb-0" id="modalTitle">Title</h4>
+          
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <!-- Modal Body -->
+        <div class="modal-body" id="modalBody">
+          <!-- Dynamically added buttons will appear here -->
+          <div id="launch-buttons" class="mb-3">
+            <!-- Buttons content will go here -->
+          </div>
+
+          
+          
+          
+<div id="demo" class="collapse">
+  <hr>
+  <button data-toggle="collapse" class="btn btn-outline-secondary float-right" data-target="#demo"><i class="fas fa-minus"></i></button>
+  <h3>Link folder</h3>
+  <p>Drag buttons here...</p>
+  
+    <div class="card-body" id="collapsibleContainer">
+      <!-- Buttons will be dragged here -->
+    </div>
+  </div>
+
+
+          
+          
+          
+          
+          
+
+          <!-- Add/Edit Button Form -->
+           <!-- Modal Footer -->
+        <div class="modal-footer" >
+          <button id="toggleFormButton" data-toggle="collapse" class="btn btn-outline-secondary tooltip-btn" data-target="#demo"  title="Link button Folder"><i class="fas fa-folder"></i></button>
+          <button data-toggle="collapse" class="btn btn-outline-secondary tooltip-btn" data-target="#demo2" title="Add a note"><i class="fas fa-sticky-note"></i></button>
+          <button type="button" class="btn btn-outline-secondary tooltip-btn" id="stickToTop" title="Pin to top"><i class="fas fa-thumbtack"></i></button>
+          
+          <button id="toggleFormButton" class="btn btn-secondary tooltip-btn" data-toggle="collapse" data-target="#addEditButton" title="Create new button"><i class="fas fa-plus"></i></button>
+         
+          <button type="button" id="closeWindowButton" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+          
+          
+          
+          <div id="addEditButton" class="collapse mt-3" style="width:100%;">
+            <form id="newButtonForm">
+              <div class="form-group">
+                <label for="buttonURL">Button URL:</label>
+                <input type="url" class="form-control" id="buttonURL" required>
+              </div>
+              <div class="form-group">
+                <label for="buttonName">Button Name:</label>
+                <input type="text" class="form-control" id="buttonName" required>
+              </div>
+              
+              <button type="submit" id="saveButton" class="btn btn-primary">Save</button>
+               <button type="button" id="toggleFormButton" class="btn btn-secondary" data-toggle="collapse" data-target="#demo5"><i class="fas fa-cog"></i></button>
+              <button type="button" id="cancelButton" class="btn btn-secondary">Cancel</button>
+  <div id="demo5" class="collapse">
+              <div class="form-group">
+                <label>Open Link:</label><br>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="openType" id="openNewTab" value="newTab" checked>
+                  <label class="form-check-label" for="openNewTab">In New Tab</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="openType" id="openNewWindow" value="newWindow">
+                  <label class="form-check-label" for="openNewWindow">In New Window</label>
+                </div>
+              </div>
+              <div id="windowSizeOptions" style="display:none;">
+                <div class="form-group">
+                  <label>Window Size:</label><br>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="windowSize" id="sizeSmall" value="small" checked>
+                    <label class="form-check-label" for="sizeSmall">Small (600x400)</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="windowSize" id="sizeMedium" value="medium">
+                    <label class="form-check-label" for="sizeMedium">Medium</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="windowSize" id="sizeLarge" value="large">
+                    <label class="form-check-label" for="sizeLarge">Large</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="windowSize" id="sizeFull" value="full">
+                    <label class="form-check-label" for="sizeFull">Full Screen</label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <button type="submit" id="saveButton" class="btn btn-primary">save settings</button>
+                
+            </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+       
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Rename Section Modal -->
+<div class="modal fade" id="renameModal" tabindex="-1" aria-labelledby="renameModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="renameModalLabel">Rename Stack</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <input type="text" id="renameInput" class="form-control" placeholder="Enter new section name">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" id="saveRenameBtn"  data-dismiss="modal">Save</button>
+      </div>
+    </div>
+  </div>
+</div> 
+</div>
+		
+
+    </main>
+	<!-- footer start -->
+    <footer class="bg-dark text-light py-5 mt-5">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12 col-md-3">
+                            <h3 class="mb-0"><i class="fas fa-th"></i> Stackboard</h3>
+           
+                        </div>
+                        <!--end of col-->
+                        <div class="col-12 col-md-9">
+                            
+                            <div class="row no-gutters">
+                                <div class="col-6 col-lg-3">
+                                     <h5>Features</h5>
+                                    <ul class="list-unstyled">
+                                        <li>
+                                            <a href="#" class="text-muted">App management</a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="text-muted">Project management</a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="text-muted">Collaboration</a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="text-muted">Smart goals</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!--end of col-->
+                                <div class="col-6 col-lg-3">
+                                    <h5>Resources</h5>
+                                    <ul class="list-unstyled">
+                                        <li>
+                                            <a href="#" class="text-muted">Media kit</a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="text-muted">Documentation</a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="text-muted">Status & uptime</a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="text-muted">Pitch deck</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!--end of col-->
+                             
+                                <div class="col-6 col-lg-3">
+                                     <h5>Help</h5>
+                                    <ul class="list-unstyled">
+                                        <li>
+                                            <a href="#" class="text-muted">Knowledgebase</a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="text-muted">FAQ</a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="text-muted">Change log</a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="text-muted">Report issue</a>
+                                        </li>
+                                          <li>
+                                            <a href="#" class="text-muted">Feature request</a>
+                                        </li>
+                                          <li>
+                                            <a href="#" class="text-muted">Site map</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!--end of col-->
+                                <div class="col-6 col-lg-3">
+                                    <h5>About</h5>
+                                    <ul class="list-unstyled">
+                                        <li>
+                                            <a href="#" class="text-muted">Team</a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="text-muted">Company</a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="text-muted">Blog</a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="text-muted">Contact</a>
+                                        </li>
+                                    </ul>
+                                    
+     
+     
+                                    
+                                    
+                                </div>
+                                <!--end of col-->
+                            </div>
+                            <!--end of row-->
+                        </div>
+                        <!--end of col-->
+                    </div>
+                    <!--end of row--><hr>
+                     <div class="col-6 col-sm-12">
+                    <small class="d-block text-muted">Copyright © 2025 stackboard technologies, a dymond company. All Rights Reserved.</small>
+                            <small class="text-muted"><a href="#">Terms of Use</a> |
+<a href="#">Privacy & Cookie Policy</a> </small></div>
+                    
+                   
+                   <div class="footer-buttons text-right">
+                   
+                   
+                    <i class="fab fa-github fa-xl"></i>
+     <i class="fa-brands fa-discord fa-xl"></i>
+  <i class="fa-brands fa-x-twitter fa-xl"></i>
+  <i class="fa-brands fa-youtube fa-xl"></i>
+  <i class="fa-brands fa-reddit-alien fa-xl"></i>
+  </div></div>
+           
+                <!--end of container-->
+            </footer>
+  
+      
+
+	
+
+    
+
+
+
+
+
+
+
+
+
+
+   <script>
+ document.addEventListener('DOMContentLoaded', () => {
+  loadSections();
+
+  // Add new section
+  document.getElementById('addSectionBtn').addEventListener('click', () => {
+    const sectionTitle = document.getElementById('sectionTitle').value.trim();
+    if (sectionTitle) {
+      const sections = JSON.parse(localStorage.getItem('sections')) || [];
+      const sectionId = `section-${Date.now()}`;
+      sections.push({ id: sectionId, title: sectionTitle });
+      localStorage.setItem('sections', JSON.stringify(sections));
+      document.getElementById('sectionTitle').value = '';
+       loadSections(); // Update main content
+    
+    } else {
+      showAlert('Please enter a section title.', 'warning');
+    }
+  });
+
+  // Set up event listener for rename modal save button
+  document.getElementById('saveRenameBtn').addEventListener('click', () => {
+    const sectionId = document.getElementById('renameModal').dataset.sectionId;
+    const newTitle = document.getElementById('renameInput').value.trim();
+    if (newTitle) {
+      const sections = JSON.parse(localStorage.getItem('sections')) || [];
+      const section = sections.find(sec => sec.id === sectionId);
+
+      if (section) {
+        section.title = newTitle;
+        localStorage.setItem('sections', JSON.stringify(sections));
+        document.getElementById(`title-${sectionId}`).textContent = newTitle;
+        loadSections(); // Ensure sidebar is refreshed correctly
+        showAlert('Section renamed successfully!', 'success');
+      }
+
+      $('#renameModal').modal('hide');
+    } else {
+      showAlert('Section title cannot be empty!', 'danger');
+    }
+  });
+});
+
+// Load sections and render them
+function loadSections() {
+  const sectionsContainer = document.getElementById('sectionsContainer');
+  const sections = JSON.parse(localStorage.getItem('sections')) || [];
+ const placeholder = document.getElementById('noSectionsPlaceholder'); 
+ 
+  // Show placeholder if no sections exist, otherwise hide it
+  if (sections.length === 0) {
+    placeholder.style.display = 'block';
+  } else {
+    placeholder.style.display = 'none';
+  }
+ 
+ sectionsContainer.innerHTML = ''; // Clear existing sections
+  sidebarLinksContainer.innerHTML = ''; // Clear sidebar links
+ 
+ 
+ 
+
+  sections.forEach(section => {
+    const sectionDiv = document.createElement('div');
+    sectionDiv.classList.add('section-container', 'mb-4');
+    sectionDiv.id = section.id;
+    sectionDiv.innerHTML = `
+      <hr>
+      <div class="d-flex justify-content-between align-items-center">
+        <h3 id="title-${section.id}">${section.title}</h3>
+        <div class="dropdown">
+          <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton-${section.id}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Actions
+          </button>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton-${section.id}">
+	   <a class="dropdown-item" href="/cardbetav1/add-appv2/v3/?sectionId=${section.id}"> <i class="fas fa-plus"></i> Add app </a>
+            <a class="dropdown-item" href="#" onclick="openRenameModal('${section.id}', '${section.title}')"><i class="fas fa-edit"></i> Rename </a>
+	   
+            <a class="dropdown-item text-danger" href="#" onclick="removeSection('${section.id}')"><i class="fas fa-trash-alt"></i> Remove </a>
+          </div>
+        </div>
+      </div>
+      <div class="row" id="cards-${section.id}">
+        <!-- Cards will be dynamically inserted here -->
+      
+      </div>
+     <div id="noCardsPlaceholder2" class="alert alert-info text-center" style="display: none; margin-top: 50px; margin-bottom: 150px; ">
+     <h4>You've created your first stack!</h4>
+  Add an app to start building out your stack.
+  <br>
+  <a href="/cardbetav1/add-appv2/v3/?sectionId=${section.id}" class="btn btn-success" role="button">Add app</a>
+  </div>
+    `;
+    sectionsContainer.appendChild(sectionDiv);
+
+
+// Populate the sidebar with a link to the section
+    const sidebarLink = document.createElement('li');
+    sidebarLink.innerHTML = `
+      <a href="#${section.id}">
+        <i class="fa fa-circle"></i> ${section.title}
+      </a>
+    `;
+    sidebarLinksContainer.appendChild(sidebarLink);
+
+ 
+ 
+
+    // Make cards sortable within each section
+    new Sortable(document.getElementById(`cards-${section.id}`), {
+      group: 'shared',
+      animation: 150,
+      onEnd: saveCardsToLocalStorage,
+    });
+  });
+
+  loadCards(); // Re-render cards
+  
+}
+
+// Open rename modal and populate it with section data
+function openRenameModal(sectionId, sectionTitle) {
+  document.getElementById('renameModal').dataset.sectionId = sectionId;
+  document.getElementById('renameInput').value = sectionTitle;
+  $('#renameModal').modal('show');
+}
+
+// Save cards to localStorage
+function saveCardsToLocalStorage() {
+  const sections = JSON.parse(localStorage.getItem('sections')) || [];
+  const allCards = [];
+  sections.forEach(section => {
+    const cardContainer = document.getElementById(`cards-${section.id}`);
+    cardContainer.querySelectorAll('.card-item').forEach(card => {
+      const cardData = {
+        id: card.dataset.id,
+        title: card.dataset.title,
+        image: card.dataset.image,
+        description: card.dataset.description,
+        sectionId: section.id,
+        category: card.dataset.category,
+      };
+      allCards.push(cardData);
+    });
+  });
+  localStorage.setItem('addedCards', JSON.stringify(allCards));
+}
+
+// Show alert
+function showAlert(message, type) {
+  const alertContainer = document.getElementById('alertContainer');
+  const alert = document.createElement('div');
+  alert.className = `alert alert-${type} alert-dismissible fade show`;
+  alert.innerHTML = `
+    ${message}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  `;
+  alertContainer.appendChild(alert);
+
+  setTimeout(() => {
+    $(alert).alert('close');
+  }, 3000);
+}
+
+</script>
+  
+    
+    
+   
+ <script>   
+    
+   
+function loadCards() {
+  const storedCards = JSON.parse(localStorage.getItem('addedCards')) || [];
+  
+  
+   const placeholder = document.getElementById('noCardsPlaceholder');
+   
+   const placeholder2 = document.getElementById('noCardsPlaceholder2');
+
+  // Show placeholder if no cards exist, otherwise hide it
+  if (storedCards.length === 0) {
+    placeholder.style.display = 'none';
+  } else {
+    placeholder.style.display = 'block';
+  }
+  
+  
+
+  // Show placeholder if no cards exist, otherwise hide it
+  if (storedCards.length === 0) {
+    placeholder2.style.display = 'block';
+  } else {
+    placeholder2.style.display = 'none';
+  }
+  
+  
+  
+  
+  
+  
+  
+  storedCards.forEach(card => {
+    const sectionContainer = document.getElementById(`cards-${card.sectionId}`);
+    if (sectionContainer) {
+      const cardDiv = document.createElement('div');
+      cardDiv.classList.add('col-md-3', 'card-item');
+      cardDiv.dataset.id = card.id;
+      cardDiv.dataset.title = card.title;
+      cardDiv.dataset.image = card.image;
+      cardDiv.dataset.description = card.description;
+      cardDiv.dataset.category = card.category;
+      cardDiv.dataset.modalId = card.modalId;
+
+      cardDiv.innerHTML = `
+        <div class="card border-secondary mb-3">
+          <div class="card-body">
+            <div class="dropdown">
+              <i class="fa fa-ellipsis-v" aria-hidden="true" data-toggle="dropdown" style="float: right;"></i>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" data-toggle="modal" href="#accountinfo" onclick="showAccountInfo('${card.id}')"><i class="fas fa-wrench-alt"></i> Manage account</a>
+                
+                <a class="dropdown-item text-danger" href="#" onclick="removeCard('${card.id}')"><i class="fas fa-trash-alt"></i> Remove</a>
+              </div>
+            </div>
+            <center><img src="${card.image}" alt="${card.title}" class="img-fluid" style="width: 80px; height: 80px;">
+            <h5 class="mt-2">${card.title}</h5>
+            <p>${card.description}</p>
+            <div class="d-flex justify-content-center">
+            <button 
+              type="button" style= "position: absolute; bottom:20px; "
+              class="btn btn-primary mt-2" 
+              data-toggle="modal" 
+              data-target="#myModal" 
+              data-title="${card.title}" 
+              data-image="${card.image}" 
+              data-modal="${card.modalId}">
+              Open 
+            </button></center>
+          </div>
+        </div>
+      `;
+      sectionContainer.appendChild(cardDiv);
+    }
+  });
+
+  // Attach modal update functionality after cards are loaded
+  attachModalTitleUpdate();
+}
+
+function attachModalTitleUpdate() {
+  const modalButtons = document.querySelectorAll("[data-target='#myModal']");
+
+  modalButtons.forEach(button => {
+    button.addEventListener("click", () => {
+      const title = button.getAttribute("data-title");
+      const image = button.getAttribute("data-image");
+      const modalTitle = document.getElementById("modalTitle");
+      const modalImage = document.getElementById("modalImage");
+
+      // Update the modal title
+      if (modalTitle && title) {
+        modalTitle.innerText = title;
+      } else {
+        console.error("Modal title element not found or title is null!");
+      }
+
+      // Update the modal image
+      if (modalImage && image) {
+        modalImage.src = image;
+        modalImage.style.display = "inline-block";
+      } else if (modalImage) {
+        modalImage.style.display = "none";
+      }
+    });
+  });
+}
+
+// Show account info in the modal
+function showAccountInfo(cardId) {
+  const storedCards = JSON.parse(localStorage.getItem('addedCards')) || [];
+  const card = storedCards.find(c => c.id === cardId);
+  if (card) {
+    document.querySelector('#accountinfo .modal-title').innerText = card.title;
+    document.querySelector('#accountinfo .modal-body').innerHTML = `
+    <h5>Due to security reasons, account management is not available in the demo version</h5>
+      <p><strong>Category:</strong> ${card.category}</p>
+      <p><strong>Description:</strong> ${card.description}</p>
+    `;
+  }
+}
+
+
+   
+    
+    
+    
+    
+    function removeCard(cardId) {
+  let storedCards = JSON.parse(localStorage.getItem('addedCards')) || [];
+  storedCards = storedCards.filter(card => card.id !== cardId);
+  localStorage.setItem('addedCards', JSON.stringify(storedCards));
+  document.querySelector(`[data-id="${cardId}"]`).remove(); // Remove card from DOM
+}
+
+    
+  </script> 
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+
+// Select modal-related elements
+const launchButtonsContainer = document.getElementById('launch-buttons');
+const collapsibleContainer = document.getElementById('collapsibleContainer');
+const folderIcon = document.getElementById('toggleFormButton'); // Assuming this is your folder icon
+const newButtonForm = document.getElementById('newButtonForm');
+const toggleFormButton = document.getElementById('toggleFormButton');
+const saveButton = document.getElementById('saveButton');
+const cancelButton = document.getElementById('cancelButton');
+let currentModal = null;
+let editingButton = null;
+const openedWindows = new Map(); // Track the opened windows
+
+// Create a drop zone overlay for the folder icon
+function createFolderDropZone() {
+  // Create a drop zone that overlays the folder icon
+  const dropZone = document.createElement('div');
+  dropZone.id = 'folderDropZone';
+  dropZone.className = 'folder-drop-zone';
+  
+  // Style the drop zone (add to your CSS)
+  // .folder-drop-zone {
+  //   position: absolute;
+  //   z-index: 100;
+  //   width: 40px;
+  //   height: 40px;
+  //   pointer-events: none;
+  // }
+  
+  // Position it over the folder icon
+  const folderRect = folderIcon.getBoundingClientRect();
+  dropZone.style.top = `${folderRect.top}px`;
+  dropZone.style.left = `${folderRect.left}px`;
+  dropZone.style.width = `${folderRect.width}px`;
+  dropZone.style.height = `${folderRect.height}px`;
+  
+  document.body.appendChild(dropZone);
+  return dropZone;
+}
+  
+  // Function to update button click handlers
+function updateButtonClickHandler(button) {
+  button.onclick = () => {
+    const refocusEnabled = JSON.parse(localStorage.getItem('refocusExistingWindows')) || false;
+    const url = button.dataset.url;
+    const size = button.dataset.size;
+    const openType = button.dataset.openType;
+
+    if (refocusEnabled && openedWindows.has(url)) {
+      const existingWindow = openedWindows.get(url);
+      if (existingWindow && !existingWindow.closed) {
+        existingWindow.focus();
+        return; // Stop here, no need to open a new window
+      }
+    }
+
+    if (openType === 'newTab') {
+      window.open(url, '_blank');
+    } else {
+      const newWindow = openWindow(url, size);
+      openedWindows.set(url, newWindow); // Track the opened window
+    }
+  };
+}
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+// Function to create and append a button to the specified container
+function createButton(buttonData, container = null, modalId = null) {
+  // Determine which container to use
+  const targetContainer = container || launchButtonsContainer;
+  
+  const buttonDiv = document.createElement('div');
+  buttonDiv.className = 'btn-group mb-2';
+  if (modalId) {
+    buttonDiv.dataset.modalId = modalId;
+  }
+
+  const button = document.createElement('button');
+  button.className = 'btn btn-sq-lg btn-outline-primary launch-button';
+  button.dataset.url = buttonData.url;
+  button.dataset.name = buttonData.name;
+  button.dataset.size = buttonData.size;
+  button.dataset.openType = buttonData.openType;
+  button.innerHTML = `<i class='fa fa-external-link-alt'></i><br>${buttonData.name}`;
+
+  button.onclick = () => {
+    const refocusEnabled = JSON.parse(localStorage.getItem('refocusExistingWindows')) || false;
+
+    if (refocusEnabled && openedWindows.has(buttonData.url)) {
+      const existingWindow = openedWindows.get(buttonData.url);
+      if (existingWindow && !existingWindow.closed) {
+        existingWindow.focus();
+        return; // Stop here, no need to open a new window
+      }
+    }
+
+    if (buttonData.openType === 'newTab') {
+      window.open(buttonData.url, '_blank');
+    } else {
+      const newWindow = openWindow(buttonData.url, buttonData.size);
+      openedWindows.set(buttonData.url, newWindow); // Track the opened window
+    }
+  };
+
+  const dropdown = document.createElement('div');
+  dropdown.className = 'dropdown';
+  dropdown.innerHTML = `    
+    <button class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown"></button>
+    <div class="dropdown-menu">
+      <a class="dropdown-item" href="#" onclick="stickToTopButton(this, 'window')"><i class="far fa-sticky-note"></i> Stick to Top</a>
+      <a class="dropdown-item" href="#" onclick="editButton(this)"><i class="fas fa-edit"></i> Edit</a>
+      <a class="dropdown-item" href="#" onclick="setShortcut(this)"><i class="fas fa-keyboard"></i> Set Shortcut</a>
+      <a class="dropdown-item text-danger" href="#" onclick="removeButton(this)"><i class="fas fa-trash-alt"></i> Remove</a>
+    </div>`;
+
+  buttonDiv.appendChild(button);
+  buttonDiv.appendChild(dropdown);
+  targetContainer.appendChild(buttonDiv);
+  
+  return button;
+}
+
+// Load buttons for a specific modal
+function loadButtons(modalId) {
+  launchButtonsContainer.innerHTML = '';  // Clear current buttons
+
+  // Predefined buttons for each modal
+  const predefinedButtons = {
+    1: [
+      { url: 'https://promptgpt.stackboard.one/', name: 'Open promptGPT', size: 'medium', openType: 'newWindow' }
+    ],
+    2: [
+      { url: 'https://chatgpt.com', name: 'Launch chatGPT', size: 'medium', openType: 'newTab' }
+    ],
+    3: [
+      { url: 'https://github.com', name: 'github home', size: 'large', openType: 'newTab' }
+    ]
+  };
+
+  // Get predefined buttons and saved buttons from localStorage
+  const predefined = predefinedButtons[modalId] || [];
+  const savedButtons = JSON.parse(localStorage.getItem(`launchButtons_${modalId}`)) || [];
+
+  // Merge and avoid duplicates by filtering out already existing buttons (based on URL)
+  const allButtons = [
+    ...predefined.filter(p => !savedButtons.some(s => s.url === p.url)),
+    ...savedButtons
+  ];
+
+  // Create buttons from the merged list
+  allButtons.forEach(button => createButton(button, null, modalId));
+}
+
+// Load buttons for the collapsible container
+function loadCollapsibleContainerButtons(modalId) {
+  collapsibleContainer.innerHTML = ''; // Clear current buttons
+  const buttons = JSON.parse(localStorage.getItem(`collapsibleContainerButtons_${modalId}`)) || [];
+  buttons.forEach(button => createButton(button, collapsibleContainer, modalId));
+}
+
+// Save buttons for a specific modal - gets the current buttons from the DOM
+function saveButtons(modalId) {
+  const buttons = [];
+  document.querySelectorAll('#launch-buttons .launch-button').forEach(btn => {
+    buttons.push({
+      url: btn.dataset.url,
+      name: btn.dataset.name,
+      size: btn.dataset.size,
+      openType: btn.dataset.openType
+    });
+  });
+  localStorage.setItem(`launchButtons_${modalId}`, JSON.stringify(buttons));
+}
+
+// Save buttons for the collapsible container - gets the current buttons from the DOM
+function saveCollapsibleContainerButtons(modalId) {
+  const buttons = [];
+  document.querySelectorAll('#collapsibleContainer .launch-button').forEach(btn => {
+    buttons.push({
+      url: btn.dataset.url,
+      name: btn.dataset.name,
+      size: btn.dataset.size,
+      openType: btn.dataset.openType
+    });
+  });
+  localStorage.setItem(`collapsibleContainerButtons_${modalId}`, JSON.stringify(buttons));
+}
+
+// Add a button directly to collapsible container (when dropping on folder icon)
+function addButtonToCollapsible(buttonData, modalId) {
+  // Create the button in the collapsible container
+  createButton(buttonData, collapsibleContainer, modalId);
+  
+  // Save the updated container
+  if (modalId) {
+    saveCollapsibleContainerButtons(modalId);
+  }
+  
+  // Show a visual feedback that the button was added (optional)
+  folderIcon.classList.add('drop-success');
+  setTimeout(() => {
+    folderIcon.classList.remove('drop-success');
+  }, 300);
+}
+
+// Save all button arrangements
+function saveAllButtonArrangements(modalId) {
+  if (modalId) {
+    saveButtons(modalId);
+    saveCollapsibleContainerButtons(modalId);
+  }
+}
+
+// Open a new window based on the selected size
+function openWindow(url, size) {
+  let width, height, left, top;
+
+  switch (size) {
+    case 'small':
+      width = screen.width * 0.4;
+      height = screen.height * 0.4;
+      break;
+    case 'medium':
+      width = screen.width * 0.6;
+      height = screen.height * 0.6;
+      break;
+    case 'large':
+      width = screen.width * 0.8;
+      height = screen.height * 0.8;
+      break;
+    case 'full':
+      width = screen.width * 1.0;
+      height = screen.height * 1.0;
+      break;
+    default:
+      width = screen.width * 0.5;
+      height = screen.height * 0.5;
+  }
+
+  left = (screen.width - width) / 2;
+  top = (screen.height - height) / 2;
+
+  const newWin = window.open(url, '_blank', `width=${width},height=${height},top=${top},left=${left}`);
+
+  if (newWin) {
+    openedWindows.set(url, newWin); // Store reference
+    newWin.onbeforeunload = () => openedWindows.delete(url); // Remove when closed
+  }
+
+  return newWin;
+}
+
+// Initialize Sortable.js for launch buttons and configure folder drop functionality
+document.addEventListener('DOMContentLoaded', () => {
+  // Add CSS for visual feedback
+  const style = document.createElement('style');
+  style.innerHTML = `
+    .folder-drop-zone {
+      position: absolute;
+      z-index: 100;
+      pointer-events: none;
+    }
+    .folder-highlight {
+      transform: scale(1.2);
+      color: #007bff;
+      transition: all 0.3s ease;
+    }
+    .drop-success {
+      animation: pulse 0.3s ease;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.3); }
+      100% { transform: scale(1); }
+    }
+  `;
+  document.head.appendChild(style);
+
+  if (typeof Sortable !== 'undefined') {
+    const sortableLaunchButtons = new Sortable(launchButtonsContainer, {
+      animation: 150,
+      handle: '.launch-button', // Drag handle
+      group: {
+        name: 'shared', // Same group name for both containers
+        pull: true, // Allow dragging from this container
+        put: true // Allow dropping into this container
+      },
+      onEnd: function (evt) {
+        // Save the arrangement of both containers when an item is moved
+        if (currentModal) {
+          saveAllButtonArrangements(currentModal);
+        }
+      }
+    });
+
+    // Initialize Sortable.js for collapsible container
+    const sortableCollapsibleContainer = new Sortable(collapsibleContainer, {
+      animation: 150,
+      group: {
+        name: 'shared', // Same group name for both containers
+        pull: true, // Allow dragging from this container
+        put: true // Allow dropping into this container
+      },
+      onEnd: function (evt) {
+        // Save the arrangement of both containers when an item is moved
+        if (currentModal) {
+          saveAllButtonArrangements(currentModal);
+        }
+      }
+    });
+    
+    // Make folder icon a drop target
+    folderIcon.addEventListener('dragover', (event) => {
+      event.preventDefault();
+      folderIcon.classList.add('folder-highlight');
+    });
+    
+    folderIcon.addEventListener('dragleave', () => {
+      folderIcon.classList.remove('folder-highlight');
+    });
+    
+    folderIcon.addEventListener('drop', (event) => {
+      event.preventDefault();
+      folderIcon.classList.remove('folder-highlight');
+      
+      // Get the button data from the dragged element
+      const draggedButton = document.querySelector('.launch-button.sortable-drag') || 
+                            document.querySelector('.launch-button.sortable-chosen');
+      
+      if (draggedButton) {
+        // Clone the button and add it to the collapsible container
+        const buttonData = {
+          url: draggedButton.dataset.url,
+          name: draggedButton.dataset.name,
+          size: draggedButton.dataset.size,
+          openType: draggedButton.dataset.openType
+        };
+        
+        // Add to collapsible and save
+        addButtonToCollapsible(buttonData, currentModal);
+        
+        // Remove the original button if it's from the main container
+        if (draggedButton.closest('#launch-buttons')) {
+          draggedButton.closest('.btn-group').remove();
+          if (currentModal) {
+            saveButtons(currentModal);
+          }
+        }
+        
+        // Show collapsible container briefly to give feedback
+        $('#demo').collapse('show');
+        setTimeout(() => {
+          $('#demo').collapse('hide');
+        }, 1000);
+      }
+    });
+  }
+});
+
+// Function to remove a button
+function removeButton(element) {
+  const buttonDiv = element.closest('.btn-group');  // Get the parent .btn-group of the clicked button
+  const button = buttonDiv.querySelector('.launch-button');
+  
+  // Remove from DOM
+  buttonDiv.remove();
+
+  // Save current arrangements after removal
+  if (currentModal) {
+    saveAllButtonArrangements(currentModal);
+  }
+}
+
+// Edit button
+function editButton(element) {
+  const button = element.closest('.btn-group').querySelector('.launch-button');
+  document.getElementById('buttonURL').value = button.dataset.url;
+  document.getElementById('buttonName').value = button.dataset.name;
+  document.querySelector(`input[value="${button.dataset.size}"]`).checked = true;
+  document.querySelector(`input[value="${button.dataset.openType}"]`).checked = true;
+  
+  editingButton = button;
+  saveButton.textContent = 'Save';
+  $('#addEditButton').collapse('show');
+}
+
+// Add or edit button
+newButtonForm.onsubmit = (e) => {
+  e.preventDefault();
+  const url = document.getElementById('buttonURL').value;
+  const name = document.getElementById('buttonName').value;
+  const size = document.querySelector('input[name="windowSize"]:checked').value;
+  const openType = document.querySelector('input[name="openType"]:checked').value;
+  
+  if (editingButton) {
+    // Update existing button
+    editingButton.dataset.url = url;
+    editingButton.dataset.name = name;
+    editingButton.dataset.size = size;
+    editingButton.dataset.openType = openType;
+    editingButton.innerHTML = `<i class='fa fa-external-link-alt'></i><br>${name}`;
+    
+    // Update the click handler immediately
+    updateButtonClickHandler(editingButton);
+    
+    // Save all arrangements
+    if (currentModal) {
+      saveAllButtonArrangements(currentModal);
+    }
+    
+    editingButton = null;
+    saveButton.textContent = 'Add';
+  } else {
+    // Create new button in the main container by default
+    createButton({ url, name, size, openType }, launchButtonsContainer, currentModal);
+    
+    // Save all arrangements
+    if (currentModal) {
+      saveAllButtonArrangements(currentModal);
+    }
+  }
+
+  newButtonForm.reset();
+  $('#addEditButton').collapse('hide');
+  $('#demo').collapse('hide');
+};
+
+// Cancel button
+cancelButton.onclick = () => {
+  newButtonForm.reset();
+  editingButton = null;
+  saveButton.textContent = 'Add';
+  $('#addEditButton').collapse('hide');
+  $('#demo').collapse('hide');
+};
+
+// Function to set a keyboard shortcut
+function setShortcut(element) {
+  const buttonDiv = element.closest('.btn-group');
+  
+  const button = buttonDiv.querySelector('.launch-button');
+
+  // Prompt the user to enter a shortcut key
+  const shortcut = prompt('Enter a keyboard shortcut (e.g., "Ctrl+Shift+K"):');
+  if (shortcut) {
+    button.dataset.shortcut = shortcut;
+    
+    // Save the shortcut to localStorage
+    const shortcuts = JSON.parse(localStorage.getItem("shortcuts")) || {};
+    shortcuts[shortcut] = {
+      url: button.dataset.url,
+      openType: button.dataset.openType,
+      size: button.dataset.size // Store size with shortcut
+    };
+    localStorage.setItem("shortcuts", JSON.stringify(shortcuts));
+    
+    alert(`Shortcut "${shortcut}" set for "${button.dataset.name}"`);
+  }
+}
+
+// Load buttons for both containers on page load and set up event listeners
+document.addEventListener('DOMContentLoaded', () => {
+  // Set up the modal event listener
+  $('#myModal').on('show.bs.modal', function (e) {
+    currentModal = $(e.relatedTarget).data('modal'); // Get modal ID
+    loadButtons(currentModal); // Load launch buttons for the modal
+    loadCollapsibleContainerButtons(currentModal); // Load collapsible container buttons for the modal
+  });
+  
+  // Close all windows when the modal is hidden (if auto-close is enabled)
+  $('#myModal').on('hidden.bs.modal', function () {
+    const autoCloseEnabled = JSON.parse(localStorage.getItem("autoCloseWindows")) || false;
+
+    if (autoCloseEnabled) {
+      // Loop through all stored windows and close them
+      openedWindows.forEach((win, url) => {
+        if (win && !win.closed) {
+          win.close();
+        }
+      });
+
+      // Clear the map after closing all windows
+      openedWindows.clear();
+    }
+  });
+  
+  // Add tooltip to folder icon
+  if (folderIcon) {
+    // You can use Bootstrap's tooltip or a custom implementation
+    $(folderIcon).tooltip({
+      title: "Drag buttons here to add to folder without opening",
+      placement: "top"
+    });
+  }
+  
+  // Set up auto-close toggle
+  const autoCloseToggle = document.getElementById("autoCloseWindowsToggle");
+  if (autoCloseToggle) {
+    // Load saved state
+    const autoCloseEnabled = JSON.parse(localStorage.getItem("autoCloseWindows")) || false;
+    autoCloseToggle.checked = autoCloseEnabled;
+
+    // Save state when toggled
+    autoCloseToggle.addEventListener("change", () => {
+      localStorage.setItem("autoCloseWindows", autoCloseToggle.checked);
+    });
+  }
+  
+  // Set up refocus toggle
+  const refocusToggle = document.getElementById('windowBehaviorToggle');
+  if (refocusToggle) {
+    refocusToggle.checked = JSON.parse(localStorage.getItem('refocusExistingWindows')) || false;
+
+    refocusToggle.addEventListener('change', (event) => {
+      localStorage.setItem('refocusExistingWindows', event.target.checked);
+    });
+  }
+  
+  // Set up shortcut refocus toggle
+  const shortcutRefocusToggle = document.getElementById("shortcutBehaviorToggle");
+  if (shortcutRefocusToggle) {
+    // Load the setting from localStorage
+    shortcutRefocusToggle.checked = JSON.parse(localStorage.getItem("refocusShortcutWindows")) || false;
+
+    // Save the setting when toggled
+    shortcutRefocusToggle.addEventListener("change", (event) => {
+      localStorage.setItem("refocusShortcutWindows", event.target.checked);
+    });
+  }
+});
+// Listen for keyboard shortcuts
+document.addEventListener("keydown", (event) => {
+  const shortcuts = JSON.parse(localStorage.getItem("shortcuts")) || {};
+  const refocusEnabled = JSON.parse(localStorage.getItem("refocusShortcutWindows")) || false;
+
+  for (const shortcut in shortcuts) {
+    if (checkShortcut(event, shortcut)) {
+      event.preventDefault();
+      const { url, openType } = shortcuts[shortcut];
+
+      // Retrieve latest size setting from the button dataset
+      const button = document.querySelector(`.launch-button[data-url="${url}"]`);
+      const size = button ? button.dataset.size : "medium"; // Default to medium if not found
+
+      if (refocusEnabled && openedWindows.has(url)) {
+        const existingWindow = openedWindows.get(url);
+        if (existingWindow && !existingWindow.closed) {
+          existingWindow.focus();
+          return; // Stop execution if refocus was successful
+        }
+      }
+
+      // If refocusing fails or is disabled, open a new window
+      if (openType === "newTab") {
+        window.open(url, "_blank");
+      } else {
+        const newWindow = openWindow(url, size);
+        openedWindows.set(url, newWindow); // Track new window
+      }
+    }
+  }
+});
+
+// Helper function to check if the pressed keys match the shortcut
+function checkShortcut(event, shortcut) {
+  const keys = shortcut.split('+');
+  const modifiers = {
+    ctrl: event.ctrlKey,
+    shift: event.shiftKey,
+    alt: event.altKey,
+    meta: event.metaKey,
+  };
+
+  for (const key of keys) {
+    const lowerKey = key.toLowerCase();
+    if (lowerKey === 'ctrl' || lowerKey === 'shift' || lowerKey === 'alt' || lowerKey === 'meta') {
+      if (!modifiers[lowerKey]) return false;
+    } else {
+      if (event.key.toLowerCase() !== lowerKey) return false;
+    }
+  }
+  return true;
+}
+
+// Function to stick button to top (placeholder)
+function stickToTopButton(element, type) {
+  // Implement your sticky functionality here
+  alert('Sticky button feature coming soon!');
+}
+
+        </script>   
+      
+      
+      
+  <script>
+// List of browser default shortcuts (add more if needed)
+const restrictedShortcuts = [
+  "Ctrl+t", "Ctrl+T", "Ctrl+w", "Ctrl+W", "Ctrl+r", "Ctrl+R",
+  "Ctrl+shift+i", "Ctrl+Shift+I", "Ctrl+l", "Ctrl+L", "Alt+d", "Alt+D", "Ctrl+Shift+n"
+];
+
+// Global variables
+let currentButton = null; // Store the button being edited
+let currentShortcut = []; // Store the current shortcut keys
+
+// Check if shortcut is restricted
+function isRestrictedShortcut(shortcut) {
+  return restrictedShortcuts.includes(shortcut);
+}
+
+function openShortcutBuilder(button) {
+  currentButton = button;
+  currentShortcut = [];
+  $('#shortcutModal').modal('show');
+  updateShortcutDisplay();
+
+  // Load existing shortcuts
+  const allShortcuts = JSON.parse(localStorage.getItem('shortcuts')) || {};
+  const currentShortcutDisplay = document.getElementById('currentShortcutDisplay');
+  
+  // Find matching shortcut by URL
+  let foundShortcut = null;
+  for (const [shortcutKey, data] of Object.entries(allShortcuts)) {
+    if (data.url === currentButton.dataset.url) {
+      foundShortcut = shortcutKey;
+      break;
+    }
+  }
+
+  // Display the current shortcut if available
+  if (foundShortcut) {
+    currentShortcutDisplay.textContent = foundShortcut;
+  } else {
+    currentShortcutDisplay.textContent = 'None';
+  }
+
+  // Hide any previous alerts
+  document.getElementById('shortcutConflictAlert').style.display = 'none';
+}
+
+// Update the new shortcut display in the modal
+function updateShortcutDisplay() {
+  const shortcutDisplay = document.getElementById('shortcutDisplay');
+  shortcutDisplay.textContent = currentShortcut.length ? currentShortcut.join(' + ') : 'Press any key';
+}
+
+// Add modifier keys to the shortcut
+document.querySelectorAll('.modifier-keys button').forEach((button) => {
+  button.addEventListener('click', () => {
+    const key = button.dataset.key;
+    if (!currentShortcut.includes(key)) {
+      currentShortcut.push(key);
+      updateShortcutDisplay();
+    }
+  });
+});
+
+// Listen for key presses to add the final key
+document.addEventListener('keydown', (event) => {
+  if ($('#shortcutModal').is(':visible')) {
+    event.preventDefault();
+    const key = event.key === ' ' ? 'Space' : event.key;
+    if (!currentShortcut.includes(key)) {
+      currentShortcut.push(key);
+      updateShortcutDisplay();
+    }
+  }
+});
+
+// Save the shortcut
+document.getElementById('saveShortcut').addEventListener('click', () => {
+  const shortcut = currentShortcut.join('+');
+
+  // Check for conflicts first
+  const conflictData = checkShortcutConflict(shortcut);
+  if (conflictData) {
+    // Show conflict alert inside the modal
+    document.getElementById('conflictingButtonName').textContent = conflictData.name;
+    document.getElementById('shortcutConflictAlert').style.display = 'block';
+    return; // Exit the function if there's a conflict
+  }
+
+  // Check if the shortcut is restricted
+  if (isRestrictedShortcut(shortcut)) {
+    alert(`ATTENTION!"${shortcut}" is a reserved browser shortcut and cannot be used. Please select another key combination`);
+    return; // Exit the function if the shortcut is restricted
+  }
+
+  // Save shortcut normally
+  saveShortcut(shortcut);
+});
+
+// Check if the shortcut already exists and return the conflicting shortcut data
+function checkShortcutConflict(shortcut) {
+  const allShortcuts = JSON.parse(localStorage.getItem('shortcuts')) || {};
+
+  for (const [storedShortcut, data] of Object.entries(allShortcuts)) {
+    if (storedShortcut === shortcut && data.url !== currentButton.dataset.url) {
+      return data; // Returns the conflicting shortcut’s stored data
+    }
+  }
+  return null; // No conflict
+}
+
+// Save the shortcut to localStorage
+function saveShortcut(shortcut) {
+  if (!currentButton) return;
+
+  const url = currentButton.dataset.url;
+  const name = currentButton.dataset.name;
+  const openType = currentButton.dataset.openType;
+  const size = currentButton.dataset.size;
+
+  // Load shortcuts from localStorage
+  let shortcuts = JSON.parse(localStorage.getItem('shortcuts')) || {};
+
+  // Remove the old shortcut if it exists (avoids duplicate shortcuts)
+  Object.keys(shortcuts).forEach((key) => {
+    if (shortcuts[key].url === url) {
+      delete shortcuts[key]; // Remove old shortcut before saving
+    }
+  });
+
+  // Save the new shortcut with opening settings
+  shortcuts[shortcut] = { url, name, openType, size };
+  localStorage.setItem('shortcuts', JSON.stringify(shortcuts));
+
+  // Update the current shortcut display
+  document.getElementById('currentShortcutDisplay').textContent = shortcut;
+
+  // Hide the modal & reset conflict alert
+  $('#shortcutModal').modal('hide');
+  document.getElementById('shortcutConflictAlert').style.display = 'none';
+}
+
+// Handle override confirmation
+document.getElementById('confirmOverride').addEventListener('click', () => {
+  const shortcut = currentShortcut.join('+');
+  saveShortcut(shortcut);
+});
+
+// Handle cancel override
+document.getElementById('cancelOverride').addEventListener('click', () => {
+  document.getElementById('shortcutConflictAlert').style.display = 'none';
+});
+
+// Reset the modal when closed
+$('#shortcutModal').on('hidden.bs.modal', () => {
+  currentButton = null;
+  currentShortcut = [];
+  document.getElementById('shortcutConflictAlert').style.display = 'none';
+});
+
+// Update the dropdown to use the new shortcut builder
+function setShortcut(element) {
+  const buttonDiv = element.closest('.btn-group');
+  const button = buttonDiv.querySelector('.launch-button');
+  openShortcutBuilder(button);
+}
+    
+      </script>
+      
+
+<script>
+const openTypeRadios = document.querySelectorAll('input[name="openType"]');
+const windowSizeOptions = document.getElementById('windowSizeOptions'); // The div containing window size options
+
+// Function to toggle window size options based on the "Open Link" choice
+function toggleWindowSizeOptions() {
+  const openType = document.querySelector('input[name="openType"]:checked').value;
+
+  if (openType === 'newWindow') {
+    windowSizeOptions.style.display = 'block'; // Show window size options
+  } else {
+    windowSizeOptions.style.display = 'none'; // Hide window size options
+  }
+}
+
+// Listen for changes in the "Open Link" radio buttons
+openTypeRadios.forEach(radio => {
+  radio.addEventListener('change', toggleWindowSizeOptions);
+});
+
+// Call the toggle function on page load to set the initial state
+toggleWindowSizeOptions();
+</script>
+
+
+<script>
+function removeSection(sectionId) {
+  // Remove section from localStorage
+  let sections = JSON.parse(localStorage.getItem('sections')) || [];
+  sections = sections.filter(section => section.id !== sectionId);
+  localStorage.setItem('sections', JSON.stringify(sections));
+
+  // Remove associated cards
+  let storedCards = JSON.parse(localStorage.getItem('addedCards')) || [];
+  storedCards = storedCards.filter(card => card.sectionId !== sectionId);
+  localStorage.setItem('addedCards', JSON.stringify(storedCards));
+
+  // Remove section from the DOM
+  document.getElementById(sectionId)?.remove();
+  
+  renderSidebar(); // Update sidebar
+}
+
+
+
+
+</script>
+
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const isFullscreenMode = JSON.parse(localStorage.getItem('isFullscreenMode')) || false;
+    
+    // Apply fullscreen mode immediately
+    handleFullscreenToggle({ target: { checked: isFullscreenMode } });
+
+    // Sync settings toggle (if on settings page)
+    const settingsToggle = document.getElementById('settingsFullscreenToggle');
+    if (settingsToggle) {
+        settingsToggle.checked = isFullscreenMode;
+    }
+});
+
+      </script>
+
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // Element References
+  const stickyButtonsContainer = document.getElementById('stickyButtonsContainer');
+  const sidebar = document.getElementById('popUpSidebar');
+  const sidebarButtonsContainer = document.getElementById('sidebarButtonsContainer');
+  const stickToTopButton = document.getElementById('stickToTop');
+
+  // State Management
+  let currentCardData = null;
+  const openedWindows = new Map();
+  const existingStickyButtons = new Set();
+  const existingSidebarButtons = new Set();
+  let isFullscreenMode = localStorage.getItem('isFullscreenMode') === 'true';
+  
+  // Domains that are untrackable (e.g., google.com)
+const untrackableDomains = new Set(['google.com', 'chat.openai.com']);
+
+// Specific subdomains that are allowed (e.g., docs.google.com)
+const allowedSubdomains = new Set(['docs.google.com', 'drive.google.com', 'gemini.google.com']);
+
+ 
+  
+  // Constants
+  const SIDEBAR_WIDTH = 200;
+  const SIDEBAR_MARGIN = 10;
+  const WINDOW_PARAMS = {
+    small: { width: 600, height: 400 },
+    medium: { width: 800, height: 600 },
+    large: { width: screen.width - (SIDEBAR_WIDTH + SIDEBAR_MARGIN), height: 800 },
+    full: { width: screen.width - (SIDEBAR_WIDTH + SIDEBAR_MARGIN), height: screen.height }
+  };
+
+  // Initialize the sidebar structure
+  function initializeSidebar() {
+    // Control Buttons Container
+    const controlButtonsContainer = document.createElement('div');
+    controlButtonsContainer.classList.add('control-buttons');
+
+    // Close All Button
+    const closeAllButton = document.createElement('button');
+    closeAllButton.classList.add('btn', 'btn-danger', 'btn-block', 'close-all-btn');
+    closeAllButton.textContent = 'Close All';
+    closeAllButton.addEventListener('click', handleCloseAll);
+
+    // Close Sidebar Button
+    const closeSidebarButton = document.createElement('button');
+    closeSidebarButton.classList.add('btn', 'btn-secondary', 'btn-block', 'close-sidebar-btn');
+    closeSidebarButton.textContent = 'Close Sidebar';
+    closeSidebarButton.addEventListener('click', () => sidebar.classList.remove('show'));
+
+    // Window Buttons Container
+    const windowButtonsContainer = document.createElement('div');
+    windowButtonsContainer.classList.add('window-buttons');
+
+    // Fullscreen Toggle Container
+    const fullscreenToggleContainer = document.createElement('div');
+    fullscreenToggleContainer.classList.add('fullscreen-toggle-container');
+    
+    fullscreenToggleContainer.innerHTML = `
+      <div class="custom-control custom-switch">
+        <input type="checkbox" class="custom-control-input" id="fullscreenToggle" ${isFullscreenMode ? 'checked' : ''}>
+        <label class="custom-control-label" for="fullscreenToggle"> <a href="#" style="color:white; text-decoration: none;" data-toggle="tooltip" data-placement="top" title="Open all windows in full screen when using sidebar">Fullscreen mode</a></label>
+      </div>
+    `;
+
+     const fullscreenToggle = fullscreenToggleContainer.querySelector('#fullscreenToggle');
+fullscreenToggle.checked = JSON.parse(localStorage.getItem('isFullscreenMode')) || false;
+fullscreenToggle.addEventListener('change', (event) => {
+    localStorage.setItem('isFullscreenMode', event.target.checked);
+    handleFullscreenToggle(event);
+});
+
+// Sync with settings page toggle if it exists
+const settingsToggle = document.getElementById('settingsFullscreenToggle');
+if (settingsToggle) {
+    settingsToggle.checked = fullscreenToggle.checked;
+    settingsToggle.addEventListener('change', (event) => {
+        const newState = event.target.checked;
+        localStorage.setItem('isFullscreenMode', newState);
+        fullscreenToggle.checked = newState; // Sync sidebar toggle
+        handleFullscreenToggle({ target: { checked: newState } });
+    });
+}
+
+    // Assemble Sidebar
+    controlButtonsContainer.appendChild(closeAllButton);
+    controlButtonsContainer.appendChild(closeSidebarButton);
+    sidebarButtonsContainer.appendChild(controlButtonsContainer);
+    sidebarButtonsContainer.appendChild(windowButtonsContainer);
+    sidebarButtonsContainer.appendChild(fullscreenToggleContainer);
+
+    return { windowButtonsContainer };
+  }
+
+  // Event Handlers
+  function handleCloseAll() {
+    openedWindows.forEach((win) => {
+      if (win && !win.closed) win.close();
+    });
+    openedWindows.clear();
+    
+    stickyButtonsContainer.innerHTML = '';
+    existingStickyButtons.clear();
+    
+    const windowButtons = sidebarButtonsContainer.querySelectorAll('.sidebar-btn');
+    windowButtons.forEach(btn => btn.remove());
+    existingSidebarButtons.clear();
+    
+    sidebar.classList.remove('show');
+    
+    saveStickyButtons();
+    saveSidebarButtons();
+  }
+
+  function handleFullscreenToggle(event) {
+    isFullscreenMode = event.target.checked;
+    localStorage.setItem('isFullscreenMode', isFullscreenMode);
+    
+    openedWindows.forEach((win, title) => {
+      if (win && !win.closed) {
+        const size = isFullscreenMode ? 'full' : win.originalSize;
+        const params = WINDOW_PARAMS[size];
+        
+        try {
+          win.resizeTo(params.width, params.height);
+          win.moveTo(
+            (screen.width - params.width - SIDEBAR_WIDTH - SIDEBAR_MARGIN) / 2,
+            (screen.height - params.height) / 2
+          );
+        } catch (error) {
+          console.warn(`Cannot modify window for ${title}. Window will be reopened.`, error);
+          const url = win.location.href;
+          win.close();
+          openWindow(url, win.originalSize, title);
+        }
+      }
+    });
+  }
+
+  // Window Management
+  function openWindow(url, size, title) {
+    let width, height, left, top;
+    
+    const originalSize = size;
+    if (isFullscreenMode) {
+      size = 'full';
+    }
+
+    const params = WINDOW_PARAMS[size] || WINDOW_PARAMS.medium;
+    width = params.width;
+    height = params.height;
+    
+    left = (screen.width - width - SIDEBAR_WIDTH - SIDEBAR_MARGIN) / 2;
+    top = (screen.height - height) / 2;
+
+    const newWindow = window.open(
+      url,
+      '_blank',
+      `width=${width},height=${height},top=${top},left=${left}`
+    );
+
+    if (newWindow) {
+      newWindow.originalSize = originalSize;
+      openedWindows.set(title, newWindow);
+      setupWindowEventListeners(newWindow, title);
+    }
+
+    return newWindow;
+  }
+
+  function setupWindowEventListeners(newWindow, title) {
+    function updateSidebarPosition() {
+      sidebar.style.position = 'fixed';
+      sidebar.style.right = '0';
+      sidebar.style.top = '0';
+      sidebar.style.height = '100%';
+      sidebar.style.width = `${SIDEBAR_WIDTH}px`;
+    }
+
+    updateSidebarPosition();
+
+    newWindow.addEventListener('focus', () => {
+      updateSidebarPosition();
+      sidebar.classList.add('show');
+    });
+
+    newWindow.addEventListener('blur', () => {
+      if (!isWindowMinimized(newWindow)) {
+        sidebar.classList.remove('show');
+      }
+    });
+
+    newWindow.addEventListener('resize', updateSidebarPosition);
+
+    newWindow.addEventListener('beforeunload', () => {
+      openedWindows.delete(title);
+      
+      const stickyBtn = Array.from(stickyButtonsContainer.children)
+        .find(btn => btn.querySelector('span').textContent === title);
+      
+      if (stickyBtn) {
+        stickyButtonsContainer.removeChild(stickyBtn);
+        existingStickyButtons.delete(title);
+      }
+      
+      removeSidebarButton(title);
+      
+      if (openedWindows.size === 0) {
+        sidebar.classList.remove('show');
+      }
+      
+      saveStickyButtons();
+      saveSidebarButtons();
+    });
+  }
+
+ 
+
+function isUntrackableDomain(url) {
+  try {
+    const domain = new URL(url).hostname.replace('www.', '');
+
+    // Check if the domain is in the allowed subdomains list
+    if (allowedSubdomains.has(domain)) {
+      return false; // Allow this subdomain
+    }
+
+    // Check if the domain is exactly in the untrackableDomains set
+    if (untrackableDomains.has(domain)) {
+      return true; // Block this domain
+    }
+
+    // Check if the domain is a subdomain of any untrackable domain
+    // e.g., "mail.google.com" should match "google.com"
+    return Array.from(untrackableDomains).some(d => domain.endsWith(`.${d}`));
+  } catch {
+    return false;
+  }
+}
+
+  function isWindowMinimized(win) {
+    return win.outerWidth <= 0 || win.outerHeight <= 0;
+  }
+
+  // Button Management
+  function addStickyButton(cardData, type = 'modal') {
+    if (existingStickyButtons.has(cardData.title)) return;
+
+    const button = document.createElement('div');
+    button.classList.add('animated-btn', 'sticky-btn');
+    const isUntrackable = isUntrackableDomain(cardData.url);
+    if (isUntrackable) button.classList.add('untrackable');
+    
+    button.dataset.id = cardData.title;
+    button.dataset.type = type;
+    button.dataset.url = cardData.url;
+    button.dataset.size = cardData.size;
+
+    button.innerHTML = `
+      <button class="close-btn">X</button>
+      <img src="${cardData.image}" alt="${cardData.title}" />
+      <span>${cardData.title}</span>
+      ${isUntrackable ? '<div class="untrackable-indicator" data-toggle="tooltip" title="Opens new window each time">!</div>' : ''}
+    `;
+
+    button.addEventListener('click', (e) => {
+      if (e.target.classList.contains('close-btn')) {
+        stickyButtonsContainer.removeChild(button);
+        existingStickyButtons.delete(cardData.title);
+        removeSidebarButton(cardData.title);
+        saveStickyButtons();
+        saveSidebarButtons();
+      } else {
+        if (type === 'modal') {
+          openMyModal(cardData);
+        } else if (type === 'window') {
+          if (!isUntrackable) {
+            const win = openedWindows.get(cardData.title);
+            if (win && !win.closed) {
+              win.focus();
+              sidebar.classList.add('show');
+              return;
+            }
+          }
+          openWindow(cardData.url, cardData.size, cardData.title);
+        }
+      }
+    });
+
+    stickyButtonsContainer.appendChild(button);
+    existingStickyButtons.add(cardData.title);
+  }
+
+  function addSidebarButton(cardData) {
+    if (existingSidebarButtons.has(cardData.title)) return;
+
+    const button = document.createElement('button');
+    button.classList.add('btn', 'btn-block', 'sidebar-btn');
+    
+    const isUntrackable = isUntrackableDomain(cardData.url);
+    button.classList.add(isUntrackable ? 'btn-warning' : 'btn-light');
+    
+    
+    
+    // Add tooltip attributes
+  button.setAttribute('data-toggle', 'tooltip');
+  button.setAttribute('data-placement', 'top'); // Optional: Set tooltip position
+  button.title = isUntrackable ? 
+    'This link will open in a new window each time' : 
+    'Click to focus existing window or open new';
+    
+    button.textContent = cardData.title;
+
+    button.addEventListener('click', () => {
+      if (!isUntrackable) {
+        const win = openedWindows.get(cardData.title);
+        if (win && !win.closed) {
+          win.focus();
+          return;
+        }
+      }
+      openWindow(cardData.url, cardData.size, cardData.title);
+    });
+
+    const windowButtonsContainer = sidebarButtonsContainer.querySelector('.window-buttons');
+    windowButtonsContainer.appendChild(button);
+    existingSidebarButtons.add(cardData.title);
+  }
+
+  function removeSidebarButton(title) {
+    const button = Array.from(sidebarButtonsContainer.querySelectorAll('.sidebar-btn'))
+      .find(btn => btn.textContent === title);
+    if (button) {
+      button.remove();
+      existingSidebarButtons.delete(title);
+    }
+  }
+
+  // Storage Management
+  function saveStickyButtons() {
+    const buttons = Array.from(stickyButtonsContainer.querySelectorAll('.sticky-btn'))
+      .map(button => ({
+        title: button.querySelector('span').innerText,
+        image: button.querySelector('img').src,
+        type: button.dataset.type,
+        url: button.dataset.url,
+        size: button.dataset.size,
+      }));
+    localStorage.setItem('stickyButtons', JSON.stringify(buttons));
+  }
+
+  function saveSidebarButtons() {
+    const buttons = Array.from(sidebarButtonsContainer.querySelectorAll('.sidebar-btn'))
+      .map(button => ({ title: button.textContent }));
+    localStorage.setItem('sidebarButtons', JSON.stringify(buttons));
+  }
+
+  function loadStickyButtons() {
+    try {
+      const storedButtons = JSON.parse(localStorage.getItem('stickyButtons')) || [];
+      storedButtons.forEach(buttonData => {
+        addStickyButton(buttonData, buttonData.type);
+        addSidebarButton(buttonData);
+      });
+    } catch (error) {
+      console.error('Error loading sticky buttons:', error);
+      localStorage.removeItem('stickyButtons');
+    }
+  }
+
+  function loadSidebarButtons() {
+    try {
+      const storedButtons = JSON.parse(localStorage.getItem('sidebarButtons')) || [];
+      storedButtons.forEach(buttonData => addSidebarButton(buttonData));
+    } catch (error) {
+      console.error('Error loading sidebar buttons:', error);
+      localStorage.removeItem('sidebarButtons');
+    }
+  }
+
+  function openMyModal(cardData) {
+    const modalTitle = document.getElementById('modalTitle');
+    const modalImage = document.getElementById('modalImage');
+
+    modalTitle.innerText = cardData.title;
+    modalImage.src = cardData.image;
+
+    $('#myModal').modal('show');
+  }
+
+  // Initialize
+  const { windowButtonsContainer } = initializeSidebar();
+  loadStickyButtons();
+  loadSidebarButtons();
+
+  // Modal Button Setup
+  document.querySelectorAll("[data-target='#myModal']").forEach((button) => {
+    button.addEventListener('click', () => {
+      currentCardData = {
+        id: button.getAttribute('data-id'),
+        title: button.getAttribute('data-title'),
+        image: button.getAttribute('data-image'),
+        url: button.getAttribute('data-url') || null,
+        size: button.getAttribute('data-size') || 'medium',
+      };
+    });
+  });
+
+  // Stick to Top Button Handler
+  stickToTopButton.addEventListener('click', () => {
+    if (currentCardData) {
+      currentCardData.image = document.getElementById('modalImage').src;
+      addStickyButton(currentCardData, 'modal');
+      saveStickyButtons();
+      $('#myModal').modal('hide');
+    }
+  });
+
+  // Global Window Functions
+  window.stickToTopButton = (element) => {
+    const buttonDiv = element.closest('.btn-group');
+    const button = buttonDiv.querySelector('.launch-button');
+
+    const cardData = {
+      title: button.dataset.name,
+      image: button.dataset.image || 'https://www.svgrepo.com/show/510970/external-link.svg',
+      url: button.dataset.url,
+      size: button.dataset.size || 'medium',
+    };
+
+    addStickyButton(cardData, 'window');
+    addSidebarButton(cardData);
+    saveStickyButtons();
+    saveSidebarButtons();
+  };
+});
+
+      </script>
+
+<script>
+document.getElementById('filterInput').addEventListener('input', function () {
+    const filterValue = this.value.toLowerCase();
+    const cards = document.querySelectorAll('.card-item');
+    const sections = document.querySelectorAll('.section-container');
+    const searchResultsContainer = document.getElementById('searchResultsContainer');
+    let hasMatch = false; // Flag to track if any cards are visible
+
+    // Clear the search results container
+    searchResultsContainer.innerHTML = '';
+
+    // Track IDs of cards added to prevent duplicates
+    const addedCardIds = new Set();
+
+    cards.forEach(card => {
+        const cardText = card.innerText.toLowerCase();
+        const cardCategory = card.getAttribute('data-category').toLowerCase();
+
+        // Check if the filter value matches either the card text or category
+        if ((cardText.includes(filterValue) || cardCategory.includes(filterValue)) && 
+            !addedCardIds.has(card.dataset.id)) {
+            
+            hasMatch = true; // A match is found
+            addedCardIds.add(card.dataset.id); // Add the card ID to the set
+
+            const clonedCard = card.cloneNode(true); // Clone the card
+            searchResultsContainer.appendChild(clonedCard); // Add to the search results container
+        }
+    });
+
+    // Show or hide the "No Results" message based on matches
+    const noResultsMessage = document.getElementById('noResultsMessage');
+    if (hasMatch) {
+        noResultsMessage.classList.add('d-none');
+        searchResultsContainer.classList.remove('d-none');
+        sections.forEach(section => section.classList.add('d-none')); // Hide all sections
+    } else {
+        noResultsMessage.classList.remove('d-none');
+        searchResultsContainer.classList.add('d-none');
+        sections.forEach(section => section.classList.remove('d-none')); // Show all sections
+    }
+
+    // Reset view when no filter is applied
+    if (!filterValue) {
+        searchResultsContainer.classList.add('d-none');
+        sections.forEach(section => section.classList.remove('d-none'));
+    }
+});
+
+
+
+
+    </script>
+
+
+<script>
+function renderSidebar() {
+  const sections = JSON.parse(localStorage.getItem('sections')) || [];
+  const sidebarMenu = document.querySelector('.sidebar-menu ul'); // Adjust selector based on your HTML structure
+
+  // Clear existing sidebar content
+  sidebarMenu.innerHTML = `
+    <li class="header-menu">
+      <span>Your stacks</span>
+    </li>
+  `;
+
+  // Add each section to the sidebar
+  sections.forEach(section => {
+    const sectionLink = document.createElement('li');
+    sectionLink.innerHTML = `
+      <a href="#${section.id}">
+        <i class="fa fa-folder"></i>
+        <span>${section.title}</span>
+      </a>
+    `;
+    sidebarMenu.appendChild(sectionLink);
+  });
+}
+
+</script>
+<script>
+jQuery(function ($) {
+
+    $(".sidebar-dropdown > a").click(function() {
+  $(".sidebar-submenu").slideUp(200);
+  if (
+    $(this)
+      .parent()
+      .hasClass("active")
+  ) {
+    $(".sidebar-dropdown").removeClass("active");
+    $(this)
+      .parent()
+      .removeClass("active");
+  } else {
+    $(".sidebar-dropdown").removeClass("active");
+    $(this)
+      .next(".sidebar-submenu")
+      .slideDown(200);
+    $(this)
+      .parent()
+      .addClass("active");
+  }
+});
+
+$("#close-sidebar").click(function() {
+  $(".page-wrapper").removeClass("toggled");
+});
+$("#show-sidebar").click(function() {
+  $(".page-wrapper").addClass("toggled");
+});
+
+
+   
+   
+});
+</script>
+
+   <script>
+     $(document).ready(function() {
+  // Get the modal element (same as before)
+  var settings = document.getElementById('settings');
+
+  // Function to open the modal (you can reuse this)
+  function openModal() {
+    $('#settings').modal('show'); // jQuery method
+    // Or, for Bootstrap 5:
+    // const modal = new bootstrap.Modal(myModal);
+    // modal.show();
+  }
+
+  // Keyboard shortcut (Ctrl + /)
+  $(document).keydown(function(e) {
+    if (e.ctrlKey && e.shiftKey && e.which === 83) { // 191 is the key code for /
+      e.preventDefault(); // Prevent default browser action (like search)
+      openModal();
+    }
+  });
+
+  // Example of opening the modal with a regular link click (optional)
+  $('a[data-target="#settings"]').click(function(e) {
+    e.preventDefault();
+    openModal();
+  });
+
+});
+      </script>
+      <script>
+        document.addEventListener('keydown', (event) => {
+    if (event.key === '/') { 
+        event.preventDefault(); // Prevent default browser behavior for '/'
+        document.getElementById('filterInput').focus(); 
+    }
+});
+      </script>
+   
+   <script>
+$(document).ready(function(){
+  $('[data-toggle="tooltip"]').tooltip();   
+});
+      </script>
+<script>
+  $(function () {
+    $('.tooltip-btn').tooltip();
+
+    $('.tooltip-btn').on('click', function() {
+      $(this).tooltip('hide');
+    });
+  });
+</script></script>
+
+<div id="noCardsPlaceholder2" style="display: none;">
+  
+  </div>
