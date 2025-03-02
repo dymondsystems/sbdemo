@@ -1691,7 +1691,7 @@ padding:10px;
    
   <!-- Filter Input -->
 <input id="filterInput" type="text" class="form-control" placeholder="Type ctrl+/ to search... ">
-</div>
+
 <!-- No Results Message -->
 <div id="noResultsMessage" class="alert alert-warning d-none">No results found.</div>
 
@@ -1701,18 +1701,19 @@ padding:10px;
 
 
 <div class="container mt-4">
-  <div class="row align-items-center"> 
+   <div class="row align-items-center">
     <div class="col"> 
-      <h2 class="mb-4">Demo board</h2>
-      
-    </div>
+      <h2 class="mb-4 float-left">Demo board</h2>
+     </div>
+ 
+    
     <div class="col-auto"> 
       <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addsection">
         New stack
       </button>
-     
+     </div>
     </div>
-  </div>
+    </div>
 </div>
 <div id="sectionsContainer">
       <!-- Dynamic sections and cards will load here -->
@@ -2074,18 +2075,18 @@ padding:10px;
           <div id="addEditButton" class="collapse mt-3" style="width:100%;">
             <form id="newButtonForm">
               <div class="form-group">
-                <label for="buttonURL">Button URL:</label>
+                <label for="buttonURL"><strong>Button URL:</strong></label>
                 <input type="url" class="form-control" id="buttonURL" required>
-              </div>
+             
               <div class="form-group">
-                <label for="buttonName">Button Name:</label>
+                <label for="buttonName"><strong>Button Name:</strong></label>
                 <input type="text" class="form-control" id="buttonName" required>
-              </div>
+                
              
               
   <div id="demo5" class="collapse">
               <div class="form-group">
-                <label>Open Link:</label><br>
+                <label><strong>Open Link:</strong></label><br>
                 <div class="form-check">
                   <input class="form-check-input" type="radio" name="openType" id="openNewTab" value="newTab">
                   <label class="form-check-label" for="openNewTab">In New Tab</label>
@@ -2094,10 +2095,10 @@ padding:10px;
                   <input class="form-check-input" type="radio" name="openType" id="openNewWindow" value="newWindow" checked>
                   <label class="form-check-label" for="openNewWindow">In New Window</label>
                 </div>
-              </div>
+              
               <div id="windowSizeOptions" style="display:none;">
                 <div class="form-group">
-                  <label>Window Size:</label><br>
+                  <label><strong>Window Size:</strong></label><br>
                   <div class="form-check">
                     <input class="form-check-input" type="radio" name="windowSize" id="sizeSmall" value="small">
                     <label class="form-check-label" for="sizeSmall">Small (600x400)</label>
@@ -2116,7 +2117,9 @@ padding:10px;
                   </div>
                 </div>
               </div>
-          
+    </div>
+          </div>
+              </div>
               </div>
             
             
