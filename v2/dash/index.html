@@ -2904,7 +2904,7 @@ function createButton(buttonData, container = null, modalId = null) {
 function loadButtons(modalId) {
   launchButtonsContainer.innerHTML = '';  // Clear current buttons
 
-  // Predefined buttons for each modal
+ // Predefined buttons for each modal
   const predefinedButtons = {
     1: [
       { url: 'https://promptgpt.stackboard.one/', name: 'Open promptGPT', size: 'large', openType: 'newWindow' }
@@ -2914,6 +2914,55 @@ function loadButtons(modalId) {
     ],
     3: [
       { url: 'https://github.com', name: 'github home', size: 'large', openType: 'newWindow' }
+    ],
+    4: [
+      { url: 'https://dymond.systems/bot2/editorv8/', name: 'Launch stack editor', size: 'large', openType: 'newWindow' }
+    ],
+    5: [
+      { url: 'https://google.com', name: 'google search', size: 'large', openType: 'newWindow' }
+    ],
+    6: [
+      { url: 'https://docs.google.com', name: 'Open docs', size: 'large', openType: 'newWindow' }
+    ],
+      7: [
+      { url: 'https://mail.google.com', name: 'Open gmail', size: 'large', openType: 'newWindow' }
+    ],
+    8: [
+      { url: 'https://fontawesome.com', name: 'Font awesome home', size: 'large', openType: 'newWindow' }
+    ],
+    9: [
+      { url: 'https://www.w3schools.com/html/tryit.asp?filename=tryhtml_editor', name: 'open editor', size: 'large', openType: 'newWindow' }
+    ],
+    10: [
+      { url: 'https://gemini.google.com/app', name: 'open Gemini', size: 'large', openType: 'newWindow' }
+    ],
+    11: [
+      { url: 'https://github.com/copilot', name: 'open Copilot', size: 'large', openType: 'newWindow' }
+    ],
+	  12: [
+      { url: 'https://firebase.google.com', name: 'open firebase', size: 'large', openType: 'newWindow' }
+    ],
+     13: [
+      { url: 'https://vscode.dev/', name: 'open VScode', size: 'large', openType: 'newWindow' }
+    ],
+     14: [
+      { url: 'https://codesandbox.io/templates', name: 'open codesandbox', size: 'large', openType: 'newWindow' }
+    ],
+     15: [
+      { url: 'https://app.linklyhq.com/', name: 'open Linkly', size: 'large', openType: 'newWindow' }
+    ],
+     16: [
+      { url: 'https://app.short.io/', name: 'open short.io', size: 'large', openType: 'newWindow' }
+    ],
+     17: [
+      { url: 'https://aws.amazon.com', name: 'open AWS', size: 'large', openType: 'newWindow' }
+    ],
+     18: [
+      { url: 'https://claude.ai/', name: 'open Claude', size: 'large', openType: 'newWindow' }
+    ],
+     19: [
+      { url: 'https://deepseek.com/', name: 'Home', size: 'large', openType: 'newWindow' },     
+      { url: 'https://chat.deepseek.com/', name: 'Chat', size: 'large', openType: 'newWindow' }
     ]
   };
 
