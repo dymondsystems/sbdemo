@@ -1,0 +1,3802 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Management App</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  
+  
+  
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <style>
+   .modal { overflow: auto !important; }
+#tasklist .card-body{
+  background-color: black;
+    }
+    
+    
+
+
+
+:root {
+      --bg-color: #e0e0e0;
+      --text-color: #000000;
+      --card-bg: #f8f9fa;
+  --btn-bg: #0dcaf0;
+ 
+    }
+
+    [data-theme="dark"] {
+      --bg-color: #121212;
+      --text-color: #ffffff;
+      --card-bg: #313131;
+      --btn-bg: #fb6204;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      
+    }
+    
+    .btn-primary{
+      background-color: var(--btn-bg);
+      color: var(--text-color);
+      border: none;
+    }
+
+    .card {
+      background-color: var(--card-bg);
+      color: var(--text-color);
+    }
+
+    .modal-content {
+      background-color: var(--card-bg);
+      color: var(--text-color);
+    }
+
+    .progress-bar {
+      background-color: #007bff;
+    }
+
+    .badge {
+      margin-right: 5px;
+    }
+.rgb-button {
+  background-image: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet); /* Rainbow gradient */
+  color: white; /* Initial text color */
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  background-size: 400% 100%; /* Make gradient larger than button */
+  transition: background-position 0.5s ease, color 0.5s ease; /* Transition background position */
+  float: right;
+}
+
+.rgb-button:hover {
+  opacity: 0.8;
+}
+
+.rgb-button.clicked {
+  background-position: 100% 0%; /* Shift gradient to the end */
+  color: black; /* Example: Change text color on click */
+}
+   
+  
+    
+    
+  /* General styles for open buttons */
+    .open-btn {
+      position: fixed;
+      bottom: 20px;
+      z-index: 1030;
+      transform: translateX(-50%);
+    }
+
+    /* Position each open button */
+    #open-btn1 { left: 20%; }
+    #open-btn2 { left: 40%; }
+    #open-btn3 { left: 60%; }
+    #open-btn4 { left: 80%; }
+
+    /* Sticky container for animated buttons */
+    .button-container {
+      position: fixed;
+      top: 0;
+      display: flex;
+      justify-content: flex-start;
+      gap: 10px;
+      z-index: 1030;
+      padding: 10px;
+      
+      flex-wrap: nowrap; /* Ensure the buttons don't wrap onto new lines */
+      overflow-x: auto; /* Allow horizontal scroll if needed */
+    }
+
+    /* Collapsible container styles */
+    #collapsible-container {
+      display: none; /* Initially collapsed */
+      width: 100%;
+      background-color:#f8f9fa;
+      padding: 10px;
+      margin-top: 10px;
+      transition: max-height 0.5s ease-in-out;
+      max-height: 0;
+      overflow: hidden;
+    }
+
+    /* Button styles */
+    .animated-btn {
+      width: 100px;
+      height: 50px;
+      transition: all 0.5s ease-in-out;
+      text-align: left;
+      font-size: 14px;
+      font-weight: bold;
+      color: white;
+      cursor: pointer;
+      position: relative;
+      padding: 5px;
+      display: flex;
+      align-items: center;
+      border-radius: 10px;
+      justify-content: flex-start;
+      flex-direction: column;
+      background-color: grey;
+      overflow: hidden;
+      /* Default size */
+    }
+
+    /* Layout for image and text inside buttons */
+    .animated-btn img {
+      width: 25px;
+      height: 25px;
+      margin-right: 5px;
+      transition: all 0.3s ease-in-out;
+    }
+
+    /* Button expand on hover */
+.animated-btn:hover {
+  width: 200px; /* Make the button 200px wide when hovered */
+  height: 180px; /* Make the button 150px tall when hovered */
+  transition: all 0.3s ease-in-out; /* Smooth transition */
+  flex-direction: column; /* Stack the image and text vertically */
+  justify-content: center; /* Center the content */
+  align-items: center; /* Align content in the center */
+  min-width: 200px;
+}
+
+/* Image grows when button expands */
+.animated-btn:hover img {
+  width: 100px; /* Image becomes bigger when the button expands */
+  height: 80px; /* Maintain aspect ratio */
+}
+
+
+    /* Close button styles */
+    .close-btn {
+  display: none;
+  padding: 5px 10px;
+  background: white;
+  color: black;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  font-size: 12px;
+  margin-bottom: 5px; /* Space between buttons */
+  
+}
+    
+
+    /* Link button styles */
+    .link-btn {
+      display: none;
+      margin-bottom: 10px;
+      padding: 5px 10px;
+      background-color: #007bff;
+      color: white;
+      text-decoration: none;
+      border-radius: 3px;
+      font-size: 12px;
+    }
+
+    /* Show close button and link button when expanded */
+    .animated-btn:hover .close-btn,
+    .animated-btn:hover .link-btn {
+      display: inline-block; /* Change to inline-block so they're side-by-side */
+    }
+
+    /* Background colors for each button */
+    .animated-btn-1 { background-color: #007bff; }
+    .animated-btn-2 { background-color: #28a745; }
+    .animated-btn-3 { background-color: #ffc107; }
+    .animated-btn-4 { background-color: #dc3545; }
+
+    /* Container for close and link buttons */
+    .btn-container {
+      display: flex;
+      gap: 10px; /* Space between buttons */
+      margin-top: 10px;
+    }
+
+    /* Hide the toggle button when the container has enough space */
+    #toggle-btn {
+      display: none;
+    }
+   
+    
+    .launch-button{
+    min-width: 100px;
+    }
+    
+.footer-buttons i{
+padding:10px;
+}
+      
+      
+           
+      
+      
+      
+      
+      
+        #popUpSidebar {
+      position: fixed;
+      width: 200px; /* Sidebar width */
+      background-color: #424949;
+      color: white;
+      z-index: 9999;
+      transition: all 0.2s ease; /* Smooth transition for sidebar movement */
+      opacity: 0; /* Initially invisible */
+      visibility: hidden; /* Sidebar hidden initially */
+      pointer-events: none; /* Disable interactions when hidden */
+      padding:20px;
+    }
+
+    #popUpSidebar.show {
+      opacity: 1; /* Fully visible */
+      visibility: visible; /* Make visible */
+      pointer-events: auto; /* Enable interactions */
+    }
+    #popUpSidebar button {
+      display: block;
+      width: 100%;
+      
+      border: none;
+      padding: 10px;
+      margin: 5px 0;
+      cursor: pointer;
+      position: relative;
+    }
+    
+
+    #popUpSidebar button:hover {
+      background-color: #003f7f;
+    }
+
+    #popUpSidebar button .remove-btn {
+      display: none;
+      position: absolute;
+      top: 40%;
+      right: 15px;
+      transform: translate(50%,-50%);
+      
+      color: white;
+      border: none;
+      border-radius: 0%;
+      width: 5px;
+      height: 0px;
+      cursor: pointer;
+      text-align: center;
+      line-height: 0px;
+      
+      
+      font-size: 12px;
+    }
+
+    #popUpSidebar button:hover .remove-btn {
+      display: block;
+    }
+
+    .content input {
+      margin-bottom: 10px;
+    }
+    add{
+    font-size: 20px;
+    font-weight: bold;
+    float: left;
+  
+    }
+      
+      /* Add these styles to your CSS */
+.btn-warning {
+  background-color: #ffc107;
+  border-color: #ffc107;
+  color: #000;
+}
+
+.sticky-btn.untrackable {
+  position: relative;
+}
+
+.untrackable-indicator {
+  position: absolute;
+  top: 5px;
+  right: 25px;
+  background: #ffc107;
+  color: #000;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: help;
+}
+      
+      
+      /* Previous styles remain the same, add/update these styles */
+
+/* Fullscreen Toggle Container */
+.fullscreen-toggle-container {
+  position: fixed;
+  bottom: 10px;
+  width: 200px;
+  padding: 15px;
+  
+  
+  z-index: 1001;
+}
+
+/* Custom Switch Styles */
+.custom-switch {
+  padding-left: 2.25rem;
+}
+
+.custom-control-input:checked ~ .custom-control-label::before {
+  background-color: #17a2b8;
+  border-color: #17a2b8;
+}
+
+.custom-control-input:focus ~ .custom-control-label::before {
+  box-shadow: 0 0 0 0.2rem rgba(23, 162, 184, 0.25);
+}
+
+/* Update window-buttons padding to account for fixed toggle */
+.window-buttons {
+  padding: 0 10px;
+  margin-bottom: 70px; /* Increased to make room for toggle switch */
+}
+    
+     hr{
+     background-color: #ccc;
+    }
+ 
+  </style>
+</head>
+<body>
+  <div class="container py-4">
+    <h1 class="text-center mb-4">Project Management</h1>
+    <div id="stickyButtonsContainer" class="button-container"></div>
+    
+    <div class="form-check form-switch">
+  <input class="form-check-input" type="checkbox" id="darkModeToggle">
+  <label class="form-check-label" for="darkModeToggle">Dark Mode</label>
+</div>
+    
+    
+    <!-- Add Project Button -->
+    <div class="mb-4 text-right">
+      <button class="btn btn-primary" id="addProjectBtn">Add Project</button>
+    </div>
+
+    <!-- Project Cards Row -->
+    <div class="row" id="project-cards">
+      <!-- Dynamic project cards will be inserted here -->
+    </div>
+  </div>
+  
+       <div id="popUpSidebar" class="sidebar">
+   
+          
+         
+  <div id="sidebarButtonsContainer"></div>
+          <div class="side" style="position: fixed; right:30px;
+                                   bottom: 40px;">
+            <center><a href="#" data-toggle="modal" data-target="#help"><i class="fas fa-question-circle fa-lg"></i></a></center>
+            <br>
+            <p>Go back: <strong>ALT + </strong><i class="fas fa-arrow-left"></i></p>
+            
+          </div>
+</div>
+  
+  
+  
+  
+  
+  
+  
+
+  <!-- Add/Edit Project Modal -->
+  <div class="modal fade" id="projectModal" tabindex="-1" role="dialog" aria-labelledby="projectModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="projectModalLabel">New project</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="projectForm">
+            <div class="form-group">
+              <label for="projectTitle">Project Title</label>
+              <input type="text" class="form-control" id="projectTitle" required>
+            </div>
+            <div class="form-group">
+              <label for="projectDescription">Description</label>
+              <textarea class="form-control" id="projectDescription" rows="3" required></textarea>
+            </div>
+           
+            <div id="projectContent"></div>
+            <button type="submit" id-"projectButton" class="btn btn-primary">Save</button>
+            <button class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+  <!-- The Modal -->
+  <div class="modal" id="myModal" style= "z-index: 9999;">
+    <div class="modal-dialog modal-lg" style="top: 50px;">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title" id="projecttest">Task</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+           <form id="taskForm">
+        
+       <div class="form-group">
+    <label for="taskStatus">Status</label>
+    <select class="form-control" id="taskStatus">
+      <option value="not-started">Not Started</option>
+      <option value="started">Started</option>
+      <option value="complete">Complete</option>
+    </select>
+  </div> 
+  <div class="form-group">
+    <label for="taskTitle">Task Title</label>
+    <input type="text" class="form-control" id="taskTitle" required>
+  </div>
+  <div class="form-group">
+    <label for="taskDescription">Description</label>
+    <textarea class="form-control" id="taskDescription" rows="3" ></textarea>
+  </div>
+  
+  <div class="dropup mb-3">
+    <button class="btn btn-secondary" type="button" data-toggle="dropdown">
+      <i class="fas fa-plus"></i>
+    </button>
+    <div class="dropdown-menu">
+      
+      <button class="dropdown-item" type="button" onclick="addTextBlock('task')"> <i class="fas fa-code"></i> text </button>
+      <button class="dropdown-item" type="button" onclick="addImage('task')"> <i class="fas fa-sticky-note"></i> Note</button>
+      <button class="dropdown-item" type="button" onclick="addImage('task')"> <i class="fas fa-image"></i> Image</button>
+      <button class="dropdown-item" type="button" onclick="addFile('task')"> <i class="fas fa-file"></i> File</button>
+      <button class="dropdown-item" type="button" onclick="addLink('task')"> <i class="fas fa-link"></i> Link</button>
+      <button class="dropdown-item" type="button" onclick="addCodeBlock('task')"> <i class="fas fa-code"></i> Code </button>
+    </div>
+  </div>
+  <div id="taskContent" class="mb-3"></div>
+  <button type="submit" id="taskButton" class="btn btn-success" data-toggle="collapse" data-target="#addTaskForm">Add Task</button>
+        <button class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+             
+</form>
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  
+  
+  
+  
+
+  <!-- Project Details Modal -->
+  <div class="modal fade" id="projectDetailsModal" tabindex="-1" role="dialog" aria-labelledby="projectDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="projectDetailsModalLabel">Project Details</h5>
+          <button class="rgb-button">
+  <i class="fas fa-magic"></i> Generate task</button>
+          
+        </div>
+        <div class="modal-body">
+          <h5 id="detailsProjectTitle"></h5>
+          <p id="detailsProjectDescription"></p>
+
+          <h6>Tasks</h6>
+          <div id="task-list" class="mb-3">
+            <!-- Dynamic task list will be inserted here -->
+          </div>
+          <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#myModal">
+            <i class="fas fa-plus"></i> Add Task
+          </button>
+          
+         <center><small><strong>Pro tip:</strong> shortcuts, sticky buttons, and sidebar set on the homepage work here. Use when working on projects!</small></center>
+<!-- Modal footer -->
+        <div class="modal-footer">
+          
+          
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+  <!-- The Modal -->
+  <div class="modal" id="myModal2" style="z-index: 9999;">
+    <div class="modal-dialog" style="top: 50px;">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Create a subtask</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+                <form id="noteForm">
+  <div class="form-group">
+    <label for="noteTitle">Note Title</label>
+    <input type="text" class="form-control" id="noteTitle" required>
+  </div>
+  <div class="form-group">
+    <label for="noteDescription">Description</label>
+    <textarea class="form-control" id="noteDescription" rows="3" ></textarea>
+  </div>
+  <div class="dropup mb-3">
+    <button class="btn btn-secondary" type="button" data-toggle="dropdown">
+      <i class="fas fa-plus"></i>
+    </button>
+    <div class="dropdown-menu">
+      
+     <button class="dropdown-item" type="button" onclick="addTextBlock('note')"> <i class="fas fa-code"></i> text </button>
+      
+     <button class="dropdown-item" type="button" onclick="addImage('note')"> <i class="fas fa-image"></i> Image</button>
+      <button class="dropdown-item" type="button" onclick="addFile('note')"> <i class="fas fa-file"></i> File</button>
+      <button class="dropdown-item" type="button" onclick="addLink('note')"> <i class="fas fa-link"></i> Link</button>
+      <button class="dropdown-item" type="button" onclick="addCodeBlock('note')"> <i class="fas fa-code"></i> Code </button>
+    </div>
+  </div>
+  <div id="noteContent" class="mb-3"></div>
+  <button type="submit" id="noteButton" class="btn btn-success">Add subtask</button>
+             <button data-dismiss="modal" data-toggle="collapse" data-target="#addNoteForm" class="btn btn-secondary">Cancel</button>
+</form>
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  
+  
+  
+  
+
+  <!-- Notes Modal -->
+  <div class="modal fade" id="notesModal" style="top: 50px;">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content bg-dark">
+        <div class="modal-header">
+          <h5 class="modal-title">Subtasks</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body bg-dark">
+          <div id="notesList"></div>
+          <center><button class="btn btn-primary mb-3" data-toggle="modal" data-target="#myModal2">
+            <i class="fas fa-plus"></i> Add 
+              </button></center>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/prism.min.js"></script>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+   <script>
+ document.addEventListener('DOMContentLoaded', () => {
+  loadSections();
+
+  // Add new section
+  document.getElementById('addSectionBtn').addEventListener('click', () => {
+    const sectionTitle = document.getElementById('sectionTitle').value.trim();
+    if (sectionTitle) {
+      const sections = JSON.parse(localStorage.getItem('sections')) || [];
+      const sectionId = `section-${Date.now()}`;
+      sections.push({ id: sectionId, title: sectionTitle });
+      localStorage.setItem('sections', JSON.stringify(sections));
+      document.getElementById('sectionTitle').value = '';
+       loadSections(); // Update main content
+    
+    } else {
+      showAlert('Please enter a section title.', 'warning');
+    }
+  });
+
+  // Set up event listener for rename modal save button
+  document.getElementById('saveRenameBtn').addEventListener('click', () => {
+    const sectionId = document.getElementById('renameModal').dataset.sectionId;
+    const newTitle = document.getElementById('renameInput').value.trim();
+    if (newTitle) {
+      const sections = JSON.parse(localStorage.getItem('sections')) || [];
+      const section = sections.find(sec => sec.id === sectionId);
+
+      if (section) {
+        section.title = newTitle;
+        localStorage.setItem('sections', JSON.stringify(sections));
+        document.getElementById(`title-${sectionId}`).textContent = newTitle;
+        loadSections(); // Ensure sidebar is refreshed correctly
+        showAlert('Section renamed successfully!', 'success');
+      }
+
+      $('#renameModal').modal('hide');
+    } else {
+      showAlert('Section title cannot be empty!', 'danger');
+    }
+  });
+});
+
+// Load sections and render them
+function loadSections() {
+  const sectionsContainer = document.getElementById('sectionsContainer');
+  const sections = JSON.parse(localStorage.getItem('sections')) || [];
+ const placeholder = document.getElementById('noSectionsPlaceholder'); 
+ 
+  // Show placeholder if no sections exist, otherwise hide it
+  if (sections.length === 0) {
+    placeholder.style.display = 'block';
+  } else {
+    placeholder.style.display = 'none';
+  }
+ 
+ sectionsContainer.innerHTML = ''; // Clear existing sections
+  sidebarLinksContainer.innerHTML = ''; // Clear sidebar links
+ 
+ 
+ 
+
+  sections.forEach(section => {
+    const sectionDiv = document.createElement('div');
+    sectionDiv.classList.add('section-container', 'mb-4');
+    sectionDiv.id = section.id;
+    sectionDiv.innerHTML = `
+      <hr>
+      <div class="d-flex justify-content-between align-items-center">
+        <h3 id="title-${section.id}">${section.title}</h3>
+        <div class="dropdown">
+          <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton-${section.id}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Actions
+          </button>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton-${section.id}">
+	   <a class="dropdown-item" href="/cardbetav1/add-appv2/v3/?sectionId=${section.id}"> <i class="fas fa-plus"></i> Add app </a>
+            <a class="dropdown-item" href="#" onclick="openRenameModal('${section.id}', '${section.title}')"><i class="fas fa-edit"></i> Rename </a>
+	   
+            <a class="dropdown-item text-danger" href="#" onclick="removeSection('${section.id}')"><i class="fas fa-trash-alt"></i> Remove </a>
+          </div>
+        </div>
+      </div>
+      <div class="row" id="cards-${section.id}">
+        <!-- Cards will be dynamically inserted here -->
+      
+      </div>
+     <div id="noCardsPlaceholder2" class="alert alert-info text-center" style="display: none; margin-top: 50px; margin-bottom: 150px; ">
+     <h4>You've created your first stack!</h4>
+  Add an app to start building out your stack.
+  <br>
+  <a href="/cardbetav1/add-appv2/v3/?sectionId=${section.id}" class="btn btn-success" role="button">Add app</a>
+  </div>
+    `;
+    sectionsContainer.appendChild(sectionDiv);
+
+
+// Populate the sidebar with a link to the section
+    const sidebarLink = document.createElement('li');
+    sidebarLink.innerHTML = `
+      <a href="#${section.id}">
+        <i class="fa fa-circle"></i> ${section.title}
+      </a>
+    `;
+    sidebarLinksContainer.appendChild(sidebarLink);
+
+ 
+ 
+
+    // Make cards sortable within each section
+    new Sortable(document.getElementById(`cards-${section.id}`), {
+      group: 'shared',
+      animation: 150,
+      onEnd: saveCardsToLocalStorage,
+    });
+  });
+
+  loadCards(); // Re-render cards
+  
+}
+
+// Open rename modal and populate it with section data
+function openRenameModal(sectionId, sectionTitle) {
+  document.getElementById('renameModal').dataset.sectionId = sectionId;
+  document.getElementById('renameInput').value = sectionTitle;
+  $('#renameModal').modal('show');
+}
+
+// Save cards to localStorage
+function saveCardsToLocalStorage() {
+  const sections = JSON.parse(localStorage.getItem('sections')) || [];
+  const allCards = [];
+  sections.forEach(section => {
+    const cardContainer = document.getElementById(`cards-${section.id}`);
+    cardContainer.querySelectorAll('.card-item').forEach(card => {
+      const cardData = {
+        id: card.dataset.id,
+        title: card.dataset.title,
+        image: card.dataset.image,
+        description: card.dataset.description,
+        sectionId: section.id,
+        category: card.dataset.category,
+      };
+      allCards.push(cardData);
+    });
+  });
+  localStorage.setItem('addedCards', JSON.stringify(allCards));
+}
+
+// Show alert
+function showAlert(message, type) {
+  const alertContainer = document.getElementById('alertContainer');
+  const alert = document.createElement('div');
+  alert.className = `alert alert-${type} alert-dismissible fade show`;
+  alert.innerHTML = `
+    ${message}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  `;
+  alertContainer.appendChild(alert);
+
+  setTimeout(() => {
+    $(alert).alert('close');
+  }, 3000);
+}
+
+</script>
+  
+    
+    
+   
+ <script>   
+    
+   
+function loadCards() {
+  const storedCards = JSON.parse(localStorage.getItem('addedCards')) || [];
+  
+  
+   const placeholder = document.getElementById('noCardsPlaceholder');
+   
+   const placeholder2 = document.getElementById('noCardsPlaceholder2');
+
+  // Show placeholder if no cards exist, otherwise hide it
+  if (storedCards.length === 0) {
+    placeholder.style.display = 'none';
+  } else {
+    placeholder.style.display = 'block';
+  }
+  
+  
+
+  // Show placeholder if no cards exist, otherwise hide it
+  if (storedCards.length === 0) {
+    placeholder2.style.display = 'block';
+  } else {
+    placeholder2.style.display = 'none';
+  }
+  
+  
+  
+  
+  
+  
+  
+  storedCards.forEach(card => {
+    const sectionContainer = document.getElementById(`cards-${card.sectionId}`);
+    if (sectionContainer) {
+      const cardDiv = document.createElement('div');
+      cardDiv.classList.add('col-md-3', 'card-item');
+      cardDiv.dataset.id = card.id;
+      cardDiv.dataset.title = card.title;
+      cardDiv.dataset.image = card.image;
+      cardDiv.dataset.description = card.description;
+      cardDiv.dataset.category = card.category;
+      cardDiv.dataset.modalId = card.modalId;
+
+      cardDiv.innerHTML = `
+        <div class="card border-secondary mb-3">
+          <div class="card-body">
+            <div class="dropdown">
+              <i class="fa fa-ellipsis-v" aria-hidden="true" data-toggle="dropdown" style="float: right;"></i>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" data-toggle="modal" href="#accountinfo" onclick="showAccountInfo('${card.id}')"><i class="fas fa-wrench-alt"></i> Manage account</a>
+                
+                <a class="dropdown-item text-danger" href="#" onclick="removeCard('${card.id}')"><i class="fas fa-trash-alt"></i> Remove</a>
+              </div>
+            </div>
+            <center><img src="${card.image}" alt="${card.title}" class="img-fluid" style="width: 80px; height: 80px;">
+            <h5 class="mt-2">${card.title}</h5>
+            <p>${card.description}</p>
+            <div class="d-flex justify-content-center">
+            <button 
+              type="button" style= "position: absolute; bottom:20px; "
+              class="btn btn-primary mt-2" 
+              data-toggle="modal" 
+              data-target="#myModal" 
+              data-title="${card.title}" 
+              data-image="${card.image}" 
+              data-modal="${card.modalId}">
+              Open 
+            </button></center>
+          </div>
+        </div>
+      `;
+      sectionContainer.appendChild(cardDiv);
+    }
+  });
+
+  // Attach modal update functionality after cards are loaded
+  attachModalTitleUpdate();
+}
+
+function attachModalTitleUpdate() {
+  const modalButtons = document.querySelectorAll("[data-target='#myModal']");
+
+  modalButtons.forEach(button => {
+    button.addEventListener("click", () => {
+      const title = button.getAttribute("data-title");
+      const image = button.getAttribute("data-image");
+      const modalTitle = document.getElementById("modalTitle");
+      const modalImage = document.getElementById("modalImage");
+
+      // Update the modal title
+      if (modalTitle && title) {
+        modalTitle.innerText = title;
+      } else {
+        console.error("Modal title element not found or title is null!");
+      }
+
+      // Update the modal image
+      if (modalImage && image) {
+        modalImage.src = image;
+        modalImage.style.display = "inline-block";
+      } else if (modalImage) {
+        modalImage.style.display = "none";
+      }
+    });
+  });
+}
+
+// Show account info in the modal
+function showAccountInfo(cardId) {
+  const storedCards = JSON.parse(localStorage.getItem('addedCards')) || [];
+  const card = storedCards.find(c => c.id === cardId);
+  if (card) {
+    document.querySelector('#accountinfo .modal-title').innerText = card.title;
+    document.querySelector('#accountinfo .modal-body').innerHTML = `
+    <h5>Due to security reasons, account management is not available in the demo version</h5>
+      <p><strong>Category:</strong> ${card.category}</p>
+      <p><strong>Description:</strong> ${card.description}</p>
+    `;
+  }
+}
+
+
+   
+    
+    
+    
+    
+    function removeCard(cardId) {
+  let storedCards = JSON.parse(localStorage.getItem('addedCards')) || [];
+  storedCards = storedCards.filter(card => card.id !== cardId);
+  localStorage.setItem('addedCards', JSON.stringify(storedCards));
+  document.querySelector(`[data-id="${cardId}"]`).remove(); // Remove card from DOM
+}
+
+    
+  </script> 
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Select modal-related elements
+const launchButtonsContainer = document.getElementById('launch-buttons');
+const newButtonForm = document.getElementById('newButtonForm');
+const toggleFormButton = document.getElementById('toggleFormButton');
+const saveButton = document.getElementById('saveButton');
+const cancelButton = document.getElementById('cancelButton');
+let currentModal = null;
+let editingButton = null;
+let openedWindow = null; // Track the opened window
+
+// Load buttons for a specific modal
+function loadButtons(modalId) {
+  launchButtonsContainer.innerHTML = '';  // Clear current buttons
+  
+  const buttons = JSON.parse(localStorage.getItem(`launchButtons_${modalId}`)) || [];
+  buttons.forEach(button => createButton(button));
+}
+
+// Save buttons for a specific modal
+function saveButtons(modalId) {
+  const buttons = [];
+  document.querySelectorAll('.launch-button').forEach(btn => {
+    buttons.push({
+      url: btn.dataset.url,
+      name: btn.dataset.name,
+      size: btn.dataset.size,
+      openType: btn.dataset.openType
+    });
+  });
+  localStorage.setItem(`launchButtons_${modalId}`, JSON.stringify(buttons));
+}
+
+// Create and append a button to the modal
+function createButton({ url, name, size, openType }) {
+  const buttonDiv = document.createElement('div');
+  buttonDiv.className = 'btn-group mb-2';
+
+  const button = document.createElement('button');
+  button.className = 'btn btn-sq-lg btn-outline-primary launch-button';
+  button.dataset.url = url;
+  button.dataset.name = name;
+  button.dataset.size = size;
+  button.dataset.openType = openType;
+  button.innerHTML = `<i class='fa fa-external-link'></i><br>${name}`;
+
+  button.onclick = () => {
+    if (openType === 'newTab') {
+      window.open(url, '_blank');
+    } else {
+      openWindow(url, size); // Call openWindow when clicking the button
+    }
+  };
+const dropdown = document.createElement('div');
+  dropdown.className = 'dropdown';
+  dropdown.innerHTML = `    
+    <button class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown"></button>
+    <div class="dropdown-menu">
+    <a class="dropdown-item" href="#" onclick="stickToTopButton(this, 'window')"> Stick to Top</a>
+      <a class="dropdown-item" href="#" onclick="editButton(this)">Edit</a>
+      <a class="dropdown-item" href="#" onclick="setShortcut(this)">Set Keyboard Shortcut</a>
+      <a class="dropdown-item text-danger" href="#" onclick="removeButton(this)">Remove</a>
+    </div>`;
+
+  buttonDiv.appendChild(button);
+  buttonDiv.appendChild(dropdown);
+  launchButtonsContainer.appendChild(buttonDiv);
+}
+  
+
+// Open a new window based on the selected size
+function openWindow(url, size) {
+  let width, height, left, top;
+
+  switch (size) {
+    case 'small':
+      width = screen.width * 0.4;
+      height = screen.height * 0.4;
+      break;
+    case 'medium':
+      width = screen.width * 0.6;
+      height = screen.height * 0.6;
+      break;
+    case 'large':
+      width = screen.width * 0.8;
+      height = screen.height * 0.8;
+      break;
+    case 'full':
+      width = screen.width * 1.0;
+      height = screen.height * 1.0;
+      break;
+    default:
+      width = screen.width * 0.5;
+      height = screen.height * 0.5;
+  }
+
+  left = (screen.width - width) / 2;
+  top = (screen.height - height) / 2;
+  
+  
+ 
+
+  const newWin = window.open(url, '_blank', `width=${width},height=${height},top=${top},left=${left}`);
+  
+  
+   if (newWin) {
+    openedWindows.set(url, newWin); // Store reference
+    newWin.onbeforeunload = () => openedWindows.delete(url); // Remove when closed
+  }
+
+  return newWin;
+}
+  
+
+ 
+ 
+
+// Add or edit button
+newButtonForm.onsubmit = (e) => {
+  e.preventDefault();
+  const url = document.getElementById('buttonURL').value;
+  const name = document.getElementById('buttonName').value;
+  const size = document.querySelector('input[name="windowSize"]:checked').value;
+  const openType = document.querySelector('input[name="openType"]:checked').value;
+
+  if (editingButton) {
+    // Update existing button
+    editingButton.dataset.url = url;
+    editingButton.dataset.name = name;
+    editingButton.dataset.size = size;
+    editingButton.dataset.openType = openType;
+    editingButton.innerHTML = `<i class='fa fa-external-link'></i><br>${name}`;
+    editingButton = null;
+    saveButton.textContent = 'Add';
+  } else {
+    // Create new button
+    createButton({ url, name, size, openType });
+  }
+
+  // Save the updated buttons and refresh the list
+  saveButtons(currentModal);
+  loadButtons(currentModal);
+  newButtonForm.reset();
+  $('#addEditButton').collapse('hide');
+};
+
+// Edit button
+function editButton(el) {
+  const button = el.closest('.btn-group').querySelector('.launch-button');
+  document.getElementById('buttonURL').value = button.dataset.url;
+  document.getElementById('buttonName').value = button.dataset.name;
+  document.querySelector(`input[value="${button.dataset.size}"]`).checked = true;
+  document.querySelector(`input[value="${button.dataset.openType}"]`).checked = true;
+  editingButton = button;
+  saveButton.textContent = 'Save';
+  $('#addEditButton').collapse('show');
+}
+
+// Remove button
+function removeButton(el) {
+  el.closest('.btn-group').remove();
+  saveButtons(currentModal);
+  loadButtons(currentModal);
+}
+
+// Cancel button
+cancelButton.onclick = () => {
+  newButtonForm.reset();
+  editingButton = null;
+  saveButton.textContent = 'Add';
+  $('#addEditButton').collapse('hide');
+};
+
+
+// Open modal
+$('#myModal').on('show.bs.modal', function (e) {
+  currentModal = $(e.relatedTarget).data('modal'); // Get modal ID
+  loadButtons(currentModal);
+});
+$('#myModal').on('hidden.bs.modal', function () {
+  editingButton = null;
+  saveButton.textContent = 'Add';
+  $('#addEditButton').collapse('hide');
+
+  // Check if auto-close is enabled
+  const autoCloseEnabled = JSON.parse(localStorage.getItem("autoCloseWindows")) || false;
+
+  if (autoCloseEnabled) {
+    // Loop through all stored windows and close them
+    openedWindows.forEach((win, url) => {
+      if (win && !win.closed) {
+        win.close();
+      }
+    });
+
+    // Clear the map after closing all windows
+    openedWindows.clear();
+  }
+});
+
+
+
+</script>
+      
+ <script>
+   document.addEventListener("DOMContentLoaded", () => {
+  const autoCloseToggle = document.getElementById("autoCloseWindowsToggle");
+
+  // Load saved state
+  const autoCloseEnabled = JSON.parse(localStorage.getItem("autoCloseWindows")) || false;
+  autoCloseToggle.checked = autoCloseEnabled;
+
+  // Save state when toggled
+  autoCloseToggle.addEventListener("change", () => {
+    localStorage.setItem("autoCloseWindows", autoCloseToggle.checked);
+  });
+});
+
+      </script>
+      
+      
+      
+      
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+  const refocusToggle = document.getElementById('windowBehaviorToggle');
+
+  if (refocusToggle) {
+    refocusToggle.checked = JSON.parse(localStorage.getItem('refocusExistingWindows')) || false;
+
+    refocusToggle.addEventListener('change', (event) => {
+      localStorage.setItem('refocusExistingWindows', event.target.checked);
+    });
+  }
+});
+
+      </script>
+
+<script>
+// Function to load buttons for a specific modal
+function loadButtons(modalId) {
+  launchButtonsContainer.innerHTML = '';  // Clear current buttons
+
+   // Predefined buttons for each modal
+  const predefinedButtons = {
+    1: [
+      { url: 'https://promptgpt.stackboard.one/', name: 'Open promptGPT', size: 'medium', openType: 'newWindow' }
+    ],
+    2: [
+      { url: 'https://chatgpt.com', name: 'Launch chatGPT', size: 'medium', openType: 'newTab' }
+    ],
+    3: [
+      { url: 'https://github.com', name: 'github home', size: 'large', openType: 'newTab' }
+    ],
+    4: [
+      { url: 'https://dymond.systems/bot2/editorv8/', name: 'Launch stack editor', size: 'small', openType: 'newTab' }
+    ],
+    5: [
+      { url: 'https://google.com', name: 'google search', size: 'medium', openType: 'newTab' }
+    ],
+    6: [
+      { url: 'https://docs.google.com', name: 'Open docs', size: 'large', openType: 'newTab' }
+    ],
+      7: [
+      { url: 'https://mail.google.com', name: 'Open gmail', size: 'small', openType: 'newTab' }
+    ],
+    8: [
+      { url: 'https://fontawesome.com', name: 'Font awesome home', size: 'medium', openType: 'newTab' }
+    ],
+    9: [
+      { url: 'https://www.w3schools.com/html/tryit.asp?filename=tryhtml_editor', name: 'open editor', size: 'large', openType: 'newTab' }
+    ],
+    10: [
+      { url: 'https://gemini.google.com/app', name: 'open Gemini', size: 'large', openType: 'newWindow' }
+    ],
+    11: [
+      { url: 'https://github.com/copilot', name: 'open Copilot', size: 'large', openType: 'newWindow' }
+    ],
+	  12: [
+      { url: 'https://firebase.google.com', name: 'open firebase', size: 'large', openType: 'newWindow' }
+    ],
+     13: [
+      { url: 'https://vscode.dev/', name: 'open VScode', size: 'large', openType: 'newWindow' }
+    ],
+     14: [
+      { url: 'https://codesandbox.io/templates', name: 'open codesandbox', size: 'large', openType: 'newWindow' }
+    ],
+     15: [
+      { url: 'https://app.linklyhq.com/', name: 'open Linkly', size: 'large', openType: 'newWindow' }
+    ],
+     16: [
+      { url: 'https://app.short.io/', name: 'open short.io', size: 'large', openType: 'newWindow' }
+    ],
+     17: [
+      { url: 'https://aws.amazon.com', name: 'open AWS', size: 'large', openType: 'newWindow' }
+    ],
+     18: [
+      { url: 'https://claude.ai/', name: 'open Claude', size: 'large', openType: 'newWindow' }
+    ],
+     19: [
+      { url: 'https://deepseek.com/', name: 'Home', size: 'large', openType: 'newWindow' },     
+      { url: 'https://chat.deepseek.com/', name: 'Chat', size: 'large', openType: 'newWindow' }
+    ]
+    
+  };
+
+  // Get predefined buttons and saved buttons from localStorage
+  const predefined = predefinedButtons[modalId] || [];
+  const savedButtons = JSON.parse(localStorage.getItem(`launchButtons_${modalId}`)) || [];
+
+  // Merge and avoid duplicates by filtering out already existing buttons (based on URL)
+  const allButtons = [
+    ...predefined.filter(p => !savedButtons.some(s => s.url === p.url)),
+    ...savedButtons
+  ];
+
+  // Create buttons from the merged list
+  allButtons.forEach(button => createButton(button, modalId));
+}
+
+// Function to create and append a button to the modal
+function createButton({ url, name, size, openType }, modalId) {
+  const buttonDiv = document.createElement('div');
+  buttonDiv.className = 'btn-group mb-2';
+
+  const button = document.createElement('button');
+  button.className = 'btn btn-sq-lg btn-outline-primary launch-button';
+  button.dataset.url = url;
+  button.dataset.name = name;
+  button.dataset.size = size;
+  button.dataset.openType = openType;
+  button.innerHTML = `<i class='fa fa-external-link-alt'></i><br>${name}`;
+
+  button.onclick = () => {
+  const refocusEnabled = JSON.parse(localStorage.getItem('refocusExistingWindows')) || false;
+
+  if (refocusEnabled && openedWindows.has(url)) {
+    const existingWindow = openedWindows.get(url);
+    if (existingWindow && !existingWindow.closed) {
+      existingWindow.focus();
+      return; // Stop here, no need to open a new window
+    }
+  }
+
+  if (openType === 'newTab') {
+    window.open(url, '_blank');
+  } else {
+    const newWindow = openWindow(url, size);
+    openedWindows.set(url, newWindow); // Track the opened window
+  }
+};
+  
+  
+  
+
+
+  const dropdown = document.createElement('div');
+  dropdown.className = 'dropdown';
+  dropdown.innerHTML = `    
+    <button class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown"></button>
+    <div class="dropdown-menu">
+    <a class="dropdown-item" href="#" onclick="stickToTopButton(this, 'window')"><i class="far fa-sticky-note"></i> Stick to Top</a>
+      <a class="dropdown-item" href="#" onclick="editButton(this, ${modalId})"><i class="fas fa-edit"></i> Edit</a>
+       <a class="dropdown-item" href="#" onclick="setShortcut(this)"><i class="fas fa-keyboard"></i> Set Shortcut</a>
+      <a class="dropdown-item text-danger" href="#" onclick="removeButton(this, ${modalId})"><i class="fas fa-trash-alt"></i> Remove</a>
+    </div>`;
+
+  
+  buttonDiv.appendChild(button);
+  buttonDiv.appendChild(dropdown);
+  launchButtonsContainer.appendChild(buttonDiv);
+}
+  
+  
+ // Function to set a keyboard shortcut
+function setShortcut(element) {
+  const buttonDiv = element.closest('.btn-group');
+  const button = buttonDiv.querySelector('.launch-button');
+
+  // Prompt the user to enter a shortcut key
+  const shortcut = prompt('Enter a keyboard shortcut (e.g., "Ctrl+Shift+K"):');
+  if (shortcut) {
+    button.dataset.shortcut = shortcut;
+    alert(`Shortcut "${shortcut}" set for "${button.dataset.name}"`);
+  }
+}
+ const openedWindows = new Map();
+
+document.addEventListener("keydown", (event) => {
+  const shortcuts = JSON.parse(localStorage.getItem("shortcuts")) || {};
+  const refocusEnabled = JSON.parse(localStorage.getItem("refocusShortcutWindows")) || false;
+
+  for (const shortcut in shortcuts) {
+    if (checkShortcut(event, shortcut)) {
+      event.preventDefault();
+      const { url, openType } = shortcuts[shortcut];
+
+      // Retrieve latest size setting from the button dataset
+      const button = document.querySelector(`.launch-button[data-url="${url}"]`);
+      const size = button ? button.dataset.size : "medium"; // Default to medium if not found
+
+      if (refocusEnabled && openedWindows.has(url)) {
+        const existingWindow = openedWindows.get(url);
+        if (existingWindow && !existingWindow.closed) {
+          existingWindow.focus();
+          return; // Stop execution if refocus was successful
+        }
+      }
+
+      // If refocusing fails or is disabled, open a new window
+      if (openType === "newTab") {
+        window.open(url, "_blank");
+      } else {
+        const newWindow = openWindow(url, size);
+        openedWindows.set(url, newWindow); // Track new window
+      }
+    }
+  }
+});
+
+
+
+
+
+
+// Helper function to check if the pressed keys match the shortcut
+function checkShortcut(event, shortcut) {
+  const keys = shortcut.split('+');
+  const modifiers = {
+    ctrl: event.ctrlKey,
+    shift: event.shiftKey,
+    alt: event.altKey,
+    meta: event.metaKey,
+  };
+
+  for (const key of keys) {
+    const lowerKey = key.toLowerCase();
+    if (lowerKey === 'ctrl' || lowerKey === 'shift' || lowerKey === 'alt' || lowerKey === 'meta') {
+      if (!modifiers[lowerKey]) return false;
+    } else {
+      if (event.key.toLowerCase() !== lowerKey) return false;
+    }
+  }
+  return true;
+} 
+
+// Function to remove a button from both DOM and localStorage
+function removeButton(element, modalId) {
+  const buttonDiv = element.closest('.btn-group');  // Get the parent .btn-group of the clicked button
+  
+  // Remove from DOM
+  buttonDiv.remove();
+
+  // Remove from localStorage
+  const url = buttonDiv.querySelector('.launch-button').dataset.url;
+
+  // Load saved buttons from localStorage
+  let savedButtons = JSON.parse(localStorage.getItem(`launchButtons_${modalId}`)) || [];
+
+  // Remove the button from the saved list
+  savedButtons = savedButtons.filter(button => button.url !== url);
+
+  // Save the updated list back to localStorage
+  localStorage.setItem(`launchButtons_${modalId}`, JSON.stringify(savedButtons));
+}
+
+// Function to save a new button to localStorage (for edit or new button creation)
+function saveButtonToLocalStorage({ url, name, size, openType }, modalId) {
+  const savedButtons = JSON.parse(localStorage.getItem(`launchButtons_${modalId}`)) || [];
+
+  // Check if the button already exists in saved buttons
+  if (!savedButtons.some(button => button.url === url)) {
+    savedButtons.push({ url, name, size, openType });
+
+    // Save the updated list back to localStorage
+    localStorage.setItem(`launchButtons_${modalId}`, JSON.stringify(savedButtons));
+  }
+}
+
+// Example of calling saveButtonToLocalStorage when creating/editing a button
+function createOrEditButton(url, name, size, openType, modalId) {
+  // Save button to localStorage when created or edited
+  saveButtonToLocalStorage({ url, name, size, openType }, modalId);
+
+  // Optionally, reload the buttons after saving
+  loadButtons(modalId);
+}
+
+
+
+</script>
+      
+      
+   <script>
+    document.addEventListener("DOMContentLoaded", () => {
+  const shortcutRefocusToggle = document.getElementById("shortcutBehaviorToggle");
+
+  if (shortcutRefocusToggle) {
+    // Load the setting from localStorage
+    shortcutRefocusToggle.checked = JSON.parse(localStorage.getItem("refocusShortcutWindows")) || false;
+
+    // Save the setting when toggled
+    shortcutRefocusToggle.addEventListener("change", (event) => {
+      localStorage.setItem("refocusShortcutWindows", event.target.checked);
+    });
+  }
+});
+
+
+        </script>   
+      
+      
+      
+  <script>
+let currentButton = null; // Store the button being edited
+let currentShortcut = []; // Store the current shortcut keys
+
+function openShortcutBuilder(button) {
+  currentButton = button;
+  currentShortcut = [];
+  $('#shortcutModal').modal('show');
+  updateShortcutDisplay();
+
+  // Load existing shortcut from localStorage
+  const allShortcuts = JSON.parse(localStorage.getItem('shortcuts')) || {};
+  const shortcutData = allShortcuts[currentButton.dataset.url];
+
+ 
+
+  // Hide any previous alerts
+  document.getElementById('shortcutConflictAlert').style.display = 'none';
+}
+
+// Update the new shortcut display in the modal
+function updateShortcutDisplay() {
+  const shortcutDisplay = document.getElementById('shortcutDisplay');
+  shortcutDisplay.textContent = currentShortcut.length ? currentShortcut.join(' + ') : 'Press any key';
+}
+
+// Add modifier keys to the shortcut
+document.querySelectorAll('.modifier-keys button').forEach((button) => {
+  button.addEventListener('click', () => {
+    const key = button.dataset.key;
+    if (!currentShortcut.includes(key)) {
+      currentShortcut.push(key);
+      updateShortcutDisplay();
+    }
+  });
+});
+
+// Listen for key presses to add the final key
+document.addEventListener('keydown', (event) => {
+  if ($('#shortcutModal').is(':visible')) {
+    event.preventDefault();
+    const key = event.key === ' ' ? 'Space' : event.key;
+    if (!currentShortcut.includes(key)) {
+      currentShortcut.push(key);
+      updateShortcutDisplay();
+    }
+  }
+});
+
+// Save the shortcut
+document.getElementById('saveShortcut').addEventListener('click', () => {
+  const shortcut = currentShortcut.join('+');
+  const conflictData = checkShortcutConflict(shortcut);
+
+  if (conflictData) {
+    // Show conflict alert inside the modal
+    document.getElementById('conflictingButtonName').textContent = conflictData.name;
+    document.getElementById('shortcutConflictAlert').style.display = 'block';
+  } else {
+    saveShortcut(shortcut);
+  }
+});
+
+// Check if the shortcut already exists and return the conflicting shortcut data
+function checkShortcutConflict(shortcut) {
+  const allShortcuts = JSON.parse(localStorage.getItem('shortcuts')) || {};
+
+  for (const [storedShortcut, data] of Object.entries(allShortcuts)) {
+    if (storedShortcut === shortcut && data.url !== currentButton.dataset.url) {
+      return data;  // FIXED: Returns the conflicting shortcut’s stored data
+    }
+  }
+  return null; // No conflict
+}
+
+function saveShortcut(shortcut) {
+  if (!currentButton) return;
+
+  const url = currentButton.dataset.url;
+  const name = currentButton.dataset.name;
+  const openType = currentButton.dataset.openType;
+
+  // Save shortcut without storing size
+  const shortcuts = JSON.parse(localStorage.getItem("shortcuts")) || {};
+  shortcuts[shortcut] = { url, name, openType };
+  localStorage.setItem("shortcuts", JSON.stringify(shortcuts));
+
+  $('#shortcutModal').modal('hide');
+  alert(`Shortcut "${shortcut}" saved for "${name}"`);
+
+  // Update the current shortcut display
+  document.getElementById('currentShortcutDisplay').textContent = shortcut;
+
+  // Hide the modal & reset conflict alert
+  $('#shortcutModal').modal('hide');
+  document.getElementById('shortcutConflictAlert').style.display = 'none';
+}
+
+// Handle override confirmation
+document.getElementById('confirmOverride').addEventListener('click', () => {
+  const shortcut = currentShortcut.join('+');
+  saveShortcut(shortcut);
+});
+
+// Handle cancel override
+document.getElementById('cancelOverride').addEventListener('click', () => {
+  document.getElementById('shortcutConflictAlert').style.display = 'none';
+});
+
+// Reset the modal when closed
+$('#shortcutModal').on('hidden.bs.modal', () => {
+  currentButton = null;
+  currentShortcut = [];
+  document.getElementById('shortcutConflictAlert').style.display = 'none';
+});
+
+// Update the dropdown to use the new shortcut builder
+function setShortcut(element) {
+  const buttonDiv = element.closest('.btn-group');
+  const button = buttonDiv.querySelector('.launch-button');
+  openShortcutBuilder(button);
+}
+    
+      </script>    
+      
+      
+       <script>
+// List of browser default shortcuts (add more if needed)
+const restrictedShortcuts = [
+    "Ctrl+t", "Ctrl+T", "Ctrl+w", "Ctrl+W", "Ctrl+r", "Ctrl+R",
+    "Ctrl+shift+i", "Ctrl+Shift+I", "Ctrl+l", "Ctrl+L", "Alt+d", "Alt+D","Ctrl+Shift+n"
+];
+
+// Check if shortcut is restricted
+function isRestrictedShortcut(shortcut) {
+    return restrictedShortcuts.includes(shortcut);
+}
+
+// Handle saving the shortcut
+document.getElementById('saveShortcut').addEventListener('click', () => {
+    const shortcut = currentShortcut.join('+');
+
+    if (isRestrictedShortcut(shortcut)) {
+        alert(`ATTENTION!"${shortcut}" is a reserved browser shortcut and cannot be used. Please select another key combination`);
+        return;
+    }
+
+    // Save shortcut normally
+    saveShortcut(shortcut);
+});
+
+
+
+
+      </script>
+      
+
+<script>
+const openTypeRadios = document.querySelectorAll('input[name="openType"]');
+const windowSizeOptions = document.getElementById('windowSizeOptions'); // The div containing window size options
+
+// Function to toggle window size options based on the "Open Link" choice
+function toggleWindowSizeOptions() {
+  const openType = document.querySelector('input[name="openType"]:checked').value;
+
+  if (openType === 'newWindow') {
+    windowSizeOptions.style.display = 'block'; // Show window size options
+  } else {
+    windowSizeOptions.style.display = 'none'; // Hide window size options
+  }
+}
+
+// Listen for changes in the "Open Link" radio buttons
+openTypeRadios.forEach(radio => {
+  radio.addEventListener('change', toggleWindowSizeOptions);
+});
+
+// Call the toggle function on page load to set the initial state
+toggleWindowSizeOptions();
+</script>
+
+
+<script>
+function removeSection(sectionId) {
+  // Remove section from localStorage
+  let sections = JSON.parse(localStorage.getItem('sections')) || [];
+  sections = sections.filter(section => section.id !== sectionId);
+  localStorage.setItem('sections', JSON.stringify(sections));
+
+  // Remove associated cards
+  let storedCards = JSON.parse(localStorage.getItem('addedCards')) || [];
+  storedCards = storedCards.filter(card => card.sectionId !== sectionId);
+  localStorage.setItem('addedCards', JSON.stringify(storedCards));
+
+  // Remove section from the DOM
+  document.getElementById(sectionId)?.remove();
+  
+  renderSidebar(); // Update sidebar
+}
+
+
+
+
+</script>
+
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const isFullscreenMode = JSON.parse(localStorage.getItem('isFullscreenMode')) || false;
+    
+    // Apply fullscreen mode immediately
+    handleFullscreenToggle({ target: { checked: isFullscreenMode } });
+
+    // Sync settings toggle (if on settings page)
+    const settingsToggle = document.getElementById('settingsFullscreenToggle');
+    if (settingsToggle) {
+        settingsToggle.checked = isFullscreenMode;
+    }
+});
+
+      </script>
+
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // Element References
+  const stickyButtonsContainer = document.getElementById('stickyButtonsContainer');
+  const sidebar = document.getElementById('popUpSidebar');
+  const sidebarButtonsContainer = document.getElementById('sidebarButtonsContainer');
+  const stickToTopButton = document.getElementById('stickToTop');
+
+  // State Management
+  let currentCardData = null;
+  const openedWindows = new Map();
+  const existingStickyButtons = new Set();
+  const existingSidebarButtons = new Set();
+  let isFullscreenMode = localStorage.getItem('isFullscreenMode') === 'true';
+  
+  // Untrackable domains configuration
+  const untrackableDomains = new Set(['google.com', 'chatgpt.com', 'gmail.com']);
+
+  // Constants
+  const SIDEBAR_WIDTH = 200;
+  const SIDEBAR_MARGIN = 10;
+  const WINDOW_PARAMS = {
+    small: { width: 600, height: 400 },
+    medium: { width: 800, height: 600 },
+    large: { width: screen.width - (SIDEBAR_WIDTH + SIDEBAR_MARGIN), height: 800 },
+    full: { width: screen.width - (SIDEBAR_WIDTH + SIDEBAR_MARGIN), height: screen.height }
+  };
+
+  // Initialize the sidebar structure
+  function initializeSidebar() {
+    // Control Buttons Container
+    const controlButtonsContainer = document.createElement('div');
+    controlButtonsContainer.classList.add('control-buttons');
+
+    // Close All Button
+    const closeAllButton = document.createElement('button');
+    closeAllButton.classList.add('btn', 'btn-danger', 'btn-block', 'close-all-btn');
+    closeAllButton.textContent = 'Close All';
+    closeAllButton.addEventListener('click', handleCloseAll);
+
+    // Close Sidebar Button
+    const closeSidebarButton = document.createElement('button');
+    closeSidebarButton.classList.add('btn', 'btn-secondary', 'btn-block', 'close-sidebar-btn');
+    closeSidebarButton.textContent = 'Close Sidebar';
+    closeSidebarButton.addEventListener('click', () => sidebar.classList.remove('show'));
+
+    // Window Buttons Container
+    const windowButtonsContainer = document.createElement('div');
+    windowButtonsContainer.classList.add('window-buttons');
+
+    // Fullscreen Toggle Container
+    const fullscreenToggleContainer = document.createElement('div');
+    fullscreenToggleContainer.classList.add('fullscreen-toggle-container');
+    
+    fullscreenToggleContainer.innerHTML = `
+      <div class="custom-control custom-switch">
+        <input type="checkbox" class="custom-control-input" id="fullscreenToggle" ${isFullscreenMode ? 'checked' : ''}>
+        <label class="custom-control-label" for="fullscreenToggle"> <a href="#" style="color:white; text-decoration: none;" data-toggle="tooltip" data-placement="top" title="Open all windows in full screen when using sidebar">Fullscreen mode</a></label>
+      </div>
+    `;
+
+     const fullscreenToggle = fullscreenToggleContainer.querySelector('#fullscreenToggle');
+fullscreenToggle.checked = JSON.parse(localStorage.getItem('isFullscreenMode')) || false;
+fullscreenToggle.addEventListener('change', (event) => {
+    localStorage.setItem('isFullscreenMode', event.target.checked);
+    handleFullscreenToggle(event);
+});
+
+// Sync with settings page toggle if it exists
+const settingsToggle = document.getElementById('settingsFullscreenToggle');
+if (settingsToggle) {
+    settingsToggle.checked = fullscreenToggle.checked;
+    settingsToggle.addEventListener('change', (event) => {
+        const newState = event.target.checked;
+        localStorage.setItem('isFullscreenMode', newState);
+        fullscreenToggle.checked = newState; // Sync sidebar toggle
+        handleFullscreenToggle({ target: { checked: newState } });
+    });
+}
+
+    // Assemble Sidebar
+    controlButtonsContainer.appendChild(closeAllButton);
+    controlButtonsContainer.appendChild(closeSidebarButton);
+    sidebarButtonsContainer.appendChild(controlButtonsContainer);
+    sidebarButtonsContainer.appendChild(windowButtonsContainer);
+    sidebarButtonsContainer.appendChild(fullscreenToggleContainer);
+
+    return { windowButtonsContainer };
+  }
+
+  // Event Handlers
+  function handleCloseAll() {
+    openedWindows.forEach((win) => {
+      if (win && !win.closed) win.close();
+    });
+    openedWindows.clear();
+    
+    stickyButtonsContainer.innerHTML = '';
+    existingStickyButtons.clear();
+    
+    const windowButtons = sidebarButtonsContainer.querySelectorAll('.sidebar-btn');
+    windowButtons.forEach(btn => btn.remove());
+    existingSidebarButtons.clear();
+    
+    sidebar.classList.remove('show');
+    
+    saveStickyButtons();
+    saveSidebarButtons();
+  }
+
+  function handleFullscreenToggle(event) {
+    isFullscreenMode = event.target.checked;
+    localStorage.setItem('isFullscreenMode', isFullscreenMode);
+    
+    openedWindows.forEach((win, title) => {
+      if (win && !win.closed) {
+        const size = isFullscreenMode ? 'full' : win.originalSize;
+        const params = WINDOW_PARAMS[size];
+        
+        try {
+          win.resizeTo(params.width, params.height);
+          win.moveTo(
+            (screen.width - params.width - SIDEBAR_WIDTH - SIDEBAR_MARGIN) / 2,
+            (screen.height - params.height) / 2
+          );
+        } catch (error) {
+          console.warn(`Cannot modify window for ${title}. Window will be reopened.`, error);
+          const url = win.location.href;
+          win.close();
+          openWindow(url, win.originalSize, title);
+        }
+      }
+    });
+  }
+
+  // Window Management
+  function openWindow(url, size, title) {
+    let width, height, left, top;
+    
+    const originalSize = size;
+    if (isFullscreenMode) {
+      size = 'full';
+    }
+
+    const params = WINDOW_PARAMS[size] || WINDOW_PARAMS.medium;
+    width = params.width;
+    height = params.height;
+    
+    left = (screen.width - width - SIDEBAR_WIDTH - SIDEBAR_MARGIN) / 2;
+    top = (screen.height - height) / 2;
+
+    const newWindow = window.open(
+      url,
+      '_blank',
+      `width=${width},height=${height},top=${top},left=${left}`
+    );
+
+    if (newWindow) {
+      newWindow.originalSize = originalSize;
+      openedWindows.set(title, newWindow);
+      setupWindowEventListeners(newWindow, title);
+    }
+
+    return newWindow;
+  }
+
+  function setupWindowEventListeners(newWindow, title) {
+    function updateSidebarPosition() {
+      sidebar.style.position = 'fixed';
+      sidebar.style.right = '0';
+      sidebar.style.top = '0';
+      sidebar.style.height = '100%';
+      sidebar.style.width = `${SIDEBAR_WIDTH}px`;
+    }
+
+    updateSidebarPosition();
+
+    newWindow.addEventListener('focus', () => {
+      updateSidebarPosition();
+      sidebar.classList.add('show');
+    });
+
+    newWindow.addEventListener('blur', () => {
+      if (!isWindowMinimized(newWindow)) {
+        sidebar.classList.remove('show');
+      }
+    });
+
+    newWindow.addEventListener('resize', updateSidebarPosition);
+
+    newWindow.addEventListener('beforeunload', () => {
+      openedWindows.delete(title);
+      
+      const stickyBtn = Array.from(stickyButtonsContainer.children)
+        .find(btn => btn.querySelector('span').textContent === title);
+      
+      if (stickyBtn) {
+        stickyButtonsContainer.removeChild(stickyBtn);
+        existingStickyButtons.delete(title);
+      }
+      
+      removeSidebarButton(title);
+      
+      if (openedWindows.size === 0) {
+        sidebar.classList.remove('show');
+      }
+      
+      saveStickyButtons();
+      saveSidebarButtons();
+    });
+  }
+
+  // Utility Functions
+  function isUntrackableDomain(url) {
+    try {
+      const domain = new URL(url).hostname.replace('www.', '');
+      return untrackableDomains.has(domain) || 
+             Array.from(untrackableDomains).some(d => domain.endsWith(d));
+    } catch {
+      return false;
+    }
+  }
+
+  function isWindowMinimized(win) {
+    return win.outerWidth <= 0 || win.outerHeight <= 0;
+  }
+
+  // Button Management
+  function addStickyButton(cardData, type = 'modal') {
+    if (existingStickyButtons.has(cardData.title)) return;
+
+    const button = document.createElement('div');
+    button.classList.add('animated-btn', 'sticky-btn');
+    const isUntrackable = isUntrackableDomain(cardData.url);
+    if (isUntrackable) button.classList.add('untrackable');
+    
+    button.dataset.id = cardData.title;
+    button.dataset.type = type;
+    button.dataset.url = cardData.url;
+    button.dataset.size = cardData.size;
+
+    button.innerHTML = `
+      <button class="close-btn">X</button>
+      <img src="${cardData.image}" alt="${cardData.title}" />
+      <span>${cardData.title}</span>
+      ${isUntrackable ? '<div class="untrackable-indicator" title="Opens new window each time">*</div>' : ''}
+    `;
+
+    button.addEventListener('click', (e) => {
+      if (e.target.classList.contains('close-btn')) {
+        stickyButtonsContainer.removeChild(button);
+        existingStickyButtons.delete(cardData.title);
+        removeSidebarButton(cardData.title);
+        saveStickyButtons();
+        saveSidebarButtons();
+      } else {
+        if (type === 'modal') {
+          openMyModal(cardData);
+        } else if (type === 'window') {
+          if (!isUntrackable) {
+            const win = openedWindows.get(cardData.title);
+            if (win && !win.closed) {
+              win.focus();
+              sidebar.classList.add('show');
+              return;
+            }
+          }
+          openWindow(cardData.url, cardData.size, cardData.title);
+        }
+      }
+    });
+
+    stickyButtonsContainer.appendChild(button);
+    existingStickyButtons.add(cardData.title);
+  }
+
+  function addSidebarButton(cardData) {
+    if (existingSidebarButtons.has(cardData.title)) return;
+
+    const button = document.createElement('button');
+    button.classList.add('btn', 'btn-block', 'sidebar-btn');
+    
+    const isUntrackable = isUntrackableDomain(cardData.url);
+    button.classList.add(isUntrackable ? 'btn-warning' : 'btn-light');
+    
+    
+    
+    button.title = isUntrackable ? 
+      'This link will open in a new window each time' : 
+      'Click to focus existing window or open new';
+    
+    button.textContent = cardData.title;
+
+    button.addEventListener('click', () => {
+      if (!isUntrackable) {
+        const win = openedWindows.get(cardData.title);
+        if (win && !win.closed) {
+          win.focus();
+          return;
+        }
+      }
+      openWindow(cardData.url, cardData.size, cardData.title);
+    });
+
+    const windowButtonsContainer = sidebarButtonsContainer.querySelector('.window-buttons');
+    windowButtonsContainer.appendChild(button);
+    existingSidebarButtons.add(cardData.title);
+  }
+
+  function removeSidebarButton(title) {
+    const button = Array.from(sidebarButtonsContainer.querySelectorAll('.sidebar-btn'))
+      .find(btn => btn.textContent === title);
+    if (button) {
+      button.remove();
+      existingSidebarButtons.delete(title);
+    }
+  }
+
+  // Storage Management
+  function saveStickyButtons() {
+    const buttons = Array.from(stickyButtonsContainer.querySelectorAll('.sticky-btn'))
+      .map(button => ({
+        title: button.querySelector('span').innerText,
+        image: button.querySelector('img').src,
+        type: button.dataset.type,
+        url: button.dataset.url,
+        size: button.dataset.size,
+      }));
+    localStorage.setItem('stickyButtons', JSON.stringify(buttons));
+  }
+
+  function saveSidebarButtons() {
+    const buttons = Array.from(sidebarButtonsContainer.querySelectorAll('.sidebar-btn'))
+      .map(button => ({ title: button.textContent }));
+    localStorage.setItem('sidebarButtons', JSON.stringify(buttons));
+  }
+
+  function loadStickyButtons() {
+    try {
+      const storedButtons = JSON.parse(localStorage.getItem('stickyButtons')) || [];
+      storedButtons.forEach(buttonData => {
+        addStickyButton(buttonData, buttonData.type);
+        addSidebarButton(buttonData);
+      });
+    } catch (error) {
+      console.error('Error loading sticky buttons:', error);
+      localStorage.removeItem('stickyButtons');
+    }
+  }
+
+  function loadSidebarButtons() {
+    try {
+      const storedButtons = JSON.parse(localStorage.getItem('sidebarButtons')) || [];
+      storedButtons.forEach(buttonData => addSidebarButton(buttonData));
+    } catch (error) {
+      console.error('Error loading sidebar buttons:', error);
+      localStorage.removeItem('sidebarButtons');
+    }
+  }
+
+  function openMyModal(cardData) {
+    const modalTitle = document.getElementById('modalTitle');
+    const modalImage = document.getElementById('modalImage');
+
+    modalTitle.innerText = cardData.title;
+    modalImage.src = cardData.image;
+
+    $('#myModal').modal('show');
+  }
+
+  // Initialize
+  const { windowButtonsContainer } = initializeSidebar();
+  loadStickyButtons();
+  loadSidebarButtons();
+
+  // Modal Button Setup
+  document.querySelectorAll("[data-target='#myModal']").forEach((button) => {
+    button.addEventListener('click', () => {
+      currentCardData = {
+        id: button.getAttribute('data-id'),
+        title: button.getAttribute('data-title'),
+        image: button.getAttribute('data-image'),
+        url: button.getAttribute('data-url') || null,
+        size: button.getAttribute('data-size') || 'medium',
+      };
+    });
+  });
+
+  // Stick to Top Button Handler
+  stickToTopButton.addEventListener('click', () => {
+    if (currentCardData) {
+      currentCardData.image = document.getElementById('modalImage').src;
+      addStickyButton(currentCardData, 'modal');
+      saveStickyButtons();
+      $('#myModal').modal('hide');
+    }
+  });
+
+  // Global Window Functions
+  window.stickToTopButton = (element) => {
+    const buttonDiv = element.closest('.btn-group');
+    const button = buttonDiv.querySelector('.launch-button');
+
+    const cardData = {
+      title: button.dataset.name,
+      image: button.dataset.image || 'https://www.svgrepo.com/show/510970/external-link.svg',
+      url: button.dataset.url,
+      size: button.dataset.size || 'medium',
+    };
+
+    addStickyButton(cardData, 'window');
+    addSidebarButton(cardData);
+    saveStickyButtons();
+    saveSidebarButtons();
+  };
+});
+
+      </script>
+
+<script>
+document.getElementById('filterInput').addEventListener('input', function () {
+    const filterValue = this.value.toLowerCase();
+    const cards = document.querySelectorAll('.card-item');
+    const sections = document.querySelectorAll('.section-container');
+    const searchResultsContainer = document.getElementById('searchResultsContainer');
+    let hasMatch = false; // Flag to track if any cards are visible
+
+    // Clear the search results container
+    searchResultsContainer.innerHTML = '';
+
+    // Track IDs of cards added to prevent duplicates
+    const addedCardIds = new Set();
+
+    cards.forEach(card => {
+        const cardText = card.innerText.toLowerCase();
+        const cardCategory = card.getAttribute('data-category').toLowerCase();
+
+        // Check if the filter value matches either the card text or category
+        if ((cardText.includes(filterValue) || cardCategory.includes(filterValue)) && 
+            !addedCardIds.has(card.dataset.id)) {
+            
+            hasMatch = true; // A match is found
+            addedCardIds.add(card.dataset.id); // Add the card ID to the set
+
+            const clonedCard = card.cloneNode(true); // Clone the card
+            searchResultsContainer.appendChild(clonedCard); // Add to the search results container
+        }
+    });
+
+    // Show or hide the "No Results" message based on matches
+    const noResultsMessage = document.getElementById('noResultsMessage');
+    if (hasMatch) {
+        noResultsMessage.classList.add('d-none');
+        searchResultsContainer.classList.remove('d-none');
+        sections.forEach(section => section.classList.add('d-none')); // Hide all sections
+    } else {
+        noResultsMessage.classList.remove('d-none');
+        searchResultsContainer.classList.add('d-none');
+        sections.forEach(section => section.classList.remove('d-none')); // Show all sections
+    }
+
+    // Reset view when no filter is applied
+    if (!filterValue) {
+        searchResultsContainer.classList.add('d-none');
+        sections.forEach(section => section.classList.remove('d-none'));
+    }
+});
+
+
+
+
+    </script>
+
+
+<script>
+function renderSidebar() {
+  const sections = JSON.parse(localStorage.getItem('sections')) || [];
+  const sidebarMenu = document.querySelector('.sidebar-menu ul'); // Adjust selector based on your HTML structure
+
+  // Clear existing sidebar content
+  sidebarMenu.innerHTML = `
+    <li class="header-menu">
+      <span>Your stacks</span>
+    </li>
+  `;
+
+  // Add each section to the sidebar
+  sections.forEach(section => {
+    const sectionLink = document.createElement('li');
+    sectionLink.innerHTML = `
+      <a href="#${section.id}">
+        <i class="fa fa-folder"></i>
+        <span>${section.title}</span>
+      </a>
+    `;
+    sidebarMenu.appendChild(sectionLink);
+  });
+}
+
+</script>
+<script>
+jQuery(function ($) {
+
+    $(".sidebar-dropdown > a").click(function() {
+  $(".sidebar-submenu").slideUp(200);
+  if (
+    $(this)
+      .parent()
+      .hasClass("active")
+  ) {
+    $(".sidebar-dropdown").removeClass("active");
+    $(this)
+      .parent()
+      .removeClass("active");
+  } else {
+    $(".sidebar-dropdown").removeClass("active");
+    $(this)
+      .next(".sidebar-submenu")
+      .slideDown(200);
+    $(this)
+      .parent()
+      .addClass("active");
+  }
+});
+
+$("#close-sidebar").click(function() {
+  $(".page-wrapper").removeClass("toggled");
+});
+$("#show-sidebar").click(function() {
+  $(".page-wrapper").addClass("toggled");
+});
+
+
+   
+   
+});
+</script>
+
+   <script>
+     $(document).ready(function() {
+  // Get the modal element (same as before)
+  var settings = document.getElementById('settings');
+
+  // Function to open the modal (you can reuse this)
+  function openModal() {
+    $('#settings').modal('show'); // jQuery method
+    // Or, for Bootstrap 5:
+    // const modal = new bootstrap.Modal(myModal);
+    // modal.show();
+  }
+
+  // Keyboard shortcut (Ctrl + /)
+  $(document).keydown(function(e) {
+    if (e.ctrlKey && e.shiftKey && e.which === 83) { // 191 is the key code for /
+      e.preventDefault(); // Prevent default browser action (like search)
+      openModal();
+    }
+  });
+
+  // Example of opening the modal with a regular link click (optional)
+  $('a[data-target="#settings"]').click(function(e) {
+    e.preventDefault();
+    openModal();
+  });
+
+});
+      </script>
+      <script>
+        document.addEventListener('keydown', (event) => {
+    if (event.key === '/') { 
+        event.preventDefault(); // Prevent default browser behavior for '/'
+        document.getElementById('filterInput').focus(); 
+    }
+});
+      </script>
+  
+  
+  
+  
+  
+  
+  
+  <script>
+$(document).ready(function(){
+  $('[data-toggle="tooltip"]').tooltip();   
+});
+</script>
+  
+  
+  
+  
+  
+  
+  
+   
+  
+  <script>
+document.addEventListener('DOMContentLoaded', function () {
+  const projectCards = document.getElementById('project-cards');
+  const projectModal = new bootstrap.Modal(document.getElementById('projectModal'));
+  const projectDetailsModal = new bootstrap.Modal(document.getElementById('projectDetailsModal'));
+  const notesModal = new bootstrap.Modal(document.getElementById('notesModal'));
+  const projectForm = document.getElementById('projectForm');
+  const taskForm = document.getElementById('taskForm');
+  const noteForm = document.getElementById('noteForm');
+  const addProjectBtn = document.getElementById('addProjectBtn');
+  const detailsProjectTitle = document.getElementById('detailsProjectTitle');
+  const detailsProjectDescription = document.getElementById('detailsProjectDescription');
+  const taskList = document.getElementById('task-list');
+  const notesList = document.getElementById('notesList');
+  const taskContent = document.getElementById('taskContent');
+  const noteContent = document.getElementById('noteContent');
+  let projects = JSON.parse(localStorage.getItem('projects')) || [];
+  let currentProjectIndex = null;
+  let currentTaskIndex = null;
+
+  // Render projects on page load
+  renderProjects();
+ 
+
+  
+  
+ function generateId() {
+  return 'task-' + Math.random().toString(36).substr(2, 9); // Generates a random ID like "task-abc123"
+}
+
+  // Render project cards
+  function renderProjects() {
+    projectCards.innerHTML = '';
+    projects.forEach((project, index) => {
+      const card = document.createElement('div');
+      card.className = 'col-md-3 mb-4';
+      card.innerHTML = `
+        <div class="card">
+          <div class="card-body">
+            <div class="dropdown float-right">
+              <button class="btn btn-sm btn-light" data-toggle="dropdown">
+                <i class="fas fa-ellipsis-v"></i>
+              </button>
+              <div class="dropdown-menu dropdown-menu-right">
+                <button class="dropdown-item" onclick="editProject(${index})"><i class="fas fa-edit"></i> Edit</button>
+                <button class="dropdown-item" onclick="deleteProject(${index})"><i class="fas fa-trash"></i> Delete</button>
+              </div>
+            </div>
+            
+            <h5 class="card-title text-truncate" data-toggle="tooltip" title="${project.title}">${project.title}</h5>
+            <p class="card-text text-truncate" data-toggle="tooltip" title="${project.description}">${project.description}</p>
+            Project Status
+            <div class="progress mb-2">
+              <div class="progress-bar" style="width:${project.progress}%">${project.progress}%</div>
+            </div>
+            <button class="btn btn-primary btn-block" onclick="viewProject(${index})">View Project</button>
+          </div>
+        </div>
+      `;
+      projectCards.appendChild(card);
+   
+        });
+  }
+  
+  
+ 
+
+  // Handle project form submission
+  projectForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const title = document.getElementById('projectTitle').value;
+    const description = document.getElementById('projectDescription').value;
+    const isEditing = projectForm.dataset.editIndex !== undefined;
+
+    if (isEditing) {
+      const index = projectForm.dataset.editIndex;
+      projects[index].title = title;
+      projects[index].description = description;
+      delete projectForm.dataset.editIndex;
+    } else {
+      projects.push({ title, description, tasks: [], progress: 0 });
+    }
+
+    localStorage.setItem('projects', JSON.stringify(projects));
+    projectForm.reset();
+    projectModal.hide();
+    renderProjects();
+  });
+
+  // Open modal for adding a new project
+  addProjectBtn.addEventListener('click', () => {
+    document.getElementById('projectTitle').value = '';
+    document.getElementById('projectDescription').value = '';
+    
+    delete projectForm.dataset.editIndex;
+    projectModal.show();
+  });
+
+  // Edit a project
+  window.editProject = function (index) {
+    const project = projects[index];
+    document.getElementById('projectTitle').value = project.title;
+    document.getElementById('projectDescription').value = project.description;
+    document.getElementById('projectModalLabel').textContent = "Edit project";
+    
+      
+    projectForm.dataset.editIndex = index;
+    projectModal.show();
+  };
+
+  // Delete a project
+  window.deleteProject = function (index) {
+    if (confirm('Are you sure you want to delete this project?')) {
+      projects.splice(index, 1);
+      localStorage.setItem('projects', JSON.stringify(projects));
+      renderProjects();
+    }
+  };
+
+  // View project details
+  window.viewProject = function (index) {
+    currentProjectIndex = index;
+    const project = projects[index];
+    detailsProjectTitle.textContent = project.title;
+    detailsProjectDescription.textContent = project.description;
+    renderTasks(index);
+    projectDetailsModal.show();
+  };
+
+  // Render tasks for a project
+  function renderTasks(projectIndex) {
+    const project = projects[projectIndex];
+    taskList.innerHTML = '';
+ 
+    project.tasks.forEach((task, taskIndex) => {
+      const taskItem = document.createElement('div');
+    
+      taskItem.className = 'card mb-3';
+      taskItem.innerHTML = `
+      
+        <div class="card-body" style=" background-color: #313131; color: gray;" >
+
+        <div class="mb-2 float-right"> Status
+            <span class="badge ${getStatusClass(task.status)}">${task.status}</span>
+          </div>
+          <h6 class="card-title">${task.title}</h6>
+            
+  <div id="${task.id}" class="collapse">
+          <p class="card-text">${task.description}</p>
+          <div class="mb-2">${task.content}</div>
+          
+         
+           <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#myModal" onclick="editTask(${projectIndex}, ${taskIndex})">Edit</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteTask(${projectIndex}, ${taskIndex})">Delete</button>
+          <center><button class="btn btn-primary btn-sm" onclick="viewNotes(${taskIndex})">
+            <i class="fas fa-sticky-note"></i> Subtasks (${task.notes ? task.notes.length : 0})
+          </button></center>
+          <br>
+         </div>
+          <div class="col text-center">
+          <button type="button" class="btn btn-sm btn-secondary " data-toggle="collapse" data-target="#${task.id}" aria-expanded="false">View task</button>
+        </div>
+        </div>
+        </div>
+        
+      `;
+         taskList.appendChild(taskItem);
+   // Add event listener to the button *after* it's added to the DOM
+        const button = taskItem.querySelector(`button[data-target="#${task.id}"]`); // Select the button within the current taskItem
+        button.addEventListener('click', function() {
+            if (this.getAttribute('aria-expanded') === 'true') {
+                this.textContent = 'Open task'; // Text when closed
+            } else {
+                this.textContent = 'Close'; // Text when open
+            }
+        });
+    });
+}     
+   
+
+ 
+
+// Handle task form submission
+taskForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const title = document.getElementById('taskTitle').value;
+  const description = document.getElementById('taskDescription').value;
+  const status = document.getElementById('taskStatus').value;
+  const content = taskContent.innerHTML;
+
+
+   if (taskForm.dataset.editIndex !== undefined) {
+    // Edit existing task
+    const taskIndex = taskForm.dataset.editIndex;
+    const existingTask = projects[currentProjectIndex].tasks[taskIndex];
+    projects[currentProjectIndex].tasks[taskIndex] = {
+      ...existingTask, // Preserve existing properties
+      title,
+      description,
+      status,
+      content,
+    };
+    delete taskForm.dataset.editIndex;
+  } else {
+    // Add new task with a unique ID
+    const newTask = {
+      id: generateId(), // Add a unique ID
+      title,
+      description,
+      status,
+      content,
+      notes: [],
+    };
+    projects[currentProjectIndex].tasks.push(newTask);
+  }
+
+
+  localStorage.setItem('projects', JSON.stringify(projects));
+  taskForm.reset();
+  taskContent.innerHTML = '';
+  renderTasks(currentProjectIndex);
+  updateProjectProgress();
+  $('#myModal').modal('hide'); // Close the modal
+});
+  
+  
+ 
+  
+
+
+  
+  // Edit a task
+  window.editTask = function (projectIndex, taskIndex) {
+    const task = projects[projectIndex].tasks[taskIndex];
+    document.getElementById('taskTitle').value = task.title;
+    document.getElementById('taskDescription').value = task.description;
+    
+    document.getElementById('taskStatus').value = task.status;
+    document.getElementById('taskButton').textContent = "Update task";
+    taskContent.innerHTML = task.content || '';
+    taskForm.dataset.editIndex = taskIndex;
+    taskForm.onsubmit = function (e) {
+      e.preventDefault();
+      task.title = document.getElementById('taskTitle').value;
+      task.description = document.getElementById('taskDescription').value;
+      task.status = document.getElementById('taskStatus').value;
+      
+      localStorage.setItem('projects', JSON.stringify(projects));
+      renderTasks(projectIndex);
+      updateProjectProgress();
+      $('#myModal').modal('hide'); // Close the modal
+    };
+  }; 
+
+
+  // Delete a task
+  window.deleteTask = function (projectIndex, taskIndex) {
+    if (confirm('Are you sure you want to delete this task?')) {
+      projects[projectIndex].tasks.splice(taskIndex, 1);
+      localStorage.setItem('projects', JSON.stringify(projects));
+      renderTasks(projectIndex);
+      updateProjectProgress();
+    }
+  };
+
+  // View notes for a task
+  window.viewNotes = function (taskIndex) {
+    currentTaskIndex = taskIndex;
+    const task = projects[currentProjectIndex].tasks[taskIndex];
+    
+    // Ensure the task has a notes array
+  if (!task.notes) {
+    task.notes = []; // Initialize notes array if it doesn't exist
+  }
+    notesList.innerHTML = '';
+
+    task.notes.forEach((note, noteIndex) => {
+      const noteElement = document.createElement('div');
+      noteElement.className = 'card mb-2';
+      noteElement.innerHTML = `
+        <div class="card-body">
+        
+          <h6>${note.title}</h6>
+           
+  <div id="${note.id}" class="collapse">
+          <p>${note.description}</p>
+          
+          <hr>
+         
+           <h6>Resources</h6>
+          <div>${note.content}</div>
+           <div id="demo" class="collapse">
+         
+    Boost your productivity by adding links from your stacks! 
+    <button type="button" class="btn btn-sm btn-primary" data-toggle="collapse" data-target="#demo"><i class="fas fa-plus"></i>Add</button>
+  </div>
+  <br>
+         
+         
+  
+         
+         
+          
+          <button class="btn btn-sm btn-danger float-right" style="margin-left:5px;" onclick="deleteNote(${noteIndex})">Delete</button>
+          <button class="btn btn-sm btn-light float-right" id="test" data-toggle="modal" data-target="#myModal2" onclick="editNote(${noteIndex})">Edit</button>
+          <button type="button" class="btn btn-sm btn-dark float-right" data-toggle="collapse" data-target="#demo"><i class="fas fa-th"></i></button>
+          <a href="#" style="margin-right:15px; float: right; color: gray;" onclick="completeNote(${noteIndex})"><i class="fas fa-check"></i></a></div>
+          
+           <Button type="button" class="btn btn-sm btn-secondary" data-toggle="collapse" data-target="#${note.id}" aria-expanded="false" >View subtask</button>
+        </div>
+        </div>
+      `;
+      notesList.appendChild(noteElement);
+      // Add event listener to the button
+    const button = noteElement.querySelector(`button[data-target="#${note.id}"]`);
+    button.addEventListener('click', function() {
+        if (this.getAttribute('aria-expanded') === 'true') {
+            this.textContent = 'View note'; // Text when closed
+        } else {
+            this.textContent = 'Close'; // Text when open
+                }
+    });
+
+        
+    });
+
+    notesModal.show();
+  };
+
+  // Handle note form submission
+  noteForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const title = document.getElementById('noteTitle').value;
+    const description = document.getElementById('noteDescription').value;
+    const content = noteContent.innerHTML;
+    
+
+   if (noteForm.dataset.editIndex !== undefined) {
+    // Edit existing note
+    const noteIndex = noteForm.dataset.editIndex;
+    const existingNote = projects[currentProjectIndex].tasks[currentTaskIndex].notes[noteIndex];
+    projects[currentProjectIndex].tasks[currentTaskIndex].notes[noteIndex] = {
+      ...existingNote, // Preserve existing properties (including id)
+      title,
+      description,
+      content,
+    };
+    delete noteForm.dataset.editIndex;
+  } else {
+    // Add new note with a unique ID
+    const newNote = {
+      id: generateId(), // Add a unique ID
+      title,
+      description,
+      content,
+    };
+    projects[currentProjectIndex].tasks[currentTaskIndex].notes.push(newNote);
+  }
+
+    localStorage.setItem('projects', JSON.stringify(projects));
+    noteForm.reset();
+    noteContent.innerHTML = '';
+    viewNotes(currentTaskIndex);
+    renderTasks(currentProjectIndex);
+    
+  
+
+   // Close the modal
+  $('#myModal2').modal('hide');
+    // Optional: Reset form after submission
+  document.getElementById("noteForm").reset();
+
+  
+  });
+
+  // Edit a note
+  window.editNote = function (noteIndex) {
+  const note = projects[currentProjectIndex].tasks[currentTaskIndex].notes[noteIndex];
+  document.getElementById('noteTitle').value = note.title;
+  document.getElementById('noteDescription').value = note.description;
+    document.getElementById('noteButton').textContent = "Update note";
+  noteContent.innerHTML = note.content || '';
+  noteForm.dataset.editIndex = noteIndex;
+    
+    // Close the modal
+  $('#myModal2').modal('hide');
+   
+};
+
+  // Delete a note
+  window.deleteNote = function (noteIndex) {
+    if (confirm('Are you sure you want to delete this note?')) {
+      projects[currentProjectIndex].tasks[currentTaskIndex].notes.splice(noteIndex, 1);
+      localStorage.setItem('projects', JSON.stringify(projects));
+      viewNotes(currentTaskIndex);
+      renderTasks(currentProjectIndex);
+    }
+  };
+  
+  // complete a note
+  window.completeNote = function (noteIndex) {
+    if (confirm('Subtask completed! Do you want to delete it?')) {
+      projects[currentProjectIndex].tasks[currentTaskIndex].notes.splice(noteIndex, 1);
+      localStorage.setItem('projects', JSON.stringify(projects));
+      viewNotes(currentTaskIndex);
+      renderTasks(currentProjectIndex);
+    }
+  };
+  
+  
+// Initialize notes array for existing tasks
+projects.forEach(project => {
+  project.tasks.forEach(task => {
+    if (!task.notes) {
+      task.notes = [];
+    }
+  });
+});
+  // Update project progress
+  function updateProjectProgress() {
+    const project = projects[currentProjectIndex];
+    const totalTasks = project.tasks.length;
+    const completedTasks = project.tasks.filter(task => task.status === 'complete').length;
+    project.progress = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+    renderProjects();
+  }
+
+  // Helper function to get status class for pills
+  function getStatusClass(status) {
+    switch (status) {
+      case 'not-started':
+        return 'badge-danger';
+      case 'started':
+        return 'badge-primary';
+      case 'complete':
+        return 'badge-success';
+      default:
+        return 'badge-secondary';
+    }
+  }
+
+  // Reset forms when modals are closed
+  document.getElementById('projectModal').addEventListener('hidden.bs.modal', () => {
+    projectForm.reset();
+  });
+
+  document.getElementById('projectDetailsModal').addEventListener('hidden.bs.modal', () => {
+    taskForm.reset();
+    taskContent.innerHTML = '';
+  });
+
+  document.getElementById('notesModal').addEventListener('hidden.bs.modal', () => {
+    noteForm.reset();
+    noteContent.innerHTML = '';
+  });
+
+  // Add content functions
+  window.addText = function (type) {
+    const container = type === 'task' ? taskContent : noteContent;
+    const text = prompt('Enter text:');
+    if (text) {
+      const textElement = document.createElement('p');
+      textElement.textContent = text;
+      container.appendChild(textElement);
+    }
+  };
+
+window.addImage = function (type) {
+  const container = type === 'task' ? taskContent : noteContent;
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'image/*';
+  input.onchange = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const base64 = event.target.result;
+
+      // Create a card for the image
+      const imageCard = document.createElement('div');
+      imageCard.className = 'card mb-2';
+      imageCard.innerHTML = `
+        <div class="card-body" style="display: flex; flex-direction: column; align-items: center;">
+          <img src="${base64}" class="img-fluid mb-2" alt="Uploaded Image">
+          <button class="btn btn-danger btn-sm" onclick="deleteImageCard(this)">
+            <i class="fas fa-trash"></i> Delete
+          </button>
+        </div>
+      `;
+
+      // Append the card to the container
+      container.appendChild(imageCard);
+    };
+    reader.readAsDataURL(file);
+  };
+  input.click();
+};
+
+// Function to delete the image card
+window.deleteImageCard = function (button) {
+  const imageCard = button.closest('.card'); // Find the closest parent card element
+  if (imageCard) {
+    imageCard.remove(); // Remove the card from the DOM
+  }
+};
+
+ window.addFile = function (type) {
+  const container = type === 'task' ? taskContent : noteContent;
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.onchange = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const base64 = event.target.result;
+
+      // Create a card for the file
+      const fileElement = document.createElement('div');
+      fileElement.className = 'card mb-2';
+      fileElement.innerHTML = `
+        <div class="card-body" style="background-color: #fc8e89; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <i class="fas fa-file fa-lg"></i> ${file.name}
+          </div>
+          <div>
+            <button class="btn btn-sm btn-light" onclick="downloadFile('${base64}', '${file.name}')">
+              <i class="fas fa-download"></i> Download
+            </button>
+            <button class="btn btn-sm btn-danger" onclick="deleteFileCard(this)">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </div>
+      `;
+
+      // Append the card to the container
+      container.appendChild(fileElement);
+    };
+    reader.readAsDataURL(file);
+  };
+  input.click();
+};
+
+// Function to delete the file card
+window.deleteFileCard = function (button) {
+  const fileCard = button.closest('.card'); // Find the closest parent card element
+  if (fileCard) {
+    fileCard.remove(); // Remove the card from the DOM
+  }
+};
+
+// Function to download the file
+window.downloadFile = function (base64, fileName) {
+  const link = document.createElement('a');
+  link.href = base64;
+  link.download = fileName;
+  link.click();
+};
+
+window.addLink = function (type) {
+  const container = type === 'task' ? taskContent : noteContent;
+
+  // Create a modal for link input
+  const modal = document.createElement('div');
+  modal.className = 'modal fade';
+  modal.style.zIndex = '9999'; // Set a high z-index
+  modal.innerHTML = `
+    <div class="modal-dialog modal-sm" style="top: 100px;">
+      <div class="modal-content" style="background-color: #313131; color: gray;">
+        <div class="modal-header">
+          <h5 class="modal-title">Add Link</h5>
+          <button type="button" class="close" data-dismiss="modal">
+            <span>&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <input id="linkInput" class="form-control" type="url" placeholder="Enter the URL..." required>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" onclick="saveLink('${type}')">Add</button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Append the modal to the body and show it
+  document.body.appendChild(modal);
+  $(modal).modal('show');
+
+  // Function to save the link
+  window.saveLink = function (type) {
+    const url = document.getElementById('linkInput').value;
+    
+    
+if (url) {
+      const container = type === 'task' ? taskContent : noteContent;
+    
+
+
+      
+      
+      
+      
+      
+      
+
+      // Create a card for the link
+      const linkCard = document.createElement('div');
+      linkCard.className = 'card mb-2';
+      const linkText = `<i class="fas fa-external-link-alt fa-lg"></i> ${url}`;
+const truncatedLink = truncateText(linkText, 80); // 50 is the maximum length
+      linkCard.innerHTML = `
+        <div class="card-body" style="background-color: #ddfcfc; display: flex; justify-content: space-between; align-items: center;">
+          <a href="${url}" target="_blank" class="card-link">
+            ${truncatedLink}</a>
+          
+          <button class="btn btn-danger btn-sm" onclick="deleteLinkCard(this)">
+            <i class="fas fa-trash"></i> 
+          </button>
+        </div>
+      `;
+      
+      function truncateText(text, maxLength) {
+    if (text.length > maxLength) {
+        return text.substring(0, maxLength) + "...";
+    }
+    return text;
+}
+
+      // Append the card to the container
+      container.appendChild(linkCard);
+    }
+    $(modal).modal('hide'); // Hide the modal
+    modal.remove(); // Remove the modal from the DOM
+  };
+};
+
+// Function to delete the link card
+window.deleteLinkCard = function (button) {
+  const linkCard = button.closest('.card'); // Find the closest parent card element
+  if (linkCard) {
+    linkCard.remove(); // Remove the card from the DOM
+  }
+};
+  
+ 
+  
+  
+  
+  
+// Function to create the "Add Code Block" modal
+window.addCodeBlock = function (type) {
+  const container = type === 'task' ? taskContent : noteContent;
+
+  // Create a modal for code input
+  const modal = document.createElement('div');
+  modal.className = 'modal fade';
+  modal.style.zIndex = '9999'; // Set a high z-index
+  modal.innerHTML = `
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Add Code</h5>
+          <button type="button" class="close" data-dismiss="modal">
+            <span>&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+         <div class="form-group">
+            <label for="codeName">Name</label>
+            <input type="text" id="codeName" class="form-control" placeholder="Code block name">
+          </div>
+          <div class="form-group">
+            <label for="codeInput">Code</label>
+            <textarea id="codeInput" class="form-control" rows="15" placeholder="<add code>"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" onclick="saveCodeBlock('${type}')">Save</button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Append the modal to the body and show it
+  document.body.appendChild(modal);
+  $(modal).modal('show');
+
+  // Remove modal after it's closed
+  $(modal).on('hidden.bs.modal', function () {
+    modal.remove();
+  });
+};
+  
+  window.saveCodeBlock = function (type) {
+  const code = document.getElementById('codeInput').value;
+ 
+  const name = document.getElementById('codeName').value; // Ask user for name
+
+  if (code) {
+    const container = type === 'task' ? taskContent : noteContent;
+    const safePreview = escapeHTML(truncateText(code, 80));
+  
+
+
+
+    // Create a card for the code block
+    const codeCard = document.createElement('div');
+    codeCard.className = 'card mb-2';
+    codeCard.innerHTML = `
+      
+        
+        <div class="card-body bg-dark" style="display: flex; justify-content: space-between; align-items: center;">
+        <span class="card-text"><i class="fas fa-code fa-lg"></i> ${name}</span>
+        
+
+        <div class="mt-2">
+          <button class="btn btn-primary btn-sm" onclick="window.createCodeModal(this)">
+            <i class="fas fa-eye"></i> View
+          </button>
+          <button class="btn btn-danger btn-sm" onclick="deleteCodeCard(this)">
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>
+
+        <textarea class="hidden-code" style="display:none">${code}</textarea>
+      </div>
+    `;
+
+    container.appendChild(codeCard);
+  }
+
+  // Close the modal
+  $('#codeInput').closest('.modal').modal('hide');
+};
+
+
+
+// Function to delete the code card
+window.deleteCodeCard = function (button) {
+  const codeCard = button.closest('.card');
+  if (codeCard) {
+    codeCard.remove();
+  }
+};
+
+// Function to escape HTML to prevent execution
+function escapeHTML(text) {
+  return text.replace(/&/g, "&amp;")
+             .replace(/</g, "&lt;")
+             .replace(/>/g, "&gt;")
+             .replace(/"/g, "&quot;")
+             .replace(/'/g, "&#039;");
+}
+
+// Function to truncate text
+function truncateText(text, maxLength) {
+  return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
+}
+
+
+
+
+ 
+
+// Function to create and show the full code modal with view and edit modes
+window.createCodeModal = function (button) {
+  const cardBody = button.closest('.card-body');
+  const hiddenCodeElement = cardBody.querySelector('.hidden-code');
+  const code = hiddenCodeElement.textContent.trim(); // Use textContent instead of value
+  const nameElement = cardBody.querySelector('.card-text'); // Use the correct selector for the name
+  const name = nameElement ? nameElement.textContent.trim() : 'Untitled';
+
+  const modal = document.createElement('div');
+  modal.className = 'modal fade';
+  modal.style.zIndex = '9999';
+  modal.innerHTML = `
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">View/Edit Code - ${name}</h5> <!-- Show the name in the header -->
+          <button type="button" class="close" data-dismiss="modal">
+            <span>&times;</span>
+          </button>
+          <button class="btn btn-primary copy-btn"><i class="fas fa-copy"></i></button>
+          <button class="btn btn-secondary toggle-mode-btn" onclick="toggleEditMode(this)"><i class="fas fa-edit"></i> Edit</button>
+        </div>
+        <div class="modal-body" style="max-height: calc(100vh - 200px); min-height: calc(100vh - 200px); overflow-y: auto; flex-grow: 1; padding: 10px;">
+          <!-- View Mode -->
+          <pre id="viewMode"><code class="language-javascript">${escapeHTML(code)}</code></pre>
+          <!-- Edit Mode -->
+          <textarea id="editMode" class="form-control" rows="30" style="width: 100%; display: none;">${code}</textarea>
+        </div>
+        <div class="modal-footer">
+          <button class="rgb-button">
+            <i class="fas fa-magic"></i> Analyze
+          </button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary save-btn" onclick="saveEditedCode(this, '${name}')" style="display: none;">Save Changes</button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+  $(modal).modal('show');
+
+  // Apply Prism.js highlighting to the view mode
+  Prism.highlightElement(modal.querySelector('#viewMode code'));
+
+  // Add copy functionality
+  const copyBtn = modal.querySelector('.copy-btn');
+  copyBtn.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(code);
+      copyBtn.innerText = 'Copied!';
+      setTimeout(() => (copyBtn.innerText = 'Copy'), 2000);
+    } catch (err) {
+      console.error('Failed to copy:', err);
+      copyBtn.innerText = 'Failed';
+      setTimeout(() => (copyBtn.innerText = 'Copy'), 2000);
+    }
+  });
+
+  // Remove modal after closing
+  $(modal).on('hidden.bs.modal', function () {
+    modal.remove();
+  });
+};
+
+// Function to toggle between view and edit modes
+window.toggleEditMode = function (button) {
+  const modal = button.closest('.modal');
+  const viewMode = modal.querySelector('#viewMode');
+  const editMode = modal.querySelector('#editMode');
+  const saveBtn = modal.querySelector('.save-btn');
+  const toggleBtn = modal.querySelector('.toggle-mode-btn');
+
+  if (viewMode.style.display === 'none') {
+    // Switch to View Mode
+    viewMode.style.display = 'block';
+    editMode.style.display = 'none';
+    saveBtn.style.display = 'none';
+    toggleBtn.innerHTML = '<i class="fas fa-edit"></i> Edit';
+    // Re-apply Prism.js highlighting
+    Prism.highlightElement(viewMode.querySelector('code'));
+  } else {
+    // Switch to Edit Mode
+    viewMode.style.display = 'none';
+    editMode.style.display = 'block';
+    saveBtn.style.display = 'inline-block';
+    toggleBtn.innerHTML = '<i class="fas fa-eye"></i> View';
+  }
+};
+
+// Function to save the edited code back to the original card
+window.saveEditedCode = function (button, name) {
+  const modal = button.closest('.modal');
+  const editedCode = modal.querySelector('#editMode').value;
+
+  // Find the original card using the name
+  const originalCard = Array.from(document.querySelectorAll('.card-body')).find(card => {
+    return card.querySelector('.card-text').textContent.trim() === name;
+  });
+
+  if (originalCard) {
+    const hiddenCodeElement = originalCard.querySelector('.hidden-code');
+    hiddenCodeElement.textContent = editedCode; // Update the hidden code
+  } else {
+    console.error('Original card not found!');
+  }
+
+  // Close the modal
+  $(modal).modal('hide');
+};
+
+// Function to escape HTML to prevent execution
+function escapeHTML(text) {
+  return text.replace(/&/g, "&amp;")
+             .replace(/</g, "&lt;")
+             .replace(/>/g, "&gt;")
+             .replace(/"/g, "&quot;")
+             .replace(/'/g, "&#039;");
+}
+  
+
+
+
+
+
+
+
+
+
+  // Function to download a file
+  window.downloadFile = function (base64, fileName) {
+    const link = document.createElement('a');
+    link.href = base64;
+    link.download = fileName;
+    link.click();
+  };
+});
+
+  $('#myModal2').on('hidden.bs.modal', function () {
+  // Reset the form fields
+  $(this).find('form')[0].reset();
+
+  // Clear the note content and remove any edit state
+  document.getElementById('noteTitle').value = '';
+  document.getElementById('noteDescription').value = '';
+  document.getElementById('noteButton').textContent = "Add Note";
+  document.getElementById('noteForm').removeAttribute('data-edit-index');
+
+  // Clear displayed note content (if applicable)
+  noteContent.innerHTML = '';
+
+  // Clear the link container inside the modal
+  document.getElementById('linkContainer').innerHTML = ''; 
+});
+    
+    $('#myModal').on('hidden.bs.modal', function () {
+  // Reset the form fields
+  $(this).find('form')[0].reset();
+
+  // Clear the note content and remove any edit state
+  document.getElementById('taskTitle').value = '';
+  document.getElementById('taskDescription').value = '';
+  document.getElementById('taskButton').textContent = "Add Task";
+  document.getElementById('taskForm').removeAttribute('data-edit-index');
+
+  // Clear displayed note content (if applicable)
+  taskContent.innerHTML = '';
+
+  // Clear the link container inside the modal
+  document.getElementById('linkContainer').innerHTML = ''; 
+});
+
+
+
+// Dark Mode Toggle
+const darkModeToggle = document.getElementById('darkModeToggle');
+
+// Function to apply the theme
+function applyTheme(theme) {
+  document.body.setAttribute('data-theme', theme);
+  localStorage.setItem('darkMode', theme);
+}
+
+// Function to toggle dark mode
+function toggleDarkMode() {
+  if (darkModeToggle.checked) {
+    applyTheme('dark');
+  } else {
+    applyTheme('light');
+  }
+}
+
+// Load saved theme on page load
+function loadTheme() {
+  const savedTheme = localStorage.getItem('darkMode') || 'light';
+  document.body.setAttribute('data-theme', savedTheme);
+  darkModeToggle.checked = savedTheme === 'dark';
+}
+
+// Event listener for dark mode toggle
+darkModeToggle.addEventListener('change', toggleDarkMode);
+
+// Load theme when the page loads
+document.addEventListener('DOMContentLoaded', loadTheme);
+
+   
+  </script>
+  
+  <script>
+// Function to create the "Add Text Block" modal
+window.addTextBlock = function (type) {
+  const container = type === 'task' ? taskContent : noteContent;
+
+  // Create a modal for text input
+  const modal = document.createElement('div');
+  modal.className = 'modal fade';
+  modal.style.zIndex = '9999'; // Set a high z-index
+  modal.innerHTML = `
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Add Text</h5>
+          <button type="button" class="close" data-dismiss="modal">
+            <span>&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+         <div class="form-group">
+            <label for="textName">Name</label>
+            <input type="text" id="textName" class="form-control" placeholder="Text block name">
+          </div>
+          <div class="form-group">
+            <label for="textInput">Text</label>
+            <textarea id="textInput" class="form-control" rows="15" placeholder="Enter text"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" onclick="saveTextBlock('${type}')">Save</button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Append the modal to the body and show it
+  document.body.appendChild(modal);
+  $(modal).modal('show');
+
+  // Remove modal after it's closed
+  $(modal).on('hidden.bs.modal', function () {
+    modal.remove();
+  });
+};
+
+// Function to save a text block
+window.saveTextBlock = function (type) {
+  const text = document.getElementById('textInput').value;
+  const name = document.getElementById('textName').value;
+
+  if (text && name) {
+    const container = type === 'task' ? taskContent : noteContent;
+
+    // Create a card for the text block
+    const textCard = document.createElement('div');
+    textCard.className = 'card mb-2';
+    textCard.innerHTML = `
+      <div class="card-body bg-dark" style="display: flex; justify-content: space-between; align-items: center;">
+        <span class="card-text"><i class="fas fa-file-alt fa-lg"></i> ${name}</span>
+        <div class="mt-2">
+          <button class="btn btn-primary btn-sm" onclick="createTextModal(this)">
+            <i class="fas fa-eye"></i> View
+          </button>
+          <button class="btn btn-danger btn-sm" onclick="deleteTextCard(this)">
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>
+        <textarea class="hidden-text" style="display:none">${text}</textarea>
+      </div>
+    `;
+
+    // Append the card to the correct container
+    container.appendChild(textCard);
+
+    // Save to local storage
+    saveToLocalStorage(type, name, text);
+  }
+
+  // Close the modal
+  $('#textInput').closest('.modal').modal('hide');
+};
+
+// Function to delete a text card
+window.deleteTextCard = function (button) {
+  const textCard = button.closest('.card');
+  if (textCard) {
+    const hiddenText = textCard.querySelector('.hidden-text').textContent;
+    textCard.remove();
+
+    // Remove from local storage
+    removeFromLocalStorage(hiddenText);
+  }
+};
+
+// Function to create and show the full text modal
+window.createTextModal = function (button) {
+  const cardBody = button.closest('.card-body');
+  const text = cardBody.querySelector('.hidden-text').textContent.trim();
+  const name = cardBody.querySelector('.card-text').textContent.trim();
+
+  const modal = document.createElement('div');
+  modal.className = 'modal fade';
+  modal.style.zIndex = '9999';
+  modal.innerHTML = `
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">View Text - ${name}</h5>
+          <button type="button" class="close" data-dismiss="modal">
+            <span>&times;</span>
+          </button>
+          <button class="btn btn-primary edit-btn"><i class="fas fa-edit"></i> Edit</button>
+        </div>
+        <div class="modal-body" style="max-height: calc(100vh - 200px); min-height: calc(100vh - 200px); overflow-y: auto; padding: 10px;">
+          <textarea id="editTextInput" class="form-control" rows="20" style="display:none;">${text}</textarea>
+          <pre><code class="language-text" style="white-space: pre-wrap; word-wrap: break-word;">${escapeHTML(text)}</code></pre>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary save-btn" style="display:none;" onclick="saveEditedText(this)">Save</button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+  $(modal).modal('show');
+
+  // Add edit functionality
+  const editBtn = modal.querySelector('.edit-btn');
+  const saveBtn = modal.querySelector('.save-btn');
+  const textArea = modal.querySelector('#editTextInput');
+  const codeElement = modal.querySelector('code');
+
+  editBtn.addEventListener('click', () => {
+    textArea.style.display = 'block';
+    codeElement.style.display = 'none';
+    saveBtn.style.display = 'inline-block';
+    editBtn.style.display = 'none';
+  });
+
+  // Remove modal after closing
+  $(modal).on('hidden.bs.modal', function () {
+    modal.remove();
+  });
+};
+
+// Function to save edited text
+window.saveEditedText = function (button) {
+  const modal = button.closest('.modal');
+  const textArea = modal.querySelector('#editTextInput');
+  const newText = textArea.value;
+
+  // Update the card's hidden textarea
+  const cardBody = modal.querySelector('.card-body');
+  const hiddenText = cardBody.querySelector('.hidden-text');
+  hiddenText.textContent = newText;
+
+  // Update the displayed text in the modal
+  const codeElement = modal.querySelector('code');
+  codeElement.textContent = newText;
+
+  // Hide the textarea and show the code element
+  textArea.style.display = 'none';
+  codeElement.style.display = 'block';
+
+  // Hide the save button and show the edit button
+  button.style.display = 'none';
+  modal.querySelector('.edit-btn').style.display = 'inline-block';
+
+  // Save to local storage
+  saveToLocalStorage(null, null, newText);
+};
+
+// Function to escape HTML to prevent execution
+function escapeHTML(text) {
+  return text.replace(/&/g, "&amp;")
+             .replace(/</g, "&lt;")
+             .replace(/>/g, "&gt;")
+             .replace(/"/g, "&quot;")
+             .replace(/'/g, "&#039;");
+}
+
+// Function to save data to local storage
+function saveToLocalStorage(type, name, text) {
+  let textBlocks = JSON.parse(localStorage.getItem('textBlocks')) || [];
+  if (type && name) {
+    // Add new text block
+    textBlocks.push({ type, name, text });
+  } else {
+    // Update existing text block
+    const blockIndex = textBlocks.findIndex((block) => block.text === text);
+    if (blockIndex !== -1) {
+      textBlocks[blockIndex].text = text;
+    }
+  }
+  localStorage.setItem('textBlocks', JSON.stringify(textBlocks));
+}
+
+// Function to remove data from local storage
+function removeFromLocalStorage(text) {
+  let textBlocks = JSON.parse(localStorage.getItem('textBlocks')) || [];
+  textBlocks = textBlocks.filter((block) => block.text !== text);
+  localStorage.setItem('textBlocks', JSON.stringify(textBlocks));
+}
+
+// Load data from local storage on page load
+window.addEventListener('load', () => {
+  const textBlocks = JSON.parse(localStorage.getItem('textBlocks')) || [];
+
+  // Clear existing cards in the containers
+  taskContent.innerHTML = '';
+  noteContent.innerHTML = '';
+
+ 
+});
+  </script>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <script>
+const rgbButton = document.querySelector('.rgb-button');
+
+rgbButton.addEventListener('click', () => {
+  rgbButton.classList.toggle('clicked');  // Toggle the 'clicked' class
+});
+
+</script>
+  
+
+  <script>
+
+
+// API Configuration
+//const API_KEY = "AIzaSyDc8QeSQzwqiOvZ7ti06pnEBVfcp0GJ0b0"; // Replace with your actual API key
+//const API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${API_KEY}`;
+// Task Management Variables
+const taskList = document.getElementById("task-list");
+let projects = JSON.parse(localStorage.getItem("projects")) || [];
+let currentProjectIndex = 0;
+
+// Chatbot Variables
+const API_KEY = "AIzaSyDc8QeSQzwqiOvZ7ti06pnEBVfcp0GJ0b0"; // Replace with your API key
+const API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${API_KEY}`;
+
+// Generate a unique ID for tasks
+const generateId = () => Math.random().toString(36).substr(2, 9);
+
+// Render tasks for a project
+const renderTasks = (projectIndex) => {
+  const project = projects[projectIndex];
+  taskList.innerHTML = '';
+
+  project.tasks.forEach((task, taskIndex) => {
+    const taskItem = document.createElement("div");
+    taskItem.className = "card mb-3";
+    taskItem.innerHTML = `
+      <div class="card-body" style="background-color: #313131; color: gray;">
+        <div class="mb-2 float-right"> Status
+          <span class="badge ${getStatusClass(task.status)}">${task.status}</span>
+        </div>
+        <h6 class="card-title">${task.title}</h6>
+        <div id="${task.id}" class="collapse">
+          <p class="card-text">${task.description}</p>
+          <div class="mb-2">${task.content}</div>
+          <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#myModal" onclick="editTask(${projectIndex}, ${taskIndex})">Edit</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteTask(${projectIndex}, ${taskIndex})">Delete</button>
+          <button class="btn btn-light btn-sm" onclick="viewNotes(${taskIndex})">
+            <i class="fas fa-sticky-note"></i> Notes (${task.notes ? task.notes.length : 0})
+          </button>
+        </div>
+        <div class="col text-center">
+          <button type="button" class="btn btn-sm btn-secondary" data-toggle="collapse" data-target="#${task.id}" aria-expanded="false">Open task</button>
+        </div>
+      </div>
+    `;
+    taskList.appendChild(taskItem);
+  });
+};
+
+// Generate tasks using the chatbot API
+const generateTasks = async (title, description) => {
+  const prompt = `Create a detailed step-by-step list to achieve the following goal: ${title}. Description: ${description}. For each step, provide a title and a detailed description of what needs to be done. Format the response as a numbered list with titles and descriptions.`;
+
+  try {
+    // Add timeout to prevent hanging requests
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+
+    const response = await fetch(API_URL, {
+      method: "POST",
+      headers: { 
+        "Content-Type": "application/json"
+      },
+      signal: controller.signal,
+      body: JSON.stringify({ 
+        contents: [{ 
+          role: "user", 
+          parts: [{ text: prompt }] 
+        }] 
+      }),
+    });
+
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error?.message || `HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    
+    if (!data?.candidates?.[0]?.content?.parts?.[0]?.text) {
+      throw new Error("Invalid response format from API");
+    }
+
+    const apiResponse = data.candidates[0].content.parts[0].text.replace(/\*\*(.*?)\*\*/g, '$1');
+    return apiResponse;
+  } catch (error) {
+    console.error("Error generating tasks:", error);
+    throw error;
+  }
+};
+
+// Parse the chatbot's response to extract tasks
+const parseTasksFromResponse = (response) => {
+  const taskRegex = /\d+\.\s*(.*?):\s*(.*)/g; // Matches numbered list items with titles and descriptions
+  const tasks = [];
+  let match;
+
+  while ((match = taskRegex.exec(response)) !== null) {
+    tasks.push({ 
+      id: generateId(), // Generate a unique ID for each task
+      title: match[1].trim(), 
+      description: match[2].trim(), 
+      status: "Not Started",
+      content: "",
+      notes: []
+    });
+  }
+
+  return tasks;
+};
+
+// Render generated tasks with add/delete buttons
+const renderGeneratedTasks = (tasks) => {
+  const generatedTaskList = document.createElement("div");
+  generatedTaskList.id = "generated-task-list";
+  generatedTaskList.className = "mb-3";
+
+  tasks.forEach((task, index) => {
+    const taskItem = document.createElement("div");
+    taskItem.className = "card mb-3";
+    taskItem.innerHTML = `
+      <div class="card-body" style="background-color: #313131; color: gray;">
+        <h6 class="card-title">${task.title}</h6>
+        <p class="card-text">${task.description}</p>
+        <button class="btn btn-success btn-sm" onclick="addGeneratedTask(${index})">Add</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteGeneratedTask(${index})">Delete</button>
+      </div>
+    `;
+    generatedTaskList.appendChild(taskItem);
+  });
+
+  // Clear previous generated tasks and append new ones
+  const existingGeneratedTasks = document.getElementById("generated-task-list");
+  if (existingGeneratedTasks) existingGeneratedTasks.remove();
+  taskList.parentNode.insertBefore(generatedTaskList, taskList);
+};
+
+// Add a generated task to the current project
+window.addGeneratedTask = (index) => {
+  const generatedTaskList = document.getElementById("generated-task-list");
+  const taskItem = generatedTaskList.children[index];
+  const task = {
+    id: generateId(),
+    title: taskItem.querySelector(".card-title").innerText,
+    description: taskItem.querySelector(".card-text").innerText,
+    status: "Not Started",
+    content: "",
+    notes: [],
+  };
+
+  projects[currentProjectIndex].tasks.push(task);
+  localStorage.setItem("projects", JSON.stringify(projects));
+  renderTasks(currentProjectIndex);
+  updateProjectProgress();
+
+  // Remove the generated task from the list
+  taskItem.remove();
+};
+
+// Delete a generated task
+window.deleteGeneratedTask = (index) => {
+  const generatedTaskList = document.getElementById("generated-task-list");
+  generatedTaskList.children[index].remove();
+};
+
+// Handle "Generate Task" button click
+const generateTaskButton = document.querySelector(".rgb-button");
+generateTaskButton.addEventListener("click", async () => {
+  const projectTitle = document.getElementById("detailsProjectTitle").innerText;
+  const projectDescription = document.getElementById("detailsProjectDescription").innerText;
+
+  // Validate inputs
+  if (!projectTitle.trim() || !projectDescription.trim()) {
+    alert("Please provide both a project title and description.");
+    return;
+  }
+
+  // Disable button and show loading state
+  generateTaskButton.disabled = true;
+  generateTaskButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
+
+  try {
+    // Generate tasks
+    const response = await generateTasks(projectTitle, projectDescription);
+    const tasks = parseTasksFromResponse(response);
+    
+    // Clear any previous error messages
+    const errorElement = document.getElementById("task-generation-error");
+    if (errorElement) errorElement.remove();
+
+    // Render the new tasks
+    renderGeneratedTasks(tasks);
+  } catch (error) {
+    // Create or update error message element
+    let errorElement = document.getElementById("task-generation-error");
+    if (!errorElement) {
+      errorElement = document.createElement("div");
+      errorElement.id = "task-generation-error";
+      errorElement.className = "alert alert-danger mt-3";
+      taskList.parentNode.insertBefore(errorElement, taskList);
+    }
+    errorElement.textContent = `Failed to generate tasks: ${error.message}`;
+  } finally {
+    // Reset button state
+    generateTaskButton.disabled = false;
+    generateTaskButton.innerHTML = '<i class="fas fa-magic"></i> Generate Task';
+  }
+});
+
+// Example function to update project progress
+const updateProjectProgress = () => {
+  console.log("Project progress updated.");
+};
+
+// Function to get status class
+const getStatusClass = (status) => {
+  switch (status) {
+    case "Not Started":
+      return "badge-secondary";
+    case "In Progress":
+      return "badge-warning";
+    case "Completed":
+      return "badge-success";
+    default:
+      return "badge-secondary";
+  }
+};
+
+// Add CSS for error message
+const style = document.createElement('style');
+style.textContent = `
+  #task-generation-error {
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    border-radius: 0.25rem;
+  }
+`;
+document.head.appendChild(style);
+  </script>
+    
+
+  
+      
+
+	
+
+    
+
+
+
+
+
+
+
+
+
+
+  
+   
+   
+
+
+
+</body>
+</html>
