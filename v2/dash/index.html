@@ -1368,6 +1368,7 @@ padding:10px;
     .card:hover {
       transform: translateY(-5px);
       box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      z-index:999;
     }
     
     /* Button hover effects */
@@ -1470,7 +1471,7 @@ padding:10px;
             <div class="sidebar-submenu">
               <ul>
                 <li>
-                  <a href="/sbdemo/v2/projects">+ New project</a>
+                  <a href="/cardbetav1/projects2">+ New project</a>
                 </li>
                
                 
@@ -2676,7 +2677,7 @@ function loadCards() {
               data-target="#myModal" 
               data-title="${card.title}" 
               data-image="${card.image}" 
-              data-modal="${card.modalId}">
+              data-modal="${card.id}">
               Open 
             </button></center>
           </div>
@@ -3952,12 +3953,12 @@ function isUntrackableDomain(url) {
     
     
     
-    //Add tooltip attributes
-  //button.setAttribute('data-toggle', 'tooltip');
- // button.setAttribute('data-placement', 'top'); // Optional: Set tooltip position
-  //button.title = isUntrackable ? 
-    //'This link will open in a new window each time' : 
-    //'Click to focus existing window or open new';
+    // Add tooltip attributes
+  button.setAttribute('data-toggle', 'tooltip');
+  button.setAttribute('data-placement', 'top'); // Optional: Set tooltip position
+  button.title = isUntrackable ? 
+    'This link will open in a new window each time' : 
+    'Click to focus existing window or open new';
     
     button.textContent = cardData.title;
 
