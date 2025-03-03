@@ -1383,7 +1383,22 @@ padding:10px;
       overflow: hidden; /* Prevent content from overflowing */
     }
 
-    
+ 
+
+/* Style for the badge */
+.badge-overlap {
+  position: absolute; /* Position the badge absolutely within the button */
+  top: -10px; /* Move the badge up */
+  right: -10px; /* Move the badge to the right */
+  background-color: #ff4757; /* Badge background color */
+  color: white; /* Badge text color */
+  border-radius: 50%; /* Make it circular */
+  padding: 5px 8px; /* Adjust padding */
+  font-size: 12px; /* Adjust font size */
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Optional: Add a shadow */
+}
+      
+      
     </style>
     
     
@@ -2075,7 +2090,9 @@ padding:10px;
            <!-- Modal Footer -->
         <div class="modal-footer" >
           <button id="toggleFormButton" data-toggle="collapse" class="btn btn-outline-secondary tooltip-btn" data-target="#demo"  title="Link button Folder"><i class="fas fa-folder"></i></button>
-          <button data-toggle="collapse" class="btn btn-outline-secondary tooltip-btn" data-target="#notesCollapse2" title="Add a note"><i class="fas fa-sticky-note"></i></button>
+          <button data-toggle="collapse" id="notesButton" class="btn btn-outline-secondary tooltip-btn position-relative" data-target="#notesCollapse2" title="Notes"><i class="fas fa-sticky-note"></i>
+          
+          </button>
           <button type="button" class="btn btn-outline-secondary tooltip-btn" id="stickToTop" title="Pin to top"><i class="fas fa-thumbtack"></i></button>
           
           <button id="toggleFormButton" class="btn btn-secondary tooltip-btn" data-toggle="collapse" data-target="#addEditButton" title="Create new button"><i class="fas fa-plus"></i></button>
@@ -2374,13 +2391,32 @@ padding:10px;
       $('#noteModal').modal('hide');
     });
 
-    // Render notes in the list
-    function renderNotes() {
-      const notesList = document.getElementById('notesList');
-      notesList.innerHTML = '';
+function updateButtonWithBadge(buttonId, noteCount) {
+  const button = document.getElementById(buttonId);
+  if (button) {
+    if (noteCount > 0) {
+      // Show the badge with the note count
+      button.innerHTML = `<i class="fas fa-sticky-note"></i><span class="badge badge-overlap position-absolute top-0 end-0">${noteCount}</span>`;
+    } else {
+      // Hide the badge (or remove it)
+      button.innerHTML = `<i class="fas fa-sticky-note"></i>`;
+    }
+  }
+}
 
-      // Filter notes for the current modal
-      const filteredNotes = notes.filter(note => note.modalId === currentModalId);
+// Example usage in your code
+function renderNotes() {
+  const notesList = document.getElementById('notesList');
+  notesList.innerHTML = '';
+
+  // Filter notes for the current modal
+  const filteredNotes = notes.filter(note => note.modalId === currentModalId);
+
+  // Get the number of notes for the current modal
+  const noteCount = filteredNotes.length;
+
+  // Update the button with the badge
+  updateButtonWithBadge('notesButton', noteCount);
 
       filteredNotes.forEach((note, index) => {
         const card = `
