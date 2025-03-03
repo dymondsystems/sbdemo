@@ -1703,7 +1703,7 @@ padding:10px;
 <div class="container mt-4">
    <div class="row align-items-center">
     <div class="col"> 
-      <h2 class="mb-4 float-left">Demo board</h2>
+      <h2 class="mb-4 float-left" id="editableH2">Demo board</h2>
      
      
     
@@ -1794,8 +1794,13 @@ padding:10px;
       </div>
       <div class="modal-body">
         <p style="margin-bottom: 50px; margin-left: 130px;">Access settings (Ctrl+Shift+S)</p>
+        <div class="mb-3">
+          <label for="h2Text" class="form-label"><strong>Board name:</strong></label>
+            <input type="text" class="form-control" id="h2Text">
         
-        
+        <button class="btn btn-primary" id="saveH2">Save</button>
+      </div>
+        <p><strong>Link settings</strong></p>
         <div class="custom-control custom-switch">
   <input type="checkbox" class="custom-control-input" id="settingsFullscreenToggle">
   <label class="custom-control-label" for="settingsFullscreenToggle">
@@ -4420,6 +4425,48 @@ $(document).ready(function(){
             $(this).find('.collapse').collapse('hide');
         });
     </script>
+      
+      <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const h2Element = document.getElementById('editableH2');
+    const h2Input = document.getElementById('h2Text');
+    const saveButton = document.getElementById('saveH2');
+
+    // Load from local storage if available
+    const storedH2Text = localStorage.getItem('h2Text');
+    if (storedH2Text) {
+        h2Element.textContent = storedH2Text;
+        h2Input.value = storedH2Text;
+    }
+
+    saveButton.addEventListener('click', function() {
+        saveButton.textContent = "Updating...";
+        saveButton.disabled = true;
+
+        setTimeout(function() {
+          const newH2Text = h2Input.value;
+          h2Element.textContent = newH2Text;
+          localStorage.setItem('h2Text', newH2Text);
+
+          saveButton.textContent = "Saved!";
+          saveButton.classList.add('btn-success');
+          saveButton.disabled = false;
+
+          setTimeout(function(){
+            saveButton.textContent = "Save";
+            saveButton.classList.remove('btn-success');
+          }, 1500)
+        }, 1000)
+
+    });
+
+    h2Input.addEventListener('input', function() {
+        //No syncing required here. If you wish to sync, use a different logic.
+    });
+
+});
+</script>
+      
 
 <div id="noCardsPlaceholder2" style="display: none;">
   
