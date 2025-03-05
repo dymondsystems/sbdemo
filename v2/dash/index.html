@@ -1524,14 +1524,13 @@ padding:10px;
             <span>More</span>
           </li>
           <li>
-            <a href="#">
-              <i class="fa fa-wrench"></i>
-              <span>Tools</span>
-              <span class="badge badge-pill badge-primary">Beta</span>
+             <a href="#" class="tooltip-btn" data-toggle="modal" data-target="#generalNotes" data-placement="top" title="Notes: Alt+N">
+              <i class="fa fa-sticky-note"></i>
+              <span>Notes</span>
             </a>
           </li>
           <li>
-            <a href="#" class="tooltip-btn" data-toggle="modal" data-target="#settings" data-placement="top" title="Quick settings: Ctrl+Shift+S">
+            <a href="#" class="tooltip-btn" data-toggle="modal" data-target="#settings" data-placement="top" title="Quick settings: Alt+S">
               <i class="fa fa-cog"></i>
               <span>Settings</span>
             </a>
@@ -1993,7 +1992,61 @@ padding:10px;
 
 
 
-    
+    <!-- General Notes editor Modal -->
+<div class="modal fade" id="generalNoteModal" tabindex="-1" aria-labelledby="generalNoteModalLabel" aria-hidden="true" style="z-index: 9999;">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="generalNoteModalLabel">General Note</h5>
+        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Note Title Input -->
+        <input type="text" id="generalNoteTitle" placeholder="Note Title" class="form-control mb-3">
+        <!-- Quill Editor Container -->
+        <div id="generalEditorContainer"></div>
+      </div>
+      
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        
+        <button type="button" id="editSaveButton" class="btn btn-warning">Edit</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+    <!-- general notes Modal -->
+  <div class="modal fade" id="generalNotes" tabindex="-1" role="dialog" aria-labelledby="settingsLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="settingsLabel">Settings</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+                 <!-- Button to Open Modal for New Note -->
+<button type="button" class="btn btn-primary" onclick="prepareForNewGeneralNote()" data-toggle="modal" data-target="#generalNoteModal">
+  Add General Note
+</button>
+        </div>
+        
+
+
+<!-- General Notes List -->
+<div id="generalNotesList" class="mt-4"></div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>     
+        
+        
+        
 
 
 
@@ -2004,9 +2057,7 @@ padding:10px;
         <div class="modal-header">
          
           <h5 class="modal-title" id="accountinfoLabel">Account Info</h5>
-          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#noteModal_MODALID">
-  Open modal
-</button>
+         
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -2014,6 +2065,8 @@ padding:10px;
         <div class="modal-body">
           <!-- Dynamic content will be inserted here -->
         </div>
+        
+      
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         </div>
@@ -2316,6 +2369,207 @@ padding:10px;
 
   <!-- Quill.js -->
   <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+      
+      
+    <script>
+// Initialize Quill editor for general notes
+let generalQuill;
+let editingGeneralNoteIndex = null; // Track the note being edited
+
+// Function to initialize the general Quill editor
+function initializeGeneralQuill() {
+  if (generalQuill) return; // Avoid re-initialization
+  generalQuill = new Quill('#generalEditorContainer', {
+    theme: 'snow',
+    modules: {
+      toolbar: [
+        [{ header: [1, 2, 3, false] }],
+        ['bold', 'italic', 'underline', 'strike'],
+        [{ list: 'ordered' }, { list: 'bullet' }],
+        ['link', 'image', 'video'],
+        ['code-block', 'blockquote'],
+        ['clean'],
+      ],
+    },
+    placeholder: 'Write your general note here...',
+  });
+}
+
+// Function to destroy the general Quill editor
+function destroyGeneralQuill() {
+  if (generalQuill) {
+    generalQuill = null;
+    document.getElementById('generalEditorContainer').innerHTML = ''; // Clear the editor container
+    const toolbars = document.querySelectorAll('.ql-toolbar');
+    toolbars.forEach(toolbar => toolbar.remove()); // Remove any leftover toolbars
+  }
+}
+
+// Load general notes from localStorage
+let generalNotes = JSON.parse(localStorage.getItem('generalNotes')) || [];
+
+// Prepare for creating a new note
+function prepareForNewGeneralNote() {
+  editingGeneralNoteIndex = null; // Reset editing index
+  document.getElementById('generalNoteTitle').value = ''; // Clear title
+  initializeGeneralQuill(); // Initialize a fresh Quill instance
+  generalQuill.root.innerHTML = ''; // Clear any existing content in the editor
+  showEditorUI(); // Show toolbar and placeholder
+  toggleEditSaveButton('save'); // Set button to "Save" mode
+  $('#generalNoteModal').modal('show');
+}
+
+// Save general note
+function saveGeneralNote() {
+  const title = document.getElementById('generalNoteTitle').value;
+  const content = generalQuill.root.innerHTML; // Get HTML content from Quill
+
+  if (editingGeneralNoteIndex !== null) {
+    // Update existing note
+    generalNotes[editingGeneralNoteIndex] = { title, content };
+  } else {
+    // Add new note at the beginning of the array (index 0)
+    generalNotes.unshift({ title, content });
+  }
+
+  // Save to localStorage
+  localStorage.setItem('generalNotes', JSON.stringify(generalNotes));
+
+  // Render the updated notes list
+  renderGeneralNotes();
+
+  // Hide the modal
+  $('#generalNoteModal').modal('hide');
+}
+
+// Render general notes
+function renderGeneralNotes() {
+  const generalNotesList = document.getElementById('generalNotesList');
+  generalNotesList.innerHTML = '';
+
+  // Render notes in their current order (newest first)
+  generalNotes.forEach((note, index) => {
+    const card = `
+      <div class="col-12 mb-3" data-index="${index}">
+        <div class="card note-card">
+          <div class="card-body d-flex justify-content-between align-items-center">
+            <div>
+              <h5 class="card-title" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 250px;">${note.title}</h5>
+            </div>
+            <div>
+              <button class="btn btn-sm btn-info" onclick="viewGeneralNote(${index})"><i class="fas fa-eye"></i></button>
+              <button class="btn btn-sm btn-danger" onclick="deleteGeneralNote(${index})"><i class="fas fa-trash"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+    generalNotesList.innerHTML += card;
+  });
+
+  // Initialize SortableJS
+  initializeSortable();
+}
+
+// Initialize SortableJS
+function initializeSortable() {
+  new Sortable(document.getElementById('generalNotesList'), {
+    animation: 150, // Smooth animation
+    onEnd: function (evt) {
+      // Get the moved note's data
+      const movedNote = generalNotes[evt.oldIndex];
+
+      // Remove the moved note from its old position
+      generalNotes.splice(evt.oldIndex, 1);
+
+      // Insert the moved note into its new position
+      generalNotes.splice(evt.newIndex, 0, movedNote);
+
+      // Save the updated order to localStorage
+      localStorage.setItem('generalNotes', JSON.stringify(generalNotes));
+
+      // Re-render the notes list to reflect the new order
+      renderGeneralNotes();
+    },
+  });
+}
+
+// View general note
+function viewGeneralNote(index) {
+  const note = generalNotes[index];
+  if (note) {
+    document.getElementById('generalNoteTitle').value = note.title;
+    initializeGeneralQuill();
+    generalQuill.root.innerHTML = note.content;
+    generalQuill.disable(); // Disable editing in view mode
+    editingGeneralNoteIndex = index; // Set the note being edited
+    hideEditorUI(); // Hide toolbar and placeholder
+    toggleEditSaveButton('edit'); // Set button to "Edit" mode
+    $('#generalNoteModal').modal('show');
+  }
+}
+
+// Toggle between Edit and Save modes
+function toggleEditSaveButton(mode) {
+  const editSaveButton = document.getElementById('editSaveButton');
+  if (mode === 'edit') {
+    editSaveButton.textContent = 'Edit';
+    editSaveButton.classList.remove('btn-primary');
+    editSaveButton.classList.add('btn-warning');
+    editSaveButton.onclick = () => {
+      generalQuill.enable(); // Enable editing
+      showEditorUI(); // Show toolbar and placeholder
+      toggleEditSaveButton('save'); // Switch button to "Save" mode
+    };
+  } else if (mode === 'save') {
+    editSaveButton.textContent = 'Save';
+    editSaveButton.classList.remove('btn-warning');
+    editSaveButton.classList.add('btn-primary');
+    editSaveButton.onclick = saveGeneralNote; // Set button to save the note
+  }
+}
+
+// Delete general note
+function deleteGeneralNote(index) {
+  generalNotes.splice(index, 1); // Remove the note
+  localStorage.setItem('generalNotes', JSON.stringify(generalNotes)); // Update localStorage
+  renderGeneralNotes(); // Re-render the notes list
+}
+
+// Clear Quill and reset form when modal is hidden
+$('#generalNoteModal').on('hidden.bs.modal', function () {
+  destroyGeneralQuill(); // Destroy the Quill instance
+  document.getElementById('generalNoteTitle').value = ''; // Clear title
+  editingGeneralNoteIndex = null; // Reset editing index
+});
+
+// Show Quill toolbar and placeholder
+function showEditorUI() {
+  const toolbar = document.querySelector('.ql-toolbar');
+  const editor = document.querySelector('.ql-editor');
+  if (toolbar) toolbar.style.display = 'block'; // Show toolbar
+  if (editor) editor.setAttribute('data-placeholder', 'Write your general note here...'); // Show placeholder
+}
+
+// Hide Quill toolbar and placeholder
+function hideEditorUI() {
+  const toolbar = document.querySelector('.ql-toolbar');
+  const editor = document.querySelector('.ql-editor');
+  if (toolbar) toolbar.style.display = 'none'; // Hide toolbar
+  if (editor) editor.removeAttribute('data-placeholder'); // Hide placeholder
+}
+
+// Initialize the general Quill editor on page load
+initializeGeneralQuill();
+
+// Render general notes on page load
+renderGeneralNotes();
+      </script>
+      
+      
+      
+      
+      
 
  <script>
     // Initialize Quill editor
@@ -4376,7 +4630,7 @@ $("#show-sidebar").click(function() {
 
   // Keyboard shortcut (Ctrl + /)
   $(document).keydown(function(e) {
-    if (e.ctrlKey && e.shiftKey && e.which === 83) { // 191 is the key code for /
+    if ( e.AltKey && e.which === 83) { // 191 is the key code for /
       e.preventDefault(); // Prevent default browser action (like search)
       openModal();
     }
@@ -4389,6 +4643,36 @@ $("#show-sidebar").click(function() {
   });
 
 });
+    //notes 
+     
+       $(document).ready(function() {
+  // Get the modal element (same as before)
+  var settings = document.getElementById('generalNotes');
+
+  // Function to open the modal (you can reuse this)
+  function openModal() {
+    $('#generalNotes').modal('show'); // jQuery method
+    // Or, for Bootstrap 5:
+    // const modal = new bootstrap.Modal(myModal);
+    // modal.show();
+  }
+
+  // Keyboard shortcut (Ctrl + /)
+  $(document).keydown(function(e) {
+    if (e.altKey && e.which === 78) { // 191 is the key code for /
+      e.preventDefault(); // Prevent default browser action (like search)
+      openModal();
+    }
+  });
+
+  // Example of opening the modal with a regular link click (optional)
+  $('a[data-target="#generalNotes"]').click(function(e) {
+    e.preventDefault();
+    openModal();
+  });
+
+});
+     
       </script>
       <script>
         document.addEventListener('keydown', (event) => {
