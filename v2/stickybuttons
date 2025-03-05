@@ -1,0 +1,497 @@
+document.addEventListener('DOMContentLoaded', () => {
+
+
+  // Element References
+  const stickyButtonsContainer = document.getElementById('stickyButtonsContainer');
+  const sidebar = document.getElementById('popUpSidebar');
+  const sidebarButtonsContainer = document.getElementById('sidebarButtonsContainer');
+  const stickToTopButton = document.getElementById('stickToTop');
+
+
+  // State Management
+  let currentCardData = null;
+  const openedWindows = new Map();
+  const existingStickyButtons = new Set();
+  const existingSidebarButtons = new Set();
+  let isFullscreenMode = localStorage.getItem('isFullscreenMode') === 'true';
+  
+  // Domains that are untrackable (e.g., google.com)
+const untrackableDomains = new Set(['google.com', 'chat.openai.com', 'chatgpt.com']);
+
+
+// Specific subdomains that are allowed (e.g., docs.google.com)
+const allowedSubdomains = new Set(['docs.google.com', 'drive.google.com', 'gemini.google.com']);
+
+
+ 
+  
+  // Constants
+  const SIDEBAR_WIDTH = 200;
+  const SIDEBAR_MARGIN = 10;
+  const WINDOW_PARAMS = {
+    small: { width: 600, height: 400 },
+    medium: { width: 800, height: 600 },
+    large: { width: screen.width - (SIDEBAR_WIDTH + SIDEBAR_MARGIN), height: 800 },
+    full: { width: screen.width - (SIDEBAR_WIDTH + SIDEBAR_MARGIN), height: screen.height }
+  };
+
+
+  // Initialize the sidebar structure
+  function initializeSidebar() {
+    // Control Buttons Container
+    const controlButtonsContainer = document.createElement('div');
+    controlButtonsContainer.classList.add('control-buttons');
+
+
+    // Close All Button
+    const closeAllButton = document.createElement('button');
+    closeAllButton.classList.add('btn', 'btn-danger', 'btn-block', 'close-all-btn');
+    closeAllButton.textContent = 'Close All';
+    closeAllButton.addEventListener('click', handleCloseAll);
+
+
+    // Close Sidebar Button
+    const closeSidebarButton = document.createElement('button');
+    closeSidebarButton.classList.add('btn', 'btn-secondary', 'btn-block', 'close-sidebar-btn');
+    closeSidebarButton.textContent = 'Close Sidebar';
+    closeSidebarButton.addEventListener('click', () => sidebar.classList.remove('show'));
+
+
+    // Window Buttons Container
+    const windowButtonsContainer = document.createElement('div');
+    windowButtonsContainer.classList.add('window-buttons');
+
+
+    // Fullscreen Toggle Container
+    const fullscreenToggleContainer = document.createElement('div');
+    fullscreenToggleContainer.classList.add('fullscreen-toggle-container');
+    
+    fullscreenToggleContainer.innerHTML = `
+      <div class="custom-control custom-switch">
+        <input type="checkbox" class="custom-control-input" id="fullscreenToggle" ${isFullscreenMode ? 'checked' : ''}>
+        <label class="custom-control-label" for="fullscreenToggle"> <a href="#" style="color:white; text-decoration: none;" data-toggle="tooltip" data-placement="top" title="Open all windows in full screen when using sidebar">Fullscreen mode</a></label>
+      </div>
+    `;
+
+
+     const fullscreenToggle = fullscreenToggleContainer.querySelector('#fullscreenToggle');
+fullscreenToggle.checked = JSON.parse(localStorage.getItem('isFullscreenMode')) || false;
+fullscreenToggle.addEventListener('change', (event) => {
+    localStorage.setItem('isFullscreenMode', event.target.checked);
+    handleFullscreenToggle(event);
+});
+
+
+// Sync with settings page toggle if it exists
+const settingsToggle = document.getElementById('settingsFullscreenToggle');
+if (settingsToggle) {
+    settingsToggle.checked = fullscreenToggle.checked;
+    settingsToggle.addEventListener('change', (event) => {
+        const newState = event.target.checked;
+        localStorage.setItem('isFullscreenMode', newState);
+        fullscreenToggle.checked = newState; // Sync sidebar toggle
+        handleFullscreenToggle({ target: { checked: newState } });
+    });
+}
+
+
+    // Assemble Sidebar
+    controlButtonsContainer.appendChild(closeAllButton);
+    controlButtonsContainer.appendChild(closeSidebarButton);
+    sidebarButtonsContainer.appendChild(controlButtonsContainer);
+    sidebarButtonsContainer.appendChild(windowButtonsContainer);
+    sidebarButtonsContainer.appendChild(fullscreenToggleContainer);
+
+
+    return { windowButtonsContainer };
+  }
+
+
+  // Event Handlers
+  function handleCloseAll() {
+    openedWindows.forEach((win) => {
+      if (win && !win.closed) win.close();
+    });
+    openedWindows.clear();
+    
+    stickyButtonsContainer.innerHTML = '';
+    existingStickyButtons.clear();
+    
+    const windowButtons = sidebarButtonsContainer.querySelectorAll('.sidebar-btn');
+    windowButtons.forEach(btn => btn.remove());
+    existingSidebarButtons.clear();
+    
+    sidebar.classList.remove('show');
+    
+    saveStickyButtons();
+    saveSidebarButtons();
+  }
+
+
+  function handleFullscreenToggle(event) {
+    isFullscreenMode = event.target.checked;
+    localStorage.setItem('isFullscreenMode', isFullscreenMode);
+    
+    openedWindows.forEach((win, title) => {
+      if (win && !win.closed) {
+        const size = isFullscreenMode ? 'full' : win.originalSize;
+        const params = WINDOW_PARAMS[size];
+        
+        try {
+          win.resizeTo(params.width, params.height);
+          win.moveTo(
+            (screen.width - params.width - SIDEBAR_WIDTH - SIDEBAR_MARGIN) / 2,
+            (screen.height - params.height) / 2
+          );
+        } catch (error) {
+          console.warn(`Cannot modify window for ${title}. Window will be reopened.`, error);
+          const url = win.location.href;
+          win.close();
+          openWindow(url, win.originalSize, title);
+        }
+      }
+    });
+  }
+
+
+  // Window Management
+  function openWindow(url, size, title) {
+    let width, height, left, top;
+    
+    const originalSize = size;
+    if (isFullscreenMode) {
+      size = 'full';
+    }
+
+
+    const params = WINDOW_PARAMS[size] || WINDOW_PARAMS.medium;
+    width = params.width;
+    height = params.height;
+    
+    left = (screen.width - width - SIDEBAR_WIDTH - SIDEBAR_MARGIN) / 2;
+    top = (screen.height - height) / 2;
+
+
+    const newWindow = window.open(
+      url,
+      '_blank',
+      `width=${width},height=${height},top=${top},left=${left}`
+    );
+
+
+    if (newWindow) {
+      newWindow.originalSize = originalSize;
+      openedWindows.set(title, newWindow);
+      setupWindowEventListeners(newWindow, title);
+    }
+
+
+    return newWindow;
+  }
+
+
+  function setupWindowEventListeners(newWindow, title) {
+    function updateSidebarPosition() {
+      sidebar.style.position = 'fixed';
+      sidebar.style.right = '0';
+      sidebar.style.top = '0';
+      sidebar.style.height = '100%';
+      sidebar.style.width = `${SIDEBAR_WIDTH}px`;
+    }
+
+
+    updateSidebarPosition();
+
+
+    newWindow.addEventListener('focus', () => {
+      updateSidebarPosition();
+      sidebar.classList.add('show');
+    });
+
+
+    newWindow.addEventListener('blur', () => {
+      if (!isWindowMinimized(newWindow)) {
+        sidebar.classList.remove('show');
+      }
+    });
+
+
+    newWindow.addEventListener('resize', updateSidebarPosition);
+
+
+    newWindow.addEventListener('beforeunload', () => {
+      openedWindows.delete(title);
+      
+      const stickyBtn = Array.from(stickyButtonsContainer.children)
+        .find(btn => btn.querySelector('span').textContent === title);
+      
+      if (stickyBtn) {
+        stickyButtonsContainer.removeChild(stickyBtn);
+        existingStickyButtons.delete(title);
+      }
+      
+      removeSidebarButton(title);
+      
+      if (openedWindows.size === 0) {
+        sidebar.classList.remove('show');
+      }
+      
+      saveStickyButtons();
+      saveSidebarButtons();
+    });
+  }
+
+
+ 
+
+
+function isUntrackableDomain(url) {
+  try {
+    const domain = new URL(url).hostname.replace('www.', '');
+
+
+    // Check if the domain is in the allowed subdomains list
+    if (allowedSubdomains.has(domain)) {
+      return false; // Allow this subdomain
+    }
+
+
+    // Check if the domain is exactly in the untrackableDomains set
+    if (untrackableDomains.has(domain)) {
+      return true; // Block this domain
+    }
+
+
+    // Check if the domain is a subdomain of any untrackable domain
+    // e.g., "mail.google.com" should match "google.com"
+    return Array.from(untrackableDomains).some(d => domain.endsWith(`.${d}`));
+  } catch {
+    return false;
+  }
+}
+
+
+  function isWindowMinimized(win) {
+    return win.outerWidth <= 0 || win.outerHeight <= 0;
+  }
+
+
+  // Button Management
+  function addStickyButton(cardData, type = 'modal') {
+    if (existingStickyButtons.has(cardData.title)) return;
+
+
+    const button = document.createElement('div');
+    button.classList.add('animated-btn', 'sticky-btn');
+    const isUntrackable = isUntrackableDomain(cardData.url);
+    if (isUntrackable) button.classList.add('untrackable');
+    
+    button.dataset.id = cardData.title;
+    button.dataset.type = type;
+    button.dataset.url = cardData.url;
+    button.dataset.size = cardData.size;
+
+
+    button.innerHTML = `
+      <button class="close-btn">X</button>
+      <img src="${cardData.image}" alt="${cardData.title}" />
+      <span>${cardData.title}</span>
+      ${isUntrackable ? '<div class="untrackable-indicator" data-toggle="tooltip" title="Opens new window each timennn">i</div>' : ''}
+    `;
+
+
+    button.addEventListener('click', (e) => {
+      if (e.target.classList.contains('close-btn')) {
+        stickyButtonsContainer.removeChild(button);
+        existingStickyButtons.delete(cardData.title);
+        removeSidebarButton(cardData.title);
+        saveStickyButtons();
+        saveSidebarButtons();
+      } else {
+        if (type === 'modal') {
+          openMyModal(cardData);
+        } else if (type === 'window') {
+          if (!isUntrackable) {
+            const win = openedWindows.get(cardData.title);
+            if (win && !win.closed) {
+              win.focus();
+              sidebar.classList.add('show');
+              return;
+            }
+          }
+          openWindow(cardData.url, cardData.size, cardData.title);
+           
+        }
+      }
+    });
+
+
+    stickyButtonsContainer.appendChild(button);
+    existingStickyButtons.add(cardData.title);
+  
+  }
+
+
+  function addSidebarButton(cardData) {
+    if (existingSidebarButtons.has(cardData.title)) return;
+
+
+    const button = document.createElement('button');
+    button.classList.add('btn', 'btn-block', 'sidebar-btn');
+    
+    const isUntrackable = isUntrackableDomain(cardData.url);
+    button.classList.add(isUntrackable ? 'btn-warning' : 'btn-light');
+    
+    
+    
+    // Add tooltip attributes
+ // button.setAttribute('data-toggle', 'tooltip');
+ // button.setAttribute('data-placement', 'top'); // Optional: Set tooltip position
+ // button.title = isUntrackable ? 
+   // 'This link will open in a new window each time' : 
+  //  'Click to focus existing window or open new';
+    
+    button.textContent = cardData.title;
+
+
+    button.addEventListener('click', () => {
+      if (!isUntrackable) {
+        const win = openedWindows.get(cardData.title);
+        if (win && !win.closed) {
+          win.focus();
+          return;
+        }
+      }
+      openWindow(cardData.url, cardData.size, cardData.title);
+    });
+
+
+    const windowButtonsContainer = sidebarButtonsContainer.querySelector('.window-buttons');
+    windowButtonsContainer.appendChild(button);
+    existingSidebarButtons.add(cardData.title);
+    
+    // Initialize the tooltip for the newly added button
+  $(button).tooltip();
+  }
+
+
+  function removeSidebarButton(title) {
+    const button = Array.from(sidebarButtonsContainer.querySelectorAll('.sidebar-btn'))
+      .find(btn => btn.textContent === title);
+    if (button) {
+      button.remove();
+      existingSidebarButtons.delete(title);
+    }
+  }
+
+
+  // Storage Management
+  function saveStickyButtons() {
+    const buttons = Array.from(stickyButtonsContainer.querySelectorAll('.sticky-btn'))
+      .map(button => ({
+        title: button.querySelector('span').innerText,
+        image: button.querySelector('img').src,
+        type: button.dataset.type,
+        url: button.dataset.url,
+        size: button.dataset.size,
+      }));
+    localStorage.setItem('stickyButtons', JSON.stringify(buttons));
+  }
+
+
+  function saveSidebarButtons() {
+    const buttons = Array.from(sidebarButtonsContainer.querySelectorAll('.sidebar-btn'))
+      .map(button => ({ title: button.textContent }));
+    localStorage.setItem('sidebarButtons', JSON.stringify(buttons));
+  }
+
+
+  function loadStickyButtons() {
+    try {
+      const storedButtons = JSON.parse(localStorage.getItem('stickyButtons')) || [];
+      storedButtons.forEach(buttonData => {
+        addStickyButton(buttonData, buttonData.type);
+        addSidebarButton(buttonData);
+      });
+    } catch (error) {
+      console.error('Error loading sticky buttons:', error);
+      localStorage.removeItem('stickyButtons');
+    }
+  }
+
+
+  function loadSidebarButtons() {
+    try {
+      const storedButtons = JSON.parse(localStorage.getItem('sidebarButtons')) || [];
+      storedButtons.forEach(buttonData => addSidebarButton(buttonData));
+    } catch (error) {
+      console.error('Error loading sidebar buttons:', error);
+      localStorage.removeItem('sidebarButtons');
+    }
+  }
+
+
+  function openMyModal(cardData) {
+    const modalTitle = document.getElementById('modalTitle');
+    const modalImage = document.getElementById('modalImage');
+
+
+    modalTitle.innerText = cardData.title;
+    modalImage.src = cardData.image;
+
+
+    $('#myModal').modal('show');
+  }
+
+
+  // Initialize
+  const { windowButtonsContainer } = initializeSidebar();
+  loadStickyButtons();
+  loadSidebarButtons();
+
+
+  // Modal Button Setup
+  document.querySelectorAll("[data-target='#myModal']").forEach((button) => {
+    button.addEventListener('click', () => {
+      currentCardData = {
+        id: button.getAttribute('data-id'),
+        title: button.getAttribute('data-title'),
+        image: button.getAttribute('data-image'),
+        url: button.getAttribute('data-url') || null,
+        size: button.getAttribute('data-size') || 'medium',
+      };
+    });
+  });
+
+
+  // Stick to Top Button Handler
+  stickToTopButton.addEventListener('click', () => {
+    if (currentCardData) {
+      currentCardData.image = document.getElementById('modalImage').src;
+      addStickyButton(currentCardData, 'modal');
+      saveStickyButtons();
+      $('#myModal').modal('hide');
+    }
+  });
+
+
+  // Global Window Functions
+  window.stickToTopButton = (element) => {
+    const buttonDiv = element.closest('.btn-group');
+    const button = buttonDiv.querySelector('.launch-button');
+
+
+    const cardData = {
+      title: button.dataset.name,
+      image: button.dataset.image || 'https://www.svgrepo.com/show/510970/external-link.svg',
+      url: button.dataset.url,
+      size: button.dataset.size || 'medium',
+    };
+
+
+    addStickyButton(cardData, 'window');
+    addSidebarButton(cardData);
+    saveStickyButtons();
+    saveSidebarButtons();
+  };
+});
