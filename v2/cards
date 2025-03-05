@@ -1,0 +1,143 @@
+function loadCards() {
+  const storedCards = JSON.parse(localStorage.getItem('addedCards')) || [];
+  
+  
+   const placeholder = document.getElementById('noCardsPlaceholder');
+   
+   const placeholder2 = document.getElementById('noCardsPlaceholder2');
+
+
+  // Show placeholder if no cards exist, otherwise hide it
+  if (storedCards.length === 0) {
+    placeholder.style.display = 'none';
+  } else {
+    placeholder.style.display = 'block';
+  }
+  
+  
+
+
+  // Show placeholder if no cards exist, otherwise hide it
+  if (storedCards.length === 0) {
+    placeholder2.style.display = 'block';
+  } else {
+    placeholder2.style.display = 'none';
+  }
+  
+  
+  
+  
+  
+  
+  
+  storedCards.forEach(card => {
+    const sectionContainer = document.getElementById(`cards-${card.sectionId}`);
+    if (sectionContainer) {
+      const cardDiv = document.createElement('div');
+      cardDiv.classList.add('col-md-3', 'card-item');
+      cardDiv.dataset.id = card.id;
+      cardDiv.dataset.title = card.title;
+      cardDiv.dataset.image = card.image;
+      cardDiv.dataset.description = card.description;
+      cardDiv.dataset.category = card.category;
+      cardDiv.dataset.modalId = card.modalId;
+
+
+      cardDiv.innerHTML = `
+        <div class="card border-secondary mb-3">
+          <div class="card-body" style="height:275px;">
+            <div class="dropdown">
+              <i class="fa fa-ellipsis-v" aria-hidden="true" data-toggle="dropdown" style="float: right;"></i>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" data-toggle="modal" href="#accountinfo" onclick="showAccountInfo('${card.id}')"><i class="fas fa-wrench-alt"></i> Manage account</a>
+                
+                <a class="dropdown-item text-danger" href="#" onclick="removeCard('${card.id}')"><i class="fas fa-trash-alt"></i> Remove</a>
+              </div>
+            </div>
+            <center><img src="${card.image}" alt="${card.title}" class="img-fluid" style="width: 80px; height: 80px;">
+            <h5 class="mt-2">${card.title}</h5>
+            <p>${card.description}</p>
+            <div class="d-flex justify-content-center">
+            <button 
+              type="button" style= "position: absolute; bottom:20px; "
+              class="btn btn-primary mt-2" 
+              data-toggle="modal" 
+              data-target="#myModal" 
+              data-title="${card.title}" 
+              data-image="${card.image}" 
+              data-modal="${card.id}">
+              Open 
+            </button></center>
+          </div>
+        </div>
+      `;
+      sectionContainer.appendChild(cardDiv);
+    }
+  });
+
+
+  // Attach modal update functionality after cards are loaded
+  attachModalTitleUpdate();
+}
+
+
+function attachModalTitleUpdate() {
+  const modalButtons = document.querySelectorAll("[data-target='#myModal']");
+
+
+  modalButtons.forEach(button => {
+    button.addEventListener("click", () => {
+      const title = button.getAttribute("data-title");
+      const image = button.getAttribute("data-image");
+      const modalTitle = document.getElementById("modalTitle");
+      const modalImage = document.getElementById("modalImage");
+
+
+      // Update the modal title
+      if (modalTitle && title) {
+        modalTitle.innerText = title;
+      } else {
+        console.error("Modal title element not found or title is null!");
+      }
+
+
+      // Update the modal image
+      if (modalImage && image) {
+        modalImage.src = image;
+        modalImage.style.display = "inline-block";
+      } else if (modalImage) {
+        modalImage.style.display = "none";
+      }
+    });
+  });
+}
+
+
+// Show account info in the modal
+function showAccountInfo(cardId) {
+  const storedCards = JSON.parse(localStorage.getItem('addedCards')) || [];
+  const card = storedCards.find(c => c.id === cardId);
+  if (card) {
+    document.querySelector('#accountinfo .modal-title').innerText = card.title;
+    document.querySelector('#accountinfo .modal-body').innerHTML = `
+    <h5>Due to security reasons, account management is not available in the demo version</h5>
+      <p><strong>Category:</strong> ${card.category}</p>
+      <p><strong>Description:</strong> ${card.description}</p>
+    `;
+  }
+}
+
+
+
+
+   
+    
+    
+    
+    
+    function removeCard(cardId) {
+  let storedCards = JSON.parse(localStorage.getItem('addedCards')) || [];
+  storedCards = storedCards.filter(card => card.id !== cardId);
+  localStorage.setItem('addedCards', JSON.stringify(storedCards));
+  document.querySelector(`[data-id="${cardId}"]`).remove(); // Remove card from DOM
+}
