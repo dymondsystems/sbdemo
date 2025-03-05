@@ -4619,34 +4619,7 @@ $("#show-sidebar").click(function() {
 </script>
 
    <script>
-     $(document).ready(function() {
-  // Get the modal element (same as before)
-  var settings = document.getElementById('settings');
-
-  // Function to open the modal (you can reuse this)
-  function openModal() {
-    $('#settings').modal('show'); // jQuery method
-    // Or, for Bootstrap 5:
-    // const modal = new bootstrap.Modal(myModal);
-    // modal.show();
-  }
-
-  // Keyboard shortcut (Ctrl + /)
-  $(document).keydown(function(e) {
-    if ( e.AltKey && e.which === 83) { // 191 is the key code for /
-      e.preventDefault(); // Prevent default browser action (like search)
-      openModal();
-    }
-  });
-
-  // Example of opening the modal with a regular link click (optional)
-  $('a[data-target="#settings"]').click(function(e) {
-    e.preventDefault();
-    openModal();
-  });
-
-});
-    //notes 
+  //notes 
      
        $(document).ready(function() {
   // Get the modal element (same as before)
@@ -4670,6 +4643,37 @@ $("#show-sidebar").click(function() {
 
   // Example of opening the modal with a regular link click (optional)
   $('a[data-target="#generalNotes"]').click(function(e) {
+    e.preventDefault();
+    openModal();
+  });
+
+});
+    
+     
+     
+     
+        $(document).ready(function() {
+  // Get the modal element (same as before)
+  var settings = document.getElementById('settings');
+
+  // Function to open the modal (you can reuse this)
+  function openModal() {
+    $('#settings').modal('show'); // jQuery method
+    // Or, for Bootstrap 5:
+    // const modal = new bootstrap.Modal(myModal);
+    // modal.show();
+  }
+
+  // Keyboard shortcut (Ctrl + /)
+  $(document).keydown(function(e) {
+    if (e.altKey && e.which === 83) { // 191 is the key code for /
+      e.preventDefault(); // Prevent default browser action (like search)
+      openModal();
+    }
+  });
+
+  // Example of opening the modal with a regular link click (optional)
+  $('a[data-target="#settings"]').click(function(e) {
     e.preventDefault();
     openModal();
   });
