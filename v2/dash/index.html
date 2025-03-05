@@ -2392,6 +2392,10 @@ function initializeGeneralQuill() {
     },
     placeholder: 'Write your note here...',
   });
+  // Hide placeholder when clicking inside the editor
+  generalQuill.root.addEventListener('click', function () {
+    generalQuill.root.setAttribute('data-placeholder', ''); // Hide placeholder
+  });
 }
 
 // Function to destroy the general Quill editor
