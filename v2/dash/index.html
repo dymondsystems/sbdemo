@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1997,20 +1996,20 @@ padding:10px;
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="generalNoteModalLabel">General Note</h5>
-        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+        <h5 class="modal-title" id="generalNoteModalLabel">Add/edit note</h5>
+        <button type="button" id="editSaveButton" class="btn btn-outline-secondary">Edit</button>
       </div>
       <div class="modal-body">
         <!-- Note Title Input -->
         <input type="text" id="generalNoteTitle" placeholder="Note Title" class="form-control mb-3">
         <!-- Quill Editor Container -->
-        <div id="generalEditorContainer"></div>
+        <div id="generalEditorContainer" style="height: 300px;"></div>
       </div>
       
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         
-        <button type="button" id="editSaveButton" class="btn btn-warning">Edit</button>
+        
       </div>
     </div>
   </div>
@@ -2022,15 +2021,15 @@ padding:10px;
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="settingsLabel">Settings</h5>
+        <h5 class="modal-title" id="settingsLabel">Notes</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
                  <!-- Button to Open Modal for New Note -->
-<button type="button" class="btn btn-primary" onclick="prepareForNewGeneralNote()" data-toggle="modal" data-target="#generalNoteModal">
-  Add General Note
+<button type="button" class="btn btn-primary" onclick="prepareForNewGeneralNote()" data-toggle="modal" data-target="#generalNoteModal"><i class="fas fa fa-plus"></i>
+  New Note
 </button>
         </div>
         
@@ -2391,7 +2390,7 @@ function initializeGeneralQuill() {
         ['clean'],
       ],
     },
-    placeholder: 'Write your general note here...',
+    placeholder: 'Write your note here...',
   });
 }
 
@@ -2515,7 +2514,7 @@ function toggleEditSaveButton(mode) {
   if (mode === 'edit') {
     editSaveButton.textContent = 'Edit';
     editSaveButton.classList.remove('btn-primary');
-    editSaveButton.classList.add('btn-warning');
+    editSaveButton.classList.add('btn-outline-secondary');
     editSaveButton.onclick = () => {
       generalQuill.enable(); // Enable editing
       showEditorUI(); // Show toolbar and placeholder
@@ -2523,7 +2522,7 @@ function toggleEditSaveButton(mode) {
     };
   } else if (mode === 'save') {
     editSaveButton.textContent = 'Save';
-    editSaveButton.classList.remove('btn-warning');
+    editSaveButton.classList.remove('btn-outline-secondary');
     editSaveButton.classList.add('btn-primary');
     editSaveButton.onclick = saveGeneralNote; // Set button to save the note
   }
