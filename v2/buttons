@@ -1,0 +1,733 @@
+// Select modal-related elements
+const launchButtonsContainer = document.getElementById('launch-buttons');
+const collapsibleContainer = document.getElementById('collapsibleContainer');
+ 
+const folderIcon = document.getElementById('toggleFormButton'); // Assuming this is your folder icon
+const newButtonForm = document.getElementById('newButtonForm');
+const toggleFormButton = document.getElementById('toggleFormButton');
+const saveButton = document.getElementById('saveButton');
+const cancelButton = document.getElementById('cancelButton');
+
+
+  
+let currentModal = null;
+let editingButton = null;
+const openedWindows = new Map(); // Track the opened windows
+
+
+// Create a drop zone overlay for the folder icon
+function createFolderDropZone() {
+  // Create a drop zone that overlays the folder icon
+  const dropZone = document.createElement('div');
+  dropZone.id = 'folderDropZone';
+  dropZone.className = 'folder-drop-zone';
+  
+  // Style the drop zone (add to your CSS)
+  // .folder-drop-zone {
+  //   position: absolute;
+  //   z-index: 100;
+  //   width: 40px;
+  //   height: 40px;
+  //   pointer-events: none;
+  // }
+  
+  // Position it over the folder icon
+  const folderRect = folderIcon.getBoundingClientRect();
+  dropZone.style.top = `${folderRect.top}px`;
+  dropZone.style.left = `${folderRect.left}px`;
+  dropZone.style.width = `${folderRect.width}px`;
+  dropZone.style.height = `${folderRect.height}px`;
+  
+  document.body.appendChild(dropZone);
+  return dropZone;
+}
+  
+  // Function to update button click handlers
+function updateButtonClickHandler(button) {
+  button.onclick = () => {
+    const refocusEnabled = JSON.parse(localStorage.getItem('refocusExistingWindows')) || false;
+    const url = button.dataset.url;
+    const size = button.dataset.size;
+    const openType = button.dataset.openType;
+
+
+    if (refocusEnabled && openedWindows.has(url)) {
+      const existingWindow = openedWindows.get(url);
+      if (existingWindow && !existingWindow.closed) {
+        existingWindow.focus();
+        return; // Stop here, no need to open a new window
+      }
+    }
+
+
+    if (openType === 'newTab') {
+      window.open(url, '_blank');
+    } else {
+      const newWindow = openWindow(url, size);
+      openedWindows.set(url, newWindow); // Track the opened window
+    }
+  };
+}
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+// Function to create and append a button to the specified container
+function createButton(buttonData, container = null, modalId = null) {
+  // Determine which container to use
+  const targetContainer = container || launchButtonsContainer;
+  
+  const buttonDiv = document.createElement('div');
+  buttonDiv.className = 'btn-group mb-2';
+  if (modalId) {
+    buttonDiv.dataset.modalId = modalId;
+  }
+
+
+  const button = document.createElement('button');
+  button.className = 'btn btn-sq-lg btn-outline-secondary launch-button';
+  button.dataset.url = buttonData.url;
+  button.dataset.name = buttonData.name;
+  button.dataset.size = buttonData.size;
+  button.dataset.openType = buttonData.openType;
+  button.innerHTML = `<i class='fa fa-external-link-alt'></i><br>${buttonData.name}`;
+
+
+  button.onclick = () => {
+    const refocusEnabled = JSON.parse(localStorage.getItem('refocusExistingWindows')) || false;
+
+
+    if (refocusEnabled && openedWindows.has(buttonData.url)) {
+      const existingWindow = openedWindows.get(buttonData.url);
+      if (existingWindow && !existingWindow.closed) {
+        existingWindow.focus();
+        return; // Stop here, no need to open a new window
+      }
+    }
+
+
+    if (buttonData.openType === 'newTab') {
+      window.open(buttonData.url, '_blank');
+    } else {
+      const newWindow = openWindow(buttonData.url, buttonData.size);
+      openedWindows.set(buttonData.url, newWindow); // Track the opened window
+    }
+  };
+
+
+  const dropdown = document.createElement('div');
+  dropdown.className = 'dropdown';
+  dropdown.innerHTML = `    
+    <button class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown"></button>
+    <div class="dropdown-menu">
+      <a class="dropdown-item" href="#" onclick="stickToTopButton(this, 'window')"><i class="fas fa-thumbtack"></i> Pin to Top</a>
+      <a class="dropdown-item" href="#" onclick="editButton(this)"><i class="fas fa-edit"></i> Edit</a>
+      <a class="dropdown-item" href="#" onclick="setShortcut(this)"><i class="fas fa-keyboard"></i> Set Shortcut</a>
+      <a class="dropdown-item text-danger" href="#" onclick="removeButton(this)"><i class="fas fa-trash-alt"></i> Remove</a>
+    </div>`;
+
+
+  buttonDiv.appendChild(button);
+  buttonDiv.appendChild(dropdown);
+  targetContainer.appendChild(buttonDiv);
+  
+  return button;
+}
+
+
+// Load buttons for a specific modal
+function loadButtons(modalId) {
+  launchButtonsContainer.innerHTML = '';  // Clear current buttons
+
+
+  // Predefined buttons for each modal
+  const predefinedButtons = {
+    1: [
+      { url: 'https://promptgpt.stackboard.one/', name: 'Open promptGPT', size: 'large', openType: 'newWindow' }
+    ],
+    2: [
+      { url: 'https://chatgpt.com', name: 'Launch chatGPT', size: 'large', openType: 'newWindow' }
+    ],
+    3: [
+      { url: 'https://github.com', name: 'github home', size: 'large', openType: 'newWindow' }
+    ],
+    4: [
+      { url: 'https://dymond.systems/bot2/editorv8/', name: 'Launch stack editor', size: 'large', openType: 'newWindow' }
+    ],
+    5: [
+      { url: 'https://google.com', name: 'google search', size: 'large', openType: 'newWindow' }
+    ],
+    6: [
+      { url: 'https://docs.google.com', name: 'Open docs', size: 'large', openType: 'newWindow' }
+    ],
+      7: [
+      { url: 'https://mail.google.com', name: 'Open gmail', size: 'large', openType: 'newWindow' }
+    ],
+    8: [
+      { url: 'https://fontawesome.com', name: 'Font awesome home', size: 'large', openType: 'newWindow' }
+    ],
+    9: [
+      { url: 'https://www.w3schools.com/html/tryit.asp?filename=tryhtml_editor', name: 'open editor', size: 'large', openType: 'newWindow' }
+    ],
+    10: [
+      { url: 'https://gemini.google.com/app', name: 'open Gemini', size: 'large', openType: 'newWindow' }
+    ],
+    11: [
+      { url: 'https://github.com/copilot', name: 'open Copilot', size: 'large', openType: 'newWindow' }
+    ],
+	  12: [
+      { url: 'https://firebase.google.com', name: 'open firebase', size: 'large', openType: 'newWindow' }
+    ],
+     13: [
+      { url: 'https://vscode.dev/', name: 'open VScode', size: 'large', openType: 'newWindow' }
+    ],
+     14: [
+      { url: 'https://codesandbox.io/templates', name: 'open codesandbox', size: 'large', openType: 'newWindow' }
+    ],
+     15: [
+      { url: 'https://app.linklyhq.com/', name: 'open Linkly', size: 'large', openType: 'newWindow' }
+    ],
+     16: [
+      { url: 'https://app.short.io/', name: 'open short.io', size: 'large', openType: 'newWindow' }
+    ],
+     17: [
+      { url: 'https://aws.amazon.com', name: 'open AWS', size: 'large', openType: 'newWindow' }
+    ],
+     18: [
+      { url: 'https://claude.ai/', name: 'open Claude', size: 'large', openType: 'newWindow' }
+    ],
+     19: [
+      { url: 'https://deepseek.com/', name: 'Home', size: 'large', openType: 'newWindow' },     
+      { url: 'https://chat.deepseek.com/', name: 'Chat', size: 'large', openType: 'newWindow' }
+    ]
+  };
+
+
+  // Get predefined buttons and saved buttons from localStorage
+  const predefined = predefinedButtons[modalId] || [];
+  const savedButtons = JSON.parse(localStorage.getItem(`launchButtons_${modalId}`)) || [];
+
+
+  // Merge and avoid duplicates by filtering out already existing buttons (based on URL)
+  const allButtons = [
+    ...predefined.filter(p => !savedButtons.some(s => s.url === p.url)),
+    ...savedButtons
+  ];
+
+
+  // Create buttons from the merged list
+  allButtons.forEach(button => createButton(button, null, modalId));
+}
+
+
+// Load buttons for the collapsible container
+function loadCollapsibleContainerButtons(modalId) {
+  collapsibleContainer.innerHTML = ''; // Clear current buttons
+  const buttons = JSON.parse(localStorage.getItem(`collapsibleContainerButtons_${modalId}`)) || [];
+  buttons.forEach(button => createButton(button, collapsibleContainer, modalId));
+}
+
+
+// Save buttons for a specific modal - gets the current buttons from the DOM
+function saveButtons(modalId) {
+  const buttons = [];
+  document.querySelectorAll('#launch-buttons .launch-button').forEach(btn => {
+    buttons.push({
+      url: btn.dataset.url,
+      name: btn.dataset.name,
+      size: btn.dataset.size,
+      openType: btn.dataset.openType
+    });
+  });
+  localStorage.setItem(`launchButtons_${modalId}`, JSON.stringify(buttons));
+}
+
+
+// Save buttons for the collapsible container - gets the current buttons from the DOM
+function saveCollapsibleContainerButtons(modalId) {
+  const buttons = [];
+  document.querySelectorAll('#collapsibleContainer .launch-button').forEach(btn => {
+    buttons.push({
+      url: btn.dataset.url,
+      name: btn.dataset.name,
+      size: btn.dataset.size,
+      openType: btn.dataset.openType
+    });
+  });
+  localStorage.setItem(`collapsibleContainerButtons_${modalId}`, JSON.stringify(buttons));
+}
+
+
+// Add a button directly to collapsible container (when dropping on folder icon)
+function addButtonToCollapsible(buttonData, modalId) {
+  // Create the button in the collapsible container
+  createButton(buttonData, collapsibleContainer, modalId);
+  
+  // Save the updated container
+  if (modalId) {
+    saveCollapsibleContainerButtons(modalId);
+  }
+  
+  // Show a visual feedback that the button was added (optional)
+  folderIcon.classList.add('drop-success');
+  setTimeout(() => {
+    folderIcon.classList.remove('drop-success');
+  }, 300);
+}
+
+
+// Save all button arrangements
+function saveAllButtonArrangements(modalId) {
+  if (modalId) {
+    saveButtons(modalId);
+    saveCollapsibleContainerButtons(modalId);
+  }
+}
+
+
+// Open a new window based on the selected size
+function openWindow(url, size) {
+  let width, height, left, top;
+
+
+  switch (size) {
+    case 'small':
+      width = screen.width * 0.4;
+      height = screen.height * 0.4;
+      break;
+    case 'medium':
+      width = screen.width * 0.6;
+      height = screen.height * 0.6;
+      break;
+    case 'large':
+      width = screen.width * 0.8;
+      height = screen.height * 0.8;
+      break;
+    case 'full':
+      width = screen.width * 1.0;
+      height = screen.height * 1.0;
+      break;
+    default:
+      width = screen.width * 0.5;
+      height = screen.height * 0.5;
+  }
+
+
+  left = (screen.width - width) / 2;
+  top = (screen.height - height) / 2;
+
+
+  const newWin = window.open(url, '_blank', `width=${width},height=${height},top=${top},left=${left}`);
+
+
+  if (newWin) {
+    openedWindows.set(url, newWin); // Store reference
+    newWin.onbeforeunload = () => openedWindows.delete(url); // Remove when closed
+  }
+
+
+  return newWin;
+}
+  
+
+
+// Create a drop zone overlay for the folder icon
+function createFolderDropZone() {
+  // Create a drop zone that overlays the folder icon
+  const dropZone = document.createElement('div');
+  dropZone.id = 'folderDropZone';
+  dropZone.className = 'folder-drop-zone';
+  
+  // Position it over the folder icon
+  updateDropZonePosition(dropZone);
+  
+  document.body.appendChild(dropZone);
+  return dropZone;
+}
+
+
+// Update drop zone position
+function updateDropZonePosition(dropZone) {
+  if (!folderIcon || !dropZone) return;
+  
+  const folderRect = folderIcon.getBoundingClientRect();
+  dropZone.style.top = `${folderRect.top + window.scrollY}px`;
+  dropZone.style.left = `${folderRect.left + window.scrollX}px`;
+  dropZone.style.width = `${folderRect.width}px`;
+  dropZone.style.height = `${folderRect.height}px`;
+}
+
+
+// Initialize Sortable.js for launch buttons and configure folder drop functionality
+document.addEventListener('DOMContentLoaded', () => {
+  // Add CSS for visual feedback
+  const style = document.createElement('style');
+  style.innerHTML = `
+    .folder-drop-zone {
+      position: absolute;
+      z-index: 100;
+      pointer-events: none;
+      border: 2px dashed transparent;
+      transition: all 0.3s ease;
+    }
+    .folder-highlight {
+      transform: scale(1.2);
+      color: #007bff;
+      transition: all 0.3s ease;
+    }
+    .launch-button {
+      cursor: grab;
+    }
+    .launch-button:active {
+      cursor: grabbing;
+    }
+    .drop-success {
+      animation: pulse 0.3s ease;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.3); }
+      100% { transform: scale(1); }
+    }
+  `;
+  document.head.appendChild(style);
+
+
+  // Create drop zone for folder icon
+  const dropZone = createFolderDropZone();
+  
+  // Update position on window resize and scroll
+  window.addEventListener('resize', () => updateDropZonePosition(dropZone));
+  document.addEventListener('scroll', () => updateDropZonePosition(dropZone));
+
+
+  if (typeof Sortable !== 'undefined') {
+    const sortableLaunchButtons = new Sortable(launchButtonsContainer, {
+      animation: 150,
+      handle: '.launch-button', // Drag handle
+      group: {
+        name: 'shared', // Same group name for both containers
+        pull: true, // Allow dragging from this container
+        put: true // Allow dropping into this container
+      },
+      onEnd: function (evt) {
+        // Save the arrangement of both containers when an item is moved
+        if (currentModal) {
+          saveAllButtonArrangements(currentModal);
+        }
+      }
+    });
+
+
+    // Initialize Sortable.js for collapsible container
+    const sortableCollapsibleContainer = new Sortable(collapsibleContainer, {
+      animation: 150,
+      group: {
+        name: 'shared', // Same group name for both containers
+        pull: true, // Allow dragging from this container
+        put: true // Allow dropping into this container
+      },
+      onEnd: function (evt) {
+        // Save the arrangement of both containers when an item is moved
+        if (currentModal) {
+          saveAllButtonArrangements(currentModal);
+        }
+      }
+    });
+    
+    // Make folder icon a drop target
+    folderIcon.addEventListener('dragover', (event) => {
+      event.preventDefault();
+      folderIcon.classList.add('folder-highlight');
+    });
+    
+    folderIcon.addEventListener('dragleave', () => {
+      folderIcon.classList.remove('folder-highlight');
+    });
+    
+    folderIcon.addEventListener('drop', (event) => {
+      event.preventDefault();
+      folderIcon.classList.remove('folder-highlight');
+      
+      if (draggedButtonData) {
+        // Add to collapsible and save
+        addButtonToCollapsible({
+          url: draggedButtonData.url,
+          name: draggedButtonData.name,
+          size: draggedButtonData.size,
+          openType: draggedButtonData.openType
+        }, currentModal);
+        
+        // Remove the original button if it's from the main container
+        const originalButton = draggedButtonData.element;
+        if (originalButton && originalButton.closest('#launch-buttons')) {
+          originalButton.closest('.btn-group').remove();
+          if (currentModal) {
+            saveButtons(currentModal);
+          }
+        }
+        
+        // Reset the draggedButtonData
+        draggedButtonData = null;
+        
+        // Show collapsible container briefly to give feedback
+        $('#demo').collapse('show');
+        setTimeout(() => {
+          $('#demo').collapse('hide');
+        }, 1000);
+      }
+    });
+  }
+});
+
+
+// Function to remove a button
+function removeButton(element) {
+  const buttonDiv = element.closest('.btn-group');  // Get the parent .btn-group of the clicked button
+  const button = buttonDiv.querySelector('.launch-button');
+  
+  // Remove from DOM
+  buttonDiv.remove();
+
+
+  // Save current arrangements after removal
+  if (currentModal) {
+    saveAllButtonArrangements(currentModal);
+  }
+}
+
+
+// Edit button
+function editButton(element) {
+  const button = element.closest('.btn-group').querySelector('.launch-button');
+  document.getElementById('buttonURL').value = button.dataset.url;
+  document.getElementById('buttonName').value = button.dataset.name;
+  document.querySelector(`input[value="${button.dataset.size}"]`).checked = true;
+  document.querySelector(`input[value="${button.dataset.openType}"]`).checked = true;
+  
+  editingButton = button;
+  saveButton.textContent = 'Save';
+  $('#addEditButton').collapse('show');
+}
+
+
+// Add or edit button
+newButtonForm.onsubmit = (e) => {
+  e.preventDefault();
+  const url = document.getElementById('buttonURL').value;
+  const name = document.getElementById('buttonName').value;
+  const size = document.querySelector('input[name="windowSize"]:checked').value;
+  const openType = document.querySelector('input[name="openType"]:checked').value;
+  
+  if (editingButton) {
+    // Update existing button
+    editingButton.dataset.url = url;
+    editingButton.dataset.name = name;
+    editingButton.dataset.size = size;
+    editingButton.dataset.openType = openType;
+    editingButton.innerHTML = `<i class='fa fa-external-link-alt'></i><br>${name}`;
+    
+    // Update the click handler immediately
+    updateButtonClickHandler(editingButton);
+    
+    // Save all arrangements
+    if (currentModal) {
+      saveAllButtonArrangements(currentModal);
+    }
+    
+    editingButton = null;
+    saveButton.textContent = 'Add';
+  } else {
+    // Create new button in the main container by default
+    createButton({ url, name, size, openType }, launchButtonsContainer, currentModal);
+    
+    // Save all arrangements
+    if (currentModal) {
+      saveAllButtonArrangements(currentModal);
+    }
+  }
+
+
+  newButtonForm.reset();
+  $('#addEditButton').collapse('hide');
+  $('#demo').collapse('hide');
+};
+
+
+// Cancel button
+cancelButton.onclick = () => {
+  newButtonForm.reset();
+  editingButton = null;
+  saveButton.textContent = 'Add';
+  $('#addEditButton').collapse('hide');
+  $('#demo').collapse('hide');
+};
+
+
+// Function to set a keyboard shortcut
+function setShortcut(element) {
+  const buttonDiv = element.closest('.btn-group');
+  
+  const button = buttonDiv.querySelector('.launch-button');
+
+
+  // Prompt the user to enter a shortcut key
+  const shortcut = prompt('Enter a keyboard shortcut (e.g., "Ctrl+Shift+K"):');
+  if (shortcut) {
+    button.dataset.shortcut = shortcut;
+    
+    // Save the shortcut to localStorage
+    const shortcuts = JSON.parse(localStorage.getItem("shortcuts")) || {};
+    shortcuts[shortcut] = {
+      url: button.dataset.url,
+      openType: button.dataset.openType,
+      size: button.dataset.size // Store size with shortcut
+    };
+    localStorage.setItem("shortcuts", JSON.stringify(shortcuts));
+    
+    alert(`Shortcut "${shortcut}" set for "${button.dataset.name}"`);
+  }
+}
+
+
+// Load buttons for both containers on page load and set up event listeners
+document.addEventListener('DOMContentLoaded', () => {
+  // Set up the modal event listener
+  $('#myModal').on('show.bs.modal', function (e) {
+    currentModal = $(e.relatedTarget).data('modal'); // Get modal ID
+    loadButtons(currentModal); // Load launch buttons for the modal
+    loadCollapsibleContainerButtons(currentModal); // Load collapsible container buttons for the modal
+  });
+  
+  // Close all windows when the modal is hidden (if auto-close is enabled)
+  $('#myModal').on('hidden.bs.modal', function () {
+    const autoCloseEnabled = JSON.parse(localStorage.getItem("autoCloseWindows")) || false;
+
+
+    if (autoCloseEnabled) {
+      // Loop through all stored windows and close them
+      openedWindows.forEach((win, url) => {
+        if (win && !win.closed) {
+          win.close();
+        }
+      });
+
+
+      // Clear the map after closing all windows
+      openedWindows.clear();
+    }
+  });
+  
+  // Add tooltip to folder icon
+  if (folderIcon) {
+    // You can use Bootstrap's tooltip or a custom implementation
+    $(folderIcon).tooltip({
+      title: "Drag buttons here to add to folder without opening",
+      placement: "top"
+    });
+  }
+  
+  // Set up auto-close toggle
+  const autoCloseToggle = document.getElementById("autoCloseWindowsToggle");
+  if (autoCloseToggle) {
+    // Load saved state
+    const autoCloseEnabled = JSON.parse(localStorage.getItem("autoCloseWindows")) || false;
+    autoCloseToggle.checked = autoCloseEnabled;
+
+
+    // Save state when toggled
+    autoCloseToggle.addEventListener("change", () => {
+      localStorage.setItem("autoCloseWindows", autoCloseToggle.checked);
+    });
+  }
+  
+  // Set up refocus toggle
+  const refocusToggle = document.getElementById('windowBehaviorToggle');
+  if (refocusToggle) {
+    refocusToggle.checked = JSON.parse(localStorage.getItem('refocusExistingWindows')) || false;
+
+
+    refocusToggle.addEventListener('change', (event) => {
+      localStorage.setItem('refocusExistingWindows', event.target.checked);
+    });
+  }
+  
+  // Set up shortcut refocus toggle
+  const shortcutRefocusToggle = document.getElementById("shortcutBehaviorToggle");
+  if (shortcutRefocusToggle) {
+    // Load the setting from localStorage
+    shortcutRefocusToggle.checked = JSON.parse(localStorage.getItem("refocusShortcutWindows")) || false;
+
+
+    // Save the setting when toggled
+    shortcutRefocusToggle.addEventListener("change", (event) => {
+      localStorage.setItem("refocusShortcutWindows", event.target.checked);
+    });
+  }
+});
+// Listen for keyboard shortcuts
+document.addEventListener("keydown", (event) => {
+  const shortcuts = JSON.parse(localStorage.getItem("shortcuts")) || {};
+  const refocusEnabled = JSON.parse(localStorage.getItem("refocusShortcutWindows")) || false;
+
+
+  for (const shortcut in shortcuts) {
+    if (checkShortcut(event, shortcut)) {
+      event.preventDefault();
+      const { url, openType } = shortcuts[shortcut];
+
+
+      // Retrieve latest size setting from the button dataset
+      const button = document.querySelector(`.launch-button[data-url="${url}"]`);
+      const size = button ? button.dataset.size : "medium"; // Default to medium if not found
+
+
+      if (refocusEnabled && openedWindows.has(url)) {
+        const existingWindow = openedWindows.get(url);
+        if (existingWindow && !existingWindow.closed) {
+          existingWindow.focus();
+          return; // Stop execution if refocus was successful
+        }
+      }
+
+
+      // If refocusing fails or is disabled, open a new window
+      if (openType === "newTab") {
+        window.open(url, "_blank");
+      } else {
+        const newWindow = openWindow(url, size);
+        openedWindows.set(url, newWindow); // Track new window
+      }
+    }
+  }
+});
+
+
+// Helper function to check if the pressed keys match the shortcut
+function checkShortcut(event, shortcut) {
+  const keys = shortcut.split('+');
+  const modifiers = {
+    ctrl: event.ctrlKey,
+    shift: event.shiftKey,
+    alt: event.altKey,
+    meta: event.metaKey,
+  };
+
+
+  for (const key of keys) {
+    const lowerKey = key.toLowerCase();
+    if (lowerKey === 'ctrl' || lowerKey === 'shift' || lowerKey === 'alt' || lowerKey === 'meta') {
+      if (!modifiers[lowerKey]) return false;
+    } else {
+      if (event.key.toLowerCase() !== lowerKey) return false;
+    }
+  }
+  return true;
+}
