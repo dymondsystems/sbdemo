@@ -1,0 +1,988 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Page</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+  <style>
+    img { width: 100px; height: 100px; }
+    .thumbnail { height: 320px; }
+    .collapse { margin-top: 15px; }
+    .filter-button {margin-bottom:5px;}
+    
+    
+    #iframeModal .modal-dialog {
+            width: 80%; /* Make modal full width */
+            height: 100%; /* Make modal full height */
+            
+        }
+
+       #iframeModal .modal-content {
+             height: 100%; /* Make content fill modal height */
+            border: 0; /* Remove default border */
+        }
+
+       #iframeModal .modal-body {
+           flex-grow: 1; /* Allow body to expand and fill available space */
+            padding: 0; /* Remove default padding from body */
+            overflow: hidden; /* Prevent iframe content from overflowing */ 
+          height:600px;
+        }
+
+       #iframeModal .modal-iframe {
+            width: 100%;
+            height:100%;
+            border: none; /* Remove iframe border */
+        }
+
+        
+    
+    
+    
+
+  
+  </style> 
+</head>
+<body>
+  <div class="container">
+    <h2>Apps</h2>
+    <div class="container">
+      <nav class="navbar" id="mNavbar">
+        <center>
+          <a href="/sbdemo/v2/dashv5" class="btn btn-default" style="left:0px; margin-top:20px; font-size: 20px;">Back to dashbord</a>
+        </center>
+      </nav>
+    </div>
+    <hr>
+    <div class="pull-right">
+      <button class="btn btn-primary filter-button" data-filter="all">All</button>
+      <button class="btn btn-primary filter-button" data-filter="business">Business</button>
+      <button class="btn btn-primary filter-button" data-filter="ai">Ai</button>
+      <button class="btn btn-primary filter-button" data-filter="development">Development</button>
+      <button class="btn btn-primary filter-button" data-toggle="collapse" data-target="#moreFilters">More Filters</button>
+    </div>
+    <br>
+    <br>
+    <div id="moreFilters" class="collapse">
+      <button class="btn btn-secondary filter-button" data-filter="test">test</button>
+      <button class="btn btn-secondary filter-button" data-filter="tools">Tools</button>
+      <button class="btn btn-secondary filter-button" data-filter="design">Design</button>
+      <button class="btn btn-secondary filter-button" data-filter="tools">Tools</button>
+      <button class="btn btn-secondary filter-button" data-filter="design">Design</button>
+      <button class="btn btn-secondary filter-button" data-filter="tools">Tools</button>
+      <button class="btn btn-secondary filter-button" data-filter="design">Design</button>
+      <button class="btn btn-secondary filter-button" data-filter="tools">Tools</button>
+         <button class="btn btn-secondary filter-button" data-filter="design">Design</button>
+      <button class="btn btn-secondary filter-button" data-filter="tools">Tools</button>
+      <button class="btn btn-secondary filter-button" data-filter="design">Design</button>
+      <button class="btn btn-secondary filter-button" data-filter="tools">Tools</button>
+      <button class="btn btn-secondary filter-button" data-filter="design">Design</button>
+      <button class="btn btn-secondary filter-button" data-filter="tools">Tools</button>
+      <button class="btn btn-secondary filter-button" data-filter="design">Design</button>
+      <button class="btn btn-secondary filter-button" data-filter="tools">Tools</button>
+      <button class="btn btn-secondary filter-button" data-filter="design">Design</button>
+      <button class="btn btn-secondary filter-button" data-filter="tools">Tools</button>
+      <button class="btn btn-secondary filter-button" data-filter="design">Design</button>
+      <button class="btn btn-secondary filter-button" data-filter="tools">Tools</button>
+      <button class="btn btn-secondary filter-button" data-filter="design">Design</button>
+      <button class="btn btn-secondary filter-button" data-filter="tools">Tools</button>
+      <button class="btn btn-secondary filter-button" data-filter="design">Design</button>
+      <button class="btn btn-secondary filter-button" data-filter="tools">Tools</button>
+         <button class="btn btn-secondary filter-button" data-filter="design">Design</button>
+      <button class="btn btn-secondary filter-button" data-filter="tools">Tools</button>
+      <button class="btn btn-secondary filter-button" data-filter="design">Design</button>
+      <button class="btn btn-secondary filter-button" data-filter="tools">Tools</button>
+      <button class="btn btn-secondary filter-button" data-filter="design">Design</button>
+      <button class="btn btn-secondary filter-button" data-filter="tools">Tools</button>
+      <button class="btn btn-secondary filter-button" data-filter="design">Design</button>
+      <button class="btn btn-secondary filter-button" data-filter="tools">Tools</button>
+    </div>
+    <br><br>
+    <h3>Choose a stack</h3>Type / to access
+    <select id="sectionDropdown" class="form-control"style="width:300px;">
+      <!-- Dynamically populated sections -->
+    </select>
+    <br><br>
+    <div class="form-group">
+      <input id="search-box" type="text" class="form-control" style="height: 60px; font-size: 25px; font-weight: bold;" placeholder="Search Apps..." />
+    </div>
+    <br>
+    <button class="btn btn-success" data-toggle="modal" data-target="#createCardModal" style="width: 200px; height: 50px; font-size: 20px;">Custom Card</button>
+    <br><br>
+    <div class="gallery">
+      <!-- Cards will be populated here -->
+    </div>
+  </div>
+
+  <!-- The Modal for creating a new card -->
+  <div class="modal fade" id="createCardModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Create New Card</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <form id="createCardForm">
+            <div class="form-group">
+              <label for="cardTitle">Title</label>
+              <input type="text" class="form-control" id="cardTitle" required>
+            </div>
+            <div class="form-group">
+              <label for="cardDescription">Description</label>
+              <input type="text" class="form-control" id="cardDescription" required>
+            </div>
+            <div class="form-group">
+              <label for="cardImage">Image URL (optional)</label>
+              <input type="text" class="form-control" id="cardImage" placeholder="Leave blank to use default image">
+            </div>
+            <div class="form-group">
+              <label for="cardCategory">Category</label>
+              <input type="text" class="form-control" id="cardCategory" required>
+            </div>
+            <div class="form-group">
+              <label for="cardTag"></label>
+              <input type="hidden" class="form-control" id="cardTag" display="none" required>
+            </div>
+            <div class="form-group">
+              <label for="cardFilter"></label>
+              <input type="hidden" class="form-control" id="cardFilter" display="none">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="submitCard">Add to stack</button>
+        </div>
+      </div>
+    </div>
+  </div> 
+    
+    
+   
+  
+  
+  
+  
+  <div class="modal fade" id="iframeModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-xl">  <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title">App info</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <iframe id="iframeContent" class="modal-iframe"></iframe>
+            </div>
+
+            <div class="modal-footer">  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>  </div>  </div> 
+ 
+ 
+ 
+
+  <script>
+   let activeFilter = 'all';
+
+$(document).on('click', '.filter-button', function () {
+    activeFilter = $(this).data('filter').toLowerCase();
+    $('.gallery .card-item').each(function () {
+        const filterTags = $(this).data('filter').toLowerCase().split(','); // Split into array
+        if (filterTags.includes(activeFilter) || activeFilter === 'all') { // check if array contains the active filter.
+            $(this).fadeIn();
+        } else {
+            $(this).fadeOut();
+        }
+    });
+
+
+      // Close collapsible div
+      if ($(this).closest('#moreFilters').length) {
+        $('#moreFilters').collapse('hide');
+      }
+    });
+
+    // Search functionality
+    $(document).on('input', '#search-box', function () {
+      const query = $(this).val().toLowerCase().split(/\s+/);
+
+      $('.gallery .card-item').each(function () {
+        const title = $(this).find('h3').text().toLowerCase();
+        const description = $(this).find('h4').text().toLowerCase();
+        const tags = $(this).data('tag').toLowerCase();
+        const content = `${title} ${description} ${tags}`;
+
+        const matches = query.every(term => content.includes(term));
+        matches ? $(this).fadeIn() : $(this).fadeOut();
+      });
+    });
+
+    // Sample predefined cards
+     // Sample predefined cards
+    const predefinedCards = [
+      
+       { id: '1',
+      title: 'PromptGPT',
+      description: 'Create and manage chatGPT prompts',
+      image: 'https://thumbs.dreamstime.com/b/initial-letter-p-logo-design-play-icon-music-vector-illustration-341837202.jpg',
+      category: 'Ai tool',
+      tag: 'chat, ai, gpt, bot', // data-tag
+      filter: 'ai', // data-filter
+      borderClass: 'border-primary',
+      textClass: 'text-primary',
+      modalId: '1',
+    },
+    
+    { id: '2',
+      title: 'Chat GPT',
+      description: 'Ai chat bot',
+      image: 'https://cdn.iconscout.com/icon/free/png-256/free-chatgpt-icon-download-in-svg-png-gif-file-formats--ai-technology-artificial-intelligence-pack-science-icons-7576880.png?f=webp&w=256',
+      category: 'Entertainment',
+      tag: 'chat, ai, gpt, bot', // data-tag
+      filter: ['ai'], // data-filter
+      borderClass: 'border-primary',
+      textClass: 'text-primary',
+     infoUrl: 'chatgpt',
+      modalId: '2',
+    },
+    
+    { id: '3',
+      title: 'Github',
+      description: 'Manage your code base',
+      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQhcVrL5XiyI9tM5z8mYG9oSL76qEIV-JRH_A&s',
+      category: 'Code, development',
+      tag: 'github, code, development, html', // data-tag
+      filter: 'development', // data-filter
+      borderClass: 'border-primary',
+      textClass: 'text-primary',
+      modalId: '3',
+    },
+    { id: '4',
+      title: 'Stack editor',
+      description: 'Simple front end editor',
+      image: 'https://discourse-user-assets.s3.amazonaws.com/original/2X/d/df30640741461569071875cf4ff6cad9924f8b32.png',
+      category: 'development',
+      tag: 'code, editor, html,css, javascript,python', // data-tag
+      filter: 'development', // data-filter
+      borderClass: 'border-primary',
+      textClass: 'text-primary',
+      modalId: '4',
+    },
+    { id: '5',
+      title: 'google',
+      description: 'Search the web',
+      image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/800px-Google_%22G%22_logo.svg.png',
+      category: 'Entertainment',
+      tag: 'google, search', // data-tag
+      filter: 'business', // data-filter
+      borderClass: 'border-primary',
+      textClass: 'text-primary',
+      modalId: '5',
+    },
+    
+    { id: '6',
+      title: 'google docs',
+      description: 'Manage documents',
+      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpXYkEqKR1Iwm4ZIsDgW_GVQlODN4T_vkRFQ&s',
+      category: 'documents',
+      tag: 'docs, files, forms', // data-tag
+      filter: 'business', // data-filter
+      borderClass: 'border-primary',
+      textClass: 'text-primary',
+      modalId: '6',
+    },
+    { id: '7',
+      title: 'Gmail',
+      description: 'Email client',
+      image: 'https://standfirst-designweek-production.imgix.net/uploads/2020/10/07113122/gmail-1.jpg?fit=crop&crop=faces&q=80&auto=compress,format&w=364&h=243&dpr=2.625',
+      category: 'business',
+      tag: 'mail, gmail', // data-tag
+      filter: 'business', // data-filter
+      borderClass: 'border-primary',
+      textClass: 'text-primary',
+      modalId: '7',
+    },
+      { id: '8',
+      title: 'Font awesome',
+      description: 'Email client',
+      image: 'https://avatars.githubusercontent.com/u/1505683?v=4',
+      category: 'business',
+      tag: 'fonts, icons, design,development', // data-tag
+      filter: 'development', // data-filter
+      borderClass: 'border-primary',
+      textClass: 'text-primary',
+      modalId: '8',
+    },
+    
+      { id: '9',
+      title: 'tryit editor',
+      description: 'Simple front end editor',
+      image: 'https://d4.alternativeto.net/J2fiVl69ZFbPicxXE0lKoujQcbee8jxBUOKihh0BNws/rs:fit:280:280:0/g:ce:0:0/exar:1/YWJzOi8vZGlzdC9pY29ucy93M3NjaG9vbHNfMjMyMTk0LnBuZw.png',
+      category: 'development',
+      tag: 'html, code, editor', // data-tag
+      filter: 'development', // data-filter
+      borderClass: 'border-primary',
+      textClass: 'text-primary',
+      modalId: '9',
+    },
+      { id: '10',
+      title: 'Gemini',
+      description: 'Ai chat assistant by google',
+      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThr7qrIazsvZwJuw-uZCtLzIjaAyVW_ZrlEQ&s',
+      category: 'Ai chat',
+      tag: 'ai,chat,bot', // data-tag
+      filter: 'ai', // data-filter
+      borderClass: 'border-primary',
+      textClass: 'text-primary',
+      modalId: '10',
+    },
+        { id: '11',
+      title: 'Copilot',
+      description: 'Ai coding assistant by github',
+      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRA_84-WS_nHtqLPnuvyLEAR17zFDRFuD-7yQ&s',
+      category: 'Coding Ai',
+      tag: 'ai,chat,bot,github,coding, web, development', // data-tag
+      filter: 'ai', // data-filter
+      borderClass: 'border-primary',
+      textClass: 'text-primary',
+      modalId: '11',
+    },
+
+       { id: '12',
+      title: 'firebase',
+      description: 'Cloud based web develoment',
+      image: 'https://www.gstatic.com/devrel-devsite/prod/v5ab6fd0ad9c02b131b4d387b5751ac2c3616478c6dd65b5e931f0805efa1009c/firebase/images/touchicon-180.png',
+      category: 'Web development',
+      tag: 'app, data, base,coding, web, development', // data-tag
+      filter: 'development', // data-filter
+      borderClass: 'border-primary',
+      textClass: 'text-primary',
+      modalId: '12',
+    },
+     { id: '13',
+      title: 'VScode',
+      description: '#1 coding editor',
+      image: 'https://chris-ayers.com/assets/images/vscode-logo.png',
+      category: 'Web development',
+      tag: 'app, data, base,coding, web, development', // data-tag
+      filter: 'development', // data-filter
+      borderClass: 'border-primary',
+      textClass: 'text-primary',
+      modalId: '13',
+    },
+    
+     { id: '14',
+      title: 'Code sandbox',
+      description: 'Multi language playground',
+      image: 'https://images.saasworthy.com/codesandbox_12998_logo_1631778366_kenkz.png',
+      category: 'Web development',
+      tag: 'app, data, base,coding, web, development', // data-tag
+      filter: 'develoment', // data-filter
+      borderClass: 'border-primary',
+      textClass: 'text-primary',
+      modalId: '14',
+    },
+    
+     { id: '15',
+      title: 'Linkly',
+      description: 'Link shortening and tracking',
+      image: 'https://images.crunchbase.com/image/upload/c_pad,h_256,w_256,f_auto,q_auto:eco,dpr_1/bqwyo95kt9wqnimaun77',
+      category: 'Links shorteners',
+      tag: 'Link, shortening, tracking, data, analytics', // data-tag
+      filter: 'Links shortener', // data-filter
+      borderClass: 'border-primary',
+      textClass: 'text-primary',
+      modalId: '15',
+    },
+     { id: '16',
+      title: 'Short.io',
+      description: 'Cloud base web develoment',
+      image: 'https://ph-files.imgix.net/83df30e1-503b-4664-a3d1-f14d13c53650.png?auto=format',
+      category: 'link shorteners',
+      tag: 'Link, shortening, tracking, data, analytics', // data-tag
+      filter: 'Links shorteners', // data-filter
+      borderClass: 'border-primary',
+      textClass: 'text-primary',
+      modalId: '16',
+    },
+    { id: '17',
+      title: 'AWS',
+      description: 'Cloud web and app sevices',
+      image: 'https://www.amd.com/content/dam/amd/en/images/logos/partners/aws-colored-logo-padded.png',
+      category: 'Web development',
+      tag: 'app, data, base,coding, web, development, hosting, database,storage', // data-tag
+      filter: 'development', // data-filter
+      borderClass: 'border-primary',
+      textClass: 'text-primary',
+      modalId: '17',
+    },
+    { id: '18',
+      title: 'Claude',
+      description: 'Advanced ai Chat bot',
+      image: 'https://cdn.brandfetch.io/claude.ai/fallback/lettermark/theme/dark/h/256/w/256/icon?c=1bfwsmEH20zzEfSNTed',
+      category: 'Chat bot',
+      tag: 'ai, chat, bot', // data-tag
+      filter: 'Ai', // data-filter
+      borderClass: 'border-primary',
+      textClass: 'text-primary',
+      modalId: '18',
+    },
+     { id: '19',
+      title: 'deepseek R1',
+      description: 'Open source ai',
+      image: 'https://custom.typingmind.com/assets/models/deepseek.png',
+      category: 'Chat bot',
+      tag: 'ai, chat, bot', // data-tag
+      filter: ['Ai','test'], // data-filter
+      borderClass: 'border-primary',
+      textClass: 'text-primary',
+      modalId: '19',
+    },
+      { id: '20',
+      title: 'facebook',
+      description: 'Social network',
+      image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Facebook_logo_%28square%29.png/800px-Facebook_logo_%28square%29.png',
+      category: 'social',
+      tag: 'facebook, meta, network, social media', // data-tag
+      filter: ['social'], // data-filter
+      borderClass: 'border-primary',
+      textClass: 'text-primary',
+     infoUrl: '',
+      modalId: '20',
+    },
+      { id: '21',
+      title: 'x.com',
+      description: 'Micro blogging service',
+      image: 'https://assets1.chainstoreage.com/2023-07/twitter-x-logo.png',
+      category: 'Social',
+      tag: 'micro, blogging, social, twitter', // data-tag
+      filter: ['ai'], // data-filter
+      borderClass: 'border-primary',
+      textClass: 'text-primary',
+     infoUrl: '',
+      modalId: '21',
+    },
+      { id: '22',
+      title: 'Youtube',
+      description: 'Broadcast yourself',
+      image: 'https://cdn3.iconfinder.com/data/icons/social-network-30/512/social-06-512.png',
+      category: 'video',
+      tag: 'video, editing, social, sharing, live streaming', // data-tag
+      filter: ['video, video sharing'], // data-filter
+      borderClass: 'border-primary',
+      textClass: 'text-primary',
+     infoUrl: '',
+      modalId: '22',
+    },
+      { id: '23',
+      title: 'Ycombinator',
+      description: 'tech community',
+      image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Y_Combinator_logo.svg/1200px-Y_Combinator_logo.svg.png',
+      category: 'Social',
+      tag: 'forum, tech, startup, hacker news', // data-tag
+      filter: ['forum, news'], // data-filter
+      borderClass: 'border-primary',
+      textClass: 'text-primary',
+     infoUrl: '',
+      modalId: '23',
+    },
+      { id: '24',
+      title: 'rumble',
+      description: 'video sharing',
+      image: 'https://img.icons8.com/?size=512&id=PK4azLeOpaNW&format=png',
+      category: 'Social',
+      tag: 'video, editing, social, sharing, live streaming', // data-tag
+      filter: ['video, live steaming'], // data-filter
+      borderClass: 'border-primary',
+      textClass: 'text-primary',
+     infoUrl: '',
+      modalId: '24',
+    },
+      { id: '25',
+      title: 'bluesky',
+      description: 'Private micro blogging service',
+      image: 'https://heidiwaterhouse.com/wp-content/uploads/2024/11/bluesky_logo.jpg',
+      category: 'Social',
+      tag: 'micro, blogging, social, twitter', // data-tag
+      filter: ['social, blogging'], // data-filter
+      borderClass: 'border-primary',
+      textClass: 'text-primary',
+     infoUrl: '',
+      modalId: '25',
+    },
+      { id: '26',
+      title: 'telegram',
+      description: 'Micro blogging service',
+      image: 'https://i.pinimg.com/474x/16/d7/bf/16d7bf6cc7b482aca65ca62be06e50e9.jpg',
+      category: 'social',
+      tag: 'micro, blogging, social, twitter,bluesky', // data-tag
+      filter: ['blogging, social'], // data-filter
+      borderClass: 'border-primary',
+      textClass: 'text-primary',
+     infoUrl: '',
+      modalId: '26',
+    },
+      { id: '27',
+      title: 'vimeo',
+      description: 'Video sharing',
+      image: 'https://seeklogo.com/images/V/vimeo-icon-logo-441934AEB1-seeklogo.com.png',
+      category: 'Social',
+      tag: 'video, streaming, live', // data-tag
+      filter: ['video, streaming'], // data-filter
+      borderClass: 'border-primary',
+      textClass: 'text-primary',
+     infoUrl: '',
+      modalId: '27',
+    },
+      { id: '28',
+      title: 'dailymotion',
+      description: 'Video sharing',
+      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAH2sMMP6BFg81JKDVZ_z6VIaWamISyJa0OQ&s',
+      category: 'Social',
+      tag: 'video, streaming', // data-tag
+      filter: ['video, streaming'], // data-filter
+      borderClass: 'border-primary',
+      textClass: 'text-primary',
+     infoUrl: '',
+      modalId: '28',
+    },
+      { id: '29',
+      title: 'discord',
+      description: 'Modern communication platform',
+      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROUST4RKt42EfYGatQecAsirMI837zfKSbpQ&s',
+      category: 'Social, communication',
+      tag: 'social, communication', // data-tag
+      filter: ['communication, social'], // data-filter
+      borderClass: 'border-primary',
+      textClass: 'text-primary',
+     infoUrl: '',
+      modalId: '29',
+    },
+      { id: '30',
+      title: 'instagram',
+      description: 'photo sharing',
+      image: 'https://c.files.bbci.co.uk/C5CC/production/_89663605_instagram_logo_976.jpg',
+      category: 'Social, image, photo',
+      tag: 'image, picture, photos', // data-tag
+      filter: ['photos, photo editing, photo sharing'], // data-filter
+      borderClass: 'border-primary',
+      textClass: 'text-primary',
+     infoUrl: '',
+      modalId: '30',
+    },
+      { id: '31',
+      title: 'tiktok',
+      description: 'Video clip sharing',
+      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjQT_Dyh40TZUX8jAmuw8rhrs50YB7fh8qcw&s',
+      category: 'Social, video',
+      tag: 'video, social', // data-tag
+      filter: ['video, social'], // data-filter
+      borderClass: 'border-primary',
+      textClass: 'text-primary',
+     infoUrl: '',
+      modalId: '31',
+    },
+      { id: '32',
+      title: 'tumblr',
+      description: 'Blogging service',
+      image: 'https://www.iconpacks.net/icons/2/free-tumblr-logo-icon-2434-thumb.png',
+      category: 'Social',
+      tag: 'blogging, social', // data-tag
+      filter: ['blogging, websites'], // data-filter
+      borderClass: 'border-primary',
+      textClass: 'text-primary',
+     infoUrl: '',
+      modalId: '32',
+    },
+      { id: '33',
+      title: 'trustpilot',
+      description: 'Business reviews',
+      image: 'https://cdn0.iconfinder.com/data/icons/logos-brands-in-colors/1785/trustpilot-3-512.png',
+      category: 'Business',
+      tag: 'business, reviews, listings', // data-tag
+      filter: ['business, reviews'], // data-filter
+      borderClass: 'border-primary',
+      textClass: 'text-primary',
+     infoUrl: '',
+      modalId: '33',
+    },
+      { id: '34',
+      title: 'reddit',
+      description: 'Social community',
+      image: 'https://www.reddiquette.com/wp-content/uploads/2020/09/What-Is-The-Reddit-Logo-Called.png',
+      category: 'Social',
+      tag: 'social', // data-tag
+      filter: ['social, community, forums'], // data-filter
+      borderClass: 'border-primary',
+      textClass: 'text-primary',
+     infoUrl: '',
+      modalId: '34',
+    },
+      { id: '35',
+      title: 'linkedin',
+      description: 'Social network for business',
+      image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/LinkedIn_logo_initials.png/600px-LinkedIn_logo_initials.png?20140125013055',
+      category: 'Social, business',
+      tag: 'social, business', // data-tag
+      filter: ['social, business'], // data-filter
+      borderClass: 'border-primary',
+      textClass: 'text-primary',
+     infoUrl: '',
+      modalId: '35',
+    },
+      { id: '36',
+      title: 'manta',
+      description: 'Company database',
+      image: 'https://getlogovector.com/wp-content/uploads/2019/09/manta-media-inc-logo-vector.png',
+      category: 'business',
+      tag: 'business, company, profile, listing', // data-tag
+      filter: ['business'], // data-filter
+      borderClass: 'border-primary',
+      textClass: 'text-primary',
+     infoUrl: '',
+      modalId: '36',
+    },
+      { id: '37',
+      title: 'medium',
+      description: ' Blogging service',
+      image: 'https://cdn.mos.cms.futurecdn.net/xJGh6cXvC69an86AdrLD98.jpg',
+      category: 'Social',
+      tag: 'micro, blogging, social, twitter', // data-tag
+      filter: ['blogging'], // data-filter
+      borderClass: 'border-primary',
+      textClass: 'text-primary',
+     infoUrl: '',
+      modalId: '37',
+    },
+      { id: '38',
+      title: 'substack',
+      description: 'Blogging/writing platform',
+      image: 'https://substack.com/img/substack.png',
+      category: 'blogging',
+      tag: 'blogging, social', // data-tag
+      filter: ['blogging, writing'], // data-filter
+      borderClass: 'border-primary',
+      textClass: 'text-primary',
+     infoUrl: '',
+      modalId: '38',
+    },
+      { id: '39',
+      title: 'merchant circle',
+      description: 'Business directory',
+      image: 'https://a.mktgcdn.com/p/QTpTL0lvZOgQLeTvbj1cwOdVpTdUwV0jSuSXCM22jTE/1024x1024.png',
+      category: 'Business',
+      tag: 'business, directory, listing, social', // data-tag
+      filter: ['business'], // data-filter
+      borderClass: 'border-primary',
+      textClass: 'text-primary',
+     infoUrl: '',
+      modalId: '39',
+    },
+      { id: '40',
+      title: 'truth social',
+      description: 'Social network',
+      image: 'https://1000logos.net/wp-content/uploads/2022/05/Truth-Social-Emblem.png',
+      category: 'Social',
+      tag: 'micro, blogging, social, twitter', // data-tag
+      filter: ['social'], // data-filter
+      borderClass: 'border-primary',
+      textClass: 'text-primary',
+     infoUrl: '',
+      modalId: '40',
+    },
+      { id: '41',
+      title: 'paper.li',
+      description: 'News feed platform',
+      image: 'https://images.g2crowd.com/uploads/product/image/large_detail/large_detail_dec36b75e42bf4339d8a1e3e2cc72a24/paper-li-paper-li.png',
+      category: 'news',
+      tag: 'news', // data-tag
+      filter: ['news'], // data-filter
+      borderClass: 'border-primary',
+      textClass: 'text-primary',
+     infoUrl: '',
+      modalId: '41',
+    },
+      { id: '42',
+      title: 'crunchbase',
+      description: 'Tech company database',
+      image: 'https://pbs.twimg.com/profile_images/1681010571792248833/uAxDDTeV_400x400.jpg',
+      category: 'business, tech',
+      tag: 'business', // data-tag
+      filter: ['business'], // data-filter
+      borderClass: 'border-primary',
+      textClass: 'text-primary',
+     infoUrl: '',
+      modalId: '42',
+    },
+       { id: '43',
+      title: 'hubpages',
+      description: 'Article/writing platform',
+      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6IV7KQdbQYIPTjw6onawFmMj5ok9SIQ3GlA&s',
+      category: 'Social',
+      tag: 'micro, blogging, social, twitter', // data-tag
+      filter: ['writing'], // data-filter
+      borderClass: 'border-primary',
+      textClass: 'text-primary',
+     infoUrl: '',
+      modalId: '43',
+    },
+    
+    
+      // Add more predefined cards...
+    ];
+
+   function generateUniqueId() {
+  // Get current timestamp in milliseconds
+  const timestamp = Date.now();
+  
+  // Generate 6 random digits
+  const randomNum = Math.floor(Math.random() * 1000000).toString().padStart(6, '0');
+  
+  // Combine timestamp and random number
+  return `${timestamp}${randomNum}`;
+}
+
+    // Function to populate the section dropdown from localStorage
+    function populateSectionDropdown() {
+      const sections = JSON.parse(localStorage.getItem('sections')) || [];
+      const dropdown = document.getElementById('sectionDropdown');
+      dropdown.innerHTML = ''; // Clear existing options
+
+      sections.forEach(section => {
+        const option = document.createElement('option');
+        option.value = section.id;
+        option.textContent = section.title;
+        dropdown.appendChild(option);
+      });
+
+      if (sections.length === 0) {
+        alert('Please create a stack first.');
+      }
+    }
+
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]]; // Swap elements
+      }
+    }
+
+    // Function to update the button UI
+    function updateButtonUI(button, added) {
+      if (added) {
+        button.textContent = 'Added!';
+        button.classList.remove('btn-primary');
+        button.classList.add('btn-default');
+
+        // Add a "Remove" button below the "Added" button
+        if (!button.nextElementSibling || !button.nextElementSibling.classList.contains('remove-btn')) {
+          const removeButton = document.createElement('button');
+          removeButton.classList.add('btn', 'btn-danger', 'mt-2', 'remove-btn');
+          removeButton.textContent = 'Remove';
+          removeButton.addEventListener('click', () => {
+            removeCard(button.getAttribute('data-target'), button, removeButton);
+          });
+          button.parentElement.appendChild(removeButton);
+        }
+      } else {
+        button.textContent = `Add to stack`;
+        button.classList.remove('btn-success');
+        button.classList.add('btn-primary');
+
+        // Remove the "Remove" button if it exists
+        const removeButton = button.parentElement.querySelector('.remove-btn');
+        if (removeButton) {
+          removeButton.remove();
+        }
+      }
+    }
+
+    // Function to remove a card
+    function removeCard(cardId, addButton, removeButton) {
+      let storedCards = JSON.parse(localStorage.getItem('addedCards')) || [];
+      storedCards = storedCards.filter(card => card.id !== cardId);
+      localStorage.setItem('addedCards', JSON.stringify(storedCards));
+
+      // Reset button UI and remove "Remove" button
+      updateButtonUI(addButton, false);
+    }
+
+    // Function to populate the cards in the gallery based on search and filters
+    function populateCards() {
+      const galleryContainer = document.querySelector('.gallery');
+      galleryContainer.innerHTML = ''; // Clear existing cards
+
+      // Shuffle the predefined cards before rendering
+      shuffleArray(predefinedCards);
+
+      predefinedCards.forEach(card => {
+        const cardHtml = `
+          <div class="col-md-3 text-center card-item" data-filter="${card.filter}" data-tag="${card.tag}">
+            <div class="thumbnail">
+              <h3>${card.title}</h3>
+              <img class="img-fluid h-100" alt="${card.title}" src="${card.image}">
+              <div class="caption">
+                <h4>${card.description}</h4>
+                <button class="btn btn-link open-modal-btn" data-modal="${card.infoUrl}"><i class="fas fa-info-circle "></i> info</button>
+                <br>
+               <button type="button" data-target="${card.id}" class="btn btn-primary addCardBtn">
+                  Add to Stack
+                </button>
+                
+              </div>
+            </div>
+          </div>
+        `;
+        galleryContainer.innerHTML += cardHtml;
+      });
+
+      // Add event listeners for the buttons to add cards to sections
+      document.querySelectorAll('.addCardBtn').forEach(button => {
+        const cardId = button.getAttribute('data-target');
+        const storedCards = JSON.parse(localStorage.getItem('addedCards')) || [];
+        const isCardAdded = storedCards.some(card => card.id === cardId);
+
+        // Initial state check for button and remove button
+        updateButtonUI(button, isCardAdded);
+
+        button.addEventListener('click', () => {
+          const sectionDropdown = document.getElementById('sectionDropdown');
+          const sectionId = sectionDropdown.value;
+
+          if (!sectionId) {
+            alert('Please select a section first.');
+            return;
+          }
+
+          const cardToAdd = predefinedCards.find(card => card.id === cardId);
+          if (!cardToAdd) {
+            alert('Error: Card not found.');
+            return;
+          }
+
+          cardToAdd.sectionId = sectionId;
+
+          const updatedStoredCards = JSON.parse(localStorage.getItem('addedCards')) || [];
+          updatedStoredCards.push(cardToAdd);
+          localStorage.setItem('addedCards', JSON.stringify(updatedStoredCards));
+
+          // Update UI to "Added" and show remove button
+          updateButtonUI(button, true);
+        });
+      });
+    }
+
+    // Function to get the section ID from the URL parameter and set it in the dropdown
+    function setSectionFromURL() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const sectionId = urlParams.get('sectionId');
+      const sectionDropdown = document.getElementById('sectionDropdown');
+
+      if (sectionId) {
+        sectionDropdown.value = sectionId; // Set the dropdown to the section from URL
+      }
+    }
+
+    // Open modal with iframe
+    $(document).on('click', '.open-modal-btn', function () {
+      const infoUrl = $(this).data('modal');
+      $('#iframeContent').attr('src', `/apps/${infoUrl}`);
+      $('#iframeModal').modal('show');
+    });
+
+    // Handle form submission for creating a new card
+    document.getElementById('submitCard').addEventListener('click', function () {
+      const cardTitle = document.getElementById('cardTitle').value;
+      const cardDescription = document.getElementById('cardDescription').value;
+      const cardImage = document.getElementById('cardImage').value || 'https://static-00.iconduck.com/assets.00/th-icon-1024x1024-j2kds1ji.png'; // Default image if empty
+      const cardCategory = document.getElementById('cardCategory').value;
+      const cardTag = document.getElementById('cardTag').value;
+      const cardFilter = document.getElementById('cardFilter').value;
+
+      // Generate unique IDs for the new card
+      const uniqueId = generateUniqueId();
+      const uniqueModalId = generateUniqueId();
+
+      const newCard = {
+        id: uniqueId, // Unique ID for the card
+        title: cardTitle,
+        description: cardDescription,
+        image: cardImage,
+        category: cardCategory,
+        tag: cardTag,
+        filter: cardFilter,
+        borderClass: 'border-primary',
+        textClass: 'text-primary',
+        modalId: uniqueModalId, // Unique modalId for the card
+      };
+
+      // Get the selected section ID
+      const sectionId = document.getElementById('sectionDropdown').value;
+
+      if (!sectionId) {
+        alert('Please select a section first.');
+        return;
+      }
+
+      // Associate the card with the selected section
+      newCard.sectionId = sectionId;
+
+      // Save the new card to localStorage under 'addedCards'
+      const addedCards = JSON.parse(localStorage.getItem('addedCards')) || [];
+      addedCards.push(newCard);
+      localStorage.setItem('addedCards', JSON.stringify(addedCards));
+
+      // Close the modal
+      $('#createCardModal').modal('hide');
+
+      // Notify the user that the card has been added
+      alert(`"${cardTitle}" has been added to your stack!`);
+    });
+
+    // Initialize the page
+    document.addEventListener('DOMContentLoaded', () => {
+      populateSectionDropdown();
+      setSectionFromURL();
+      populateCards();
+    });
+  </script>
+
+  <script>
+    $(document).ready(function() {
+      var $navbar = $("#mNavbar");
+
+      AdjustHeader(); // Incase the user loads the page from halfway down (or something);
+      $(window).scroll(function() {
+        AdjustHeader();
+      });
+
+      function AdjustHeader(){
+        if ($(window).scrollTop() > 350) {
+          if (!$navbar.hasClass("navbar-fixed-top")) {
+            $navbar.addClass("navbar-fixed-top");
+          }
+        } else {
+          $navbar.removeClass("navbar-fixed-top");
+        }
+      }
+    });
+  </script>
+    <script>
+        document.addEventListener('keydown', (event) => {
+    if (event.key === '/') { 
+        event.preventDefault(); // Prevent default browser behavior for '/'
+        document.getElementById('sectionDropdown').focus(); 
+    }
+});
+      </script>
+</body>
+</html>
