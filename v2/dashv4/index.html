@@ -3936,7 +3936,7 @@ document.addEventListener('keydown', (event) => {
     // Check if the pressed key is specifically one of the modifier keys
     if (event.key === 'Control' || event.key === 'Alt' || event.key === 'Shift' || event.key === 'Meta' || event.key === 'OS') {
       event.preventDefault(); // Prevent the default action for modifier keys
-      showAlert("Please select a modifier key.");
+      showAlert("Please select a modifier key.","danger");
     } else {
       // Allow all other key presses
       event.preventDefault();
