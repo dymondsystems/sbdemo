@@ -2927,7 +2927,7 @@ loadCards();
     if (sectionTitle) {
       const sections = JSON.parse(localStorage.getItem('sections')) || [];
       const sectionId = `section-${Date.now()}`;
-      sections.push({ id: sectionId, title: sectionTitle });
+      sections.unshift({ id: sectionId, title: sectionTitle });
       localStorage.setItem('sections', JSON.stringify(sections));
       document.getElementById('sectionTitle').value = '';
        loadSections(); // Update main content
