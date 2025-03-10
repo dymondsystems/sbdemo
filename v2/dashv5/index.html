@@ -4026,7 +4026,7 @@ document.addEventListener("keydown", (event) => {
 
       // Retrieve latest size setting from the button dataset
       const button = document.querySelector(`.launch-button[data-url="${url}"]`);
-      const size = button ? button.dataset.size : "medium"; // Default to medium if not found
+      const size = button ? button.dataset.size : "large"; // Default to medium if not found
 
       if (refocusEnabled && openedWindows.has(url)) {
         const existingWindow = openedWindows.get(url);
