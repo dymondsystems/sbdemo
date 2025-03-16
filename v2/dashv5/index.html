@@ -1513,6 +1513,13 @@ padding:10px;
         cursor: pointer;
       }
       
+      .custom-control {
+        color: gray;
+      }
+      .form-group{
+        color: gray;
+      }
+      
       
     </style>
     
@@ -2373,7 +2380,7 @@ padding:10px;
             
              <button type="submit" id="saveButton" class="btn btn-primary">Save</button>
                <button type="button" id="toggleFormButton" class="btn btn-secondary" data-toggle="collapse" data-target="#demo5"><i class="fas fa-cog"></i></button>
-              <button type="button" id="cancelButton" class="btn btn-secondary">Cancel</button>
+              <button type="button" id="cancelButton" class="btn btn-outline-secondary float-right">Cancel</button>
             </form>
             
           </div>
@@ -3567,7 +3574,7 @@ function createButton(buttonData, container = null, modalId = null) {
   const dropdown = document.createElement('div');
   dropdown.className = 'dropdown';
   dropdown.innerHTML = `    
-    <button class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown"></button>
+    <button class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" style="margin-right: 10px;"></button>
     <div class="dropdown-menu">
       <a class="dropdown-item"  onclick="stickToTopButton(this, 'window')"><i class="fas fa-thumbtack"></i> Pin to Top</a>
       <a class="dropdown-item"  onclick="editButton(this)"><i class="fas fa-edit"></i> Edit</a>
@@ -4409,37 +4416,77 @@ document.getElementById('removeShortcut').addEventListener('click', () => {
   removeShortcut();
 });
 
-function removeShortcut() {
-  if (!currentButton) return;
-
-  const url = currentButton.dataset.url;
+// Function to remove a shortcut
+function removeShortcut(shortcut = null) {
   const shortcuts = JSON.parse(localStorage.getItem('shortcuts')) || {};
 
-  // Find and remove the shortcut for the current button's URL
-  let foundShortcut = null;
-  for (const [shortcutKey, data] of Object.entries(shortcuts)) {
-    if (data.url === url) {
-      foundShortcut = shortcutKey;
-      break;
+  // Case 1: Remove by shortcut key (from shortcuts list)
+  if (shortcut) {
+    if (shortcuts[shortcut]) {
+      // Remove the shortcut
+      delete shortcuts[shortcut];
+      localStorage.setItem('shortcuts', JSON.stringify(shortcuts));
+
+      // Refresh the shortcuts list
+      showShortcutsList();
+      alert(`Shortcut "${shortcut}" removed successfully!`);
+    } else {
+      alert('Shortcut not found!');
     }
   }
+  // Case 2: Remove by currentButton (from elsewhere)
+  else if (currentButton) {
+    const url = currentButton.dataset.url;
 
-  if (foundShortcut) {
-    delete shortcuts[foundShortcut];
-    localStorage.setItem('shortcuts', JSON.stringify(shortcuts));
+    // Find and remove the shortcut for the current button's URL
+    let foundShortcut = null;
+    for (const [shortcutKey, data] of Object.entries(shortcuts)) {
+      if (data.url === url) {
+        foundShortcut = shortcutKey;
+        break;
+      }
+    }
 
-    // Update the UI to reflect the removal
-    const currentShortcutDisplay = document.getElementById('currentShortcutDisplay');
-    currentShortcutDisplay.textContent = 'None';
+    if (foundShortcut) {
+      delete shortcuts[foundShortcut];
+      localStorage.setItem('shortcuts', JSON.stringify(shortcuts));
 
-    // Clear the shortcut in the modal
-    currentShortcut = [];
-    updateShortcutDisplay();
+      // Update the UI to reflect the removal
+      const currentShortcutDisplay = document.getElementById('currentShortcutDisplay');
+      if (currentShortcutDisplay) {
+        currentShortcutDisplay.textContent = 'None';
+      }
 
-    showAlert(`Shortcut removed for "${currentButton.dataset.name}"`, 'success');
+      // Clear the shortcut in the modal
+      currentShortcut = [];
+      updateShortcutDisplay();
+
+      showAlert(`Shortcut removed for "${currentButton.dataset.name}"`, 'success');
+    } else {
+      showAlert('No shortcut exists for this button.', 'warning');
+    }
   } else {
-    showAlert('No shortcut exists for this button.', 'warning');
+    alert('No shortcut or button provided!');
   }
+}
+
+// Function to add event listeners for Edit and Remove buttons
+function addEditRemoveButtonListeners() {
+  // Edit button listeners
+  document.querySelectorAll('.edit-shortcut').forEach((button) => {
+    button.addEventListener('click', () => {
+      const shortcut = button.dataset.shortcut;
+      editShortcut(shortcut);
+    });
+  });
+
+  // Remove button listeners (for shortcuts list only)
+  document.querySelectorAll('.remove-shortcut-list').forEach((button) => {
+    button.addEventListener('click', () => {
+      const shortcut = button.dataset.shortcut;
+      removeShortcut(shortcut); // Pass the shortcut key
+    });
+  });
 }
 
 // Reset the modal when closed
@@ -5566,22 +5613,7 @@ function editShortcut(shortcut) {
   }
 }
 
-// Function to remove a shortcut
-function removeShortcut(shortcut) {
-  const shortcuts = JSON.parse(localStorage.getItem('shortcuts')) || {};
 
-  if (shortcuts[shortcut]) {
-    // Remove the shortcut
-    delete shortcuts[shortcut];
-    localStorage.setItem('shortcuts', JSON.stringify(shortcuts));
-
-    // Refresh the shortcuts list
-    showShortcutsList();
-    alert(`Shortcut "${shortcut}" removed successfully!`);
-  } else {
-    alert('Shortcut not found!');
-  }
-}
 
 // Add event listener to the "Show All Shortcuts" button
 document.getElementById('showShortcutsButton').addEventListener('click', showShortcutsList);
