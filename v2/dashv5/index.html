@@ -1509,6 +1509,10 @@ padding:10px;
   width: 15px; /* Adjust the width as needed */
 }
       
+      .dropdown-item {
+        cursor: pointer;
+      }
+      
       
     </style>
     
@@ -3125,7 +3129,7 @@ function loadSections() {
           </button>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton-${section.id}">
 	   <a class="dropdown-item" href="/sbdemo/v2/add/?sectionId=${section.id}"> <i class="fas fa-plus"></i> Add app </a>
-            <a class="dropdown-item" href="#" onclick="openRenameModal('${section.id}', '${section.title}')"><i class="fas fa-edit"></i> Rename </a>
+            <a class="dropdown-item"  onclick="openRenameModal('${section.id}', '${section.title}')"><i class="fas fa-edit"></i> Rename </a>
 	   
             <a class="dropdown-item text-danger" href="/sbdemo/v2/dashv5" onclick="removeSection('${section.id}')"><i class="fas fa-trash-alt"></i> Remove </a>
           </div>
@@ -3287,7 +3291,7 @@ function loadCards() {
               
                 <a class="dropdown-item" data-toggle="modal" href="#accountinfo" onclick="showAccountInfo('${card.id}')"><i class="fas fa-user-circle"></i> Manage account</a>
                 
-                <a class="dropdown-item text-danger" href="#" onclick="removeCard('${card.id}')"><i class="fas fa-trash-alt"></i> Remove</a>
+                <a class="dropdown-item text-danger" onclick="removeCard('${card.id}')"><i class="fas fa-trash-alt"></i> Remove</a>
               </div>
             </div>
             <center><img src="${card.image}" alt="${card.title}" class="img-fluid" style="width: 80px; height: 80px; cursor: all-scroll;">
@@ -3565,10 +3569,10 @@ function createButton(buttonData, container = null, modalId = null) {
   dropdown.innerHTML = `    
     <button class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown"></button>
     <div class="dropdown-menu">
-      <a class="dropdown-item" href="#" onclick="stickToTopButton(this, 'window')"><i class="fas fa-thumbtack"></i> Pin to Top</a>
-      <a class="dropdown-item" href="#" onclick="editButton(this)"><i class="fas fa-edit"></i> Edit</a>
-      <a class="dropdown-item" href="#" onclick="setShortcut(this)"><i class="fas fa-keyboard"></i> Set Shortcut</a>
-      <a class="dropdown-item text-danger" href="#" onclick="removeButton(this)"><i class="fas fa-trash-alt"></i> Remove</a>
+      <a class="dropdown-item"  onclick="stickToTopButton(this, 'window')"><i class="fas fa-thumbtack"></i> Pin to Top</a>
+      <a class="dropdown-item"  onclick="editButton(this)"><i class="fas fa-edit"></i> Edit</a>
+      <a class="dropdown-item"  onclick="setShortcut(this)"><i class="fas fa-keyboard"></i> Set Shortcut</a>
+      <a class="dropdown-item text-danger"  onclick="removeButton(this)"><i class="fas fa-trash-alt"></i> Remove</a>
     </div>`;
 
   buttonDiv.appendChild(button);
