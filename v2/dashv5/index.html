@@ -21,6 +21,114 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
     
     
     <style>
+      
+       .toggle-btn:focus, .toggle-btn:active {
+  outline: none !important;
+  box-shadow: none !important;
+}
+      
+      
+     .switch {
+  position: relative;
+  display: inline-block;
+  width: 45px;
+  height: 24px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+
+
+input:checked + .slider {
+  background-color: #f9f7f7;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+/* Font Awesome Icons */
+.slider.round::before,
+.slider.round::after {
+  font-family: "Font Awesome 6 Free"; /* Or your specific font family */
+  font-weight: 900; /* For solid icons */
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px; /* Adjust size as needed */
+}
+
+.slider.round::before {
+  content: "\f111"; /* Sun icon */
+  right: 7px;
+  color: #5891fe; /* Sun color */
+}
+
+.slider.round::after {
+  content: "\f111"; /* Moon icon */
+  left: 7px;
+  color: #c2d7fe; /* Moon color */
+  opacity: 0; /* Initially hidden */
+}
+
+input:checked + .slider.round::before {
+  opacity: 0;
+}
+
+input:checked + .slider.round::after {
+  opacity: 1;
+}
+
+#toggleLabel {
+    padding-left: 10px;
+} 
+      
+      
+      
+      
+      
+      
+     #homepageAlert {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      width: 450px;
+      z-index: 1000;
+      display: none; /* Initially hide the alert */
+    }     
+      
+      
 
 
 .progress{margin: 100px;}
@@ -1433,8 +1541,8 @@ padding:10px;
                
         </div>
         <div class="user-info">
-          <span class="user-name">Demo
-            <strong>User</strong>
+          <span class="user-name">
+            <strong>Tom</strong>
           </span>
           <span class="user-status">
         <i class="fa fa-circle"></i>  online</span>
@@ -1533,7 +1641,7 @@ padding:10px;
             </a>
           </li>
           <li>
-            <a href="#" class="tooltip-btn" data-toggle="modal" data-target="#settings" data-placement="top" title="Quick settings: Alt+S">
+            <a href="#" class="tooltip-btn" data-toggle="modal" id="showShortcutsButton" data-target="#settings" data-placement="top" title="Quick settings: Alt+S">
               <i class="fa fa-cog"></i>
               <span>Settings</span>
             </a>
@@ -1654,10 +1762,10 @@ padding:10px;
         
       
       <li class="nav-item">
-        <a class="nav-link" href="#">Log in</a>
+        <a class="nav-link" href="#" hidden>Log in</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Sign up</a>
+        <a class="nav-link" href="#">Sign out</a>
       </li>    
     </ul>
   </div>  
@@ -1734,6 +1842,12 @@ padding:10px;
     </div>
     </div>
 </div>
+          
+          <label class="switch tooltip-btn" title="Change view">
+    <input type="checkbox" id="toggleView">
+    <span class="slider round"></span>
+</label>
+<span id="toggleLabel" >Expand All</span>
 <div id="sectionsContainer">
       <!-- Dynamic sections and cards will load here -->
     </div>
@@ -1814,7 +1928,7 @@ padding:10px;
   <!-- settings modal -->
 
 <div class="modal fade" id="settings" tabindex="-1" role="dialog" aria-labelledby="settingsLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="settingsLabel">Settings</h5>
@@ -1864,7 +1978,12 @@ padding:10px;
   </label>
 </div>
         
-        <button id="clearShortcutsBtn" class="btn btn-warning">Clear All Shortcuts</button>
+   <hr>
+        <div class="modal-body" id="shortcutsListModalBody">
+        <!-- Shortcuts list will be inserted here -->
+      </div>
+        
+        <button id="clearShortcutsBtn" class="btn btn-danger" style="margin-left: 15px; top: 0px;">Clear All</button>
 
       </div>
 
@@ -3012,10 +3131,22 @@ function loadSections() {
           </div>
         </div>
       </div>
-      <div class="row" id="cards-${section.id}">
+        <div class="row collapse" id="cards-${section.id}">
         <!-- Cards will be dynamically inserted here -->
       
       </div>
+    
+      </div>
+      <center>
+    
+    <button class="btn toggle-btn" data-target="#cards-${section.id}">
+    <i class="fas fa-chevron-down"></i> 
+</button>
+
+
+
+
+ </center>
      <div id="noCardsPlaceholder2" class="alert alert-info text-center" style="display: none; margin-top: 50px; margin-bottom: 150px; ">
      <h4>You've created your first stack!</h4>
   Add an app to start building out your stack.
@@ -5197,6 +5328,260 @@ function sheets() {
   window.open("https://docs.google.com/spreadsheets/d/14mXcevLywTyIo2D_eEGVZDuhyXCwinD03x8zdKRnUmE/edit?usp=sharing", "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=200,left=200,width=1000,height=600");
 }
 </script>
+      
+      
+         <script>
+  
+   $(document).ready(function() {
+      if (localStorage.getItem('hideHomepageAlert')) {
+        return; // Don't show if hidden
+      }
+
+      // Delay the alert
+      setTimeout(function() {
+        $('#homepageAlert').fadeIn(); // Fade it in
+      }, 200000); // 3000 milliseconds (3 seconds)
+
+      $('#dontShowAgain').change(function() {
+        if (this.checked) {
+          localStorage.setItem('hideHomepageAlert', 'true');
+        } else {
+          localStorage.removeItem('hideHomepageAlert');
+        }
+      });
+
+      $('.close').click(function() {
+          if ($('#dontShowAgain').is(':checked')){
+              localStorage.setItem('hideHomepageAlert', 'true');
+          }
+      });
+    });
+  </script>
+      
+     <script>
+    function detectBrowser() {
+      const userAgent = navigator.userAgent;
+
+      if (userAgent.indexOf("Chrome") > -1) {
+        return "Chrome";
+      } else if (userAgent.indexOf("Firefox") > -1) {
+        return "Firefox";
+      } else if (userAgent.indexOf("Safari") > -1) {
+        return "Safari";
+      } else if (userAgent.indexOf("Edge") > -1 || userAgent.indexOf("Trident/") > -1) {
+        return "Edge";
+      } else {
+        return "Unknown";
+      }
+    }
+
+    function displayBrowserButtons() {
+      const browser = detectBrowser();
+      const buttonsContainer = document.getElementById("browserButtons");
+
+      if (browser === "Chrome") {
+        buttonsContainer.innerHTML = '<button class="btn btn-primary">Chrome Specific Button</button>';
+      } else if (browser === "Firefox") {
+        buttonsContainer.innerHTML = '<button>Firefox Specific Button</button>';
+      } else if (browser === "Safari") {
+        buttonsContainer.innerHTML = '<button>Safari Specific Button</button>';
+      } else if (browser === "Edge") {
+        buttonsContainer.innerHTML = '<button>Edge Specific Button</button>';
+      } else {
+        buttonsContainer.innerHTML = '<button>Generic Button</button>';
+      }
+    }
+
+    displayBrowserButtons();
+  </script> 
+      
+      <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const toggleSwitch = document.getElementById("toggleView");
+    const toggleLabel = document.getElementById("toggleLabel");
+
+    // Function to toggle chevron
+    function updateChevron(button, isOpen) {
+        const icon = button.querySelector("i");
+        if (isOpen) {
+            icon.classList.remove("fa-chevron-down");
+            icon.classList.add("fa-chevron-up");
+        } else {
+            icon.classList.remove("fa-chevron-up");
+            icon.classList.add("fa-chevron-down");
+        }
+    }
+
+    // Expand all sections by default unless the user preference is set
+    function expandAll() {
+        const collapsibleSections = document.querySelectorAll(".row.collapse");
+        const toggleButtons = document.querySelectorAll(".btn.toggle-btn");
+
+        collapsibleSections.forEach(section => section.classList.add("show"));
+        toggleButtons.forEach(button => updateChevron(button, true));
+        toggleLabel.textContent = "Collapse All";
+    }
+
+    function collapseAll() {
+        const collapsibleSections = document.querySelectorAll(".row.collapse");
+        const toggleButtons = document.querySelectorAll(".btn.toggle-btn");
+
+        collapsibleSections.forEach(section => section.classList.remove("show"));
+        toggleButtons.forEach(button => updateChevron(button, false));
+        toggleLabel.textContent = "Expand All";
+    }
+
+    // Load stored state
+    if (localStorage.getItem("toggleState") === "collapsed") {
+        toggleSwitch.checked = false;
+        collapseAll();
+    } else {
+        toggleSwitch.checked = true;
+        expandAll();
+        localStorage.setItem("toggleState", "expanded"); // Save initial state
+    }
+
+    // Toggle switch event
+    toggleSwitch.addEventListener("change", function () {
+        if (this.checked) {
+            expandAll();
+            localStorage.setItem("toggleState", "expanded");
+        } else {
+            collapseAll();
+            localStorage.setItem("toggleState", "collapsed");
+        }
+    });
+
+    // Individual button click event to toggle sections
+    document.querySelectorAll(".btn.toggle-btn").forEach(button => {
+        const targetId = button.getAttribute("data-target");
+        const targetSection = document.querySelector(targetId);
+
+        button.addEventListener("click", function () {
+            const isOpen = targetSection.classList.contains("show");
+            targetSection.classList.toggle("show");
+            updateChevron(button, !isOpen);
+        });
+    });
+});
+
+
+
+ 
+      </script>
+      
+        <script>
+   // Updated function to show a list of all shortcuts with Edit and Remove buttons
+function showShortcutsList() {
+  const shortcuts = JSON.parse(localStorage.getItem('shortcuts')) || {};
+  
+  // Create a list of shortcuts
+  let shortcutsList = '<ul class="list-group">';
+  
+  if (Object.keys(shortcuts).length === 0) {
+    shortcutsList += '<li class="list-group-item">No shortcuts defined.</li>';
+  } else {
+    for (const [shortcut, data] of Object.entries(shortcuts)) {
+      // Find the button to get the most up-to-date name
+      const button = document.querySelector(`.launch-button[data-url="${data.url}"]`);
+      const name = button ? button.dataset.name : (data.name || 'Unknown');
+      
+      shortcutsList += `
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <div>
+          <button class="btn btn-sm btn-outline-secondary"><strong>${shortcut}</strong></button>
+          For
+           <button class="btn btn-sm btn-outline-secondary"><strong>${name}</strong></button> 
+           Opens
+           <button class="btn  btn-link tooltip-btn" title="${data.url}">(${data.url.substring(0, 30)}${data.url.length > 30 ? '...' : ''})</button>
+              
+         
+          </div>
+          <div>
+          <button class="btn btn-sm btn-outline-secondary edit-shortcut" data-shortcut="${data.shortcut}"><i class="fas fa-edit"></i></button>
+            <button class="btn btn-sm btn-danger remove-shortcut" data-shortcut="${shortcut}"><i class="fas fa-trash"></i></button>
+          </div>
+        </li>
+      `;
+    }
+  }
+  
+  shortcutsList += '</ul>';
+  
+  // Display the list in the shortcuts modal
+  const modalBody = document.getElementById('shortcutsListModalBody');
+  if (modalBody) {
+    modalBody.innerHTML = `
+      <h5>All Shortcuts</h5>
+      ${shortcutsList}
+    `;
+    $('#shortcutsListModal').modal('show'); // Show the modal
+    
+    // Add event listeners for Edit and Remove buttons
+    addEditRemoveButtonListeners();
+  } else {
+    alert('Shortcuts list modal not found!');
+  }
+}
+
+// Function to add event listeners for Edit and Remove buttons
+function addEditRemoveButtonListeners() {
+  // Edit button listeners
+  document.querySelectorAll('.edit-shortcut').forEach((button) => {
+    button.addEventListener('click', () => {
+      const shortcut = button.dataset.shortcut;
+      editShortcut(shortcut);
+    });
+  });
+
+  // Remove button listeners
+  document.querySelectorAll('.remove-shortcut').forEach((button) => {
+    button.addEventListener('click', () => {
+      const shortcut = button.dataset.shortcut;
+      removeShortcut(shortcut);
+    });
+  });
+}
+
+// Function to edit a shortcut
+function editShortcut(shortcut) {
+  const shortcuts = JSON.parse(localStorage.getItem('shortcuts')) || {};
+  const shortcutData = shortcuts[shortcut];
+
+  if (shortcutData) {
+    // Find the button associated with this shortcut
+    const button = document.querySelector(`.launch-button[data-url="${shortcutData.url}"]`);
+    if (button) {
+      // Open the shortcut builder modal with the button's details
+      openShortcutBuilder(button);
+    } else {
+      alert('Button not found for this shortcut!');
+    }
+  } else {
+    alert('Shortcut not found!');
+  }
+}
+
+// Function to remove a shortcut
+function removeShortcut(shortcut) {
+  const shortcuts = JSON.parse(localStorage.getItem('shortcuts')) || {};
+
+  if (shortcuts[shortcut]) {
+    // Remove the shortcut
+    delete shortcuts[shortcut];
+    localStorage.setItem('shortcuts', JSON.stringify(shortcuts));
+
+    // Refresh the shortcuts list
+    showShortcutsList();
+    alert(`Shortcut "${shortcut}" removed successfully!`);
+  } else {
+    alert('Shortcut not found!');
+  }
+}
+
+// Add event listener to the "Show All Shortcuts" button
+document.getElementById('showShortcutsButton').addEventListener('click', showShortcutsList);
+      </script>
       
 
 <div id="noCardsPlaceholder2" style="display: none;">
