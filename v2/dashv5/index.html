@@ -1851,14 +1851,16 @@ padding:10px;
      </div>
     </div>
     </div>
-    </div>
-</div>
+    
+
           
-          <label class="switch tooltip-btn" title="Change view">
+          <label class="switch tooltip-btn float-left" title="Change view">
     <input type="checkbox" id="toggleView">
     <span class="slider round"></span>
 </label>
-<span id="toggleLabel" >Expand All</span>
+<span class="float-left" id="toggleLabel" >Expand All</span>
+    </div>
+          </div>
 <div id="sectionsContainer">
       <!-- Dynamic sections and cards will load here -->
     </div>
@@ -3144,8 +3146,17 @@ function loadSections() {
       </div>
         <div class="row collapse" id="cards-${section.id}">
         <!-- Cards will be dynamically inserted here -->
+        
+        
+       
       
       </div>
+      <div id="noCardsPlaceholder2" class="alert alert-info text-center" style="display: none; margin-top: 50px; margin-bottom: 150px; ">
+     <h4>You've created your first stack!</h4>
+  Add an app to start building out your stack.
+  <br>
+  <a href="/sbdemo/v2/add/?sectionId=${section.id}" class="btn btn-success" role="button">Add app</a>
+  </div>
     
       </div>
       <center>
@@ -3158,12 +3169,7 @@ function loadSections() {
 
 
  </center>
-     <div id="noCardsPlaceholder2" class="alert alert-info text-center" style="display: none; margin-top: 50px; margin-bottom: 150px; ">
-     <h4>You've created your first stack!</h4>
-  Add an app to start building out your stack.
-  <br>
-  <a href="/sbdemo/v2/add/?sectionId=${section.id}" class="btn btn-success" role="button">Add app</a>
-  </div>
+     
     `;
     sectionsContainer.appendChild(sectionDiv);
 
