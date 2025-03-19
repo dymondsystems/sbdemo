@@ -21,7 +21,15 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
     
     
     <style>
-
+.dropup .dropdown-menu {
+            width: 250px;
+            padding: 10px;
+        }
+        .copy-feedback {
+            display: none;
+            color: green;
+            font-size: 12px;
+        }
 
 .progress{margin: 100px;}
 
@@ -2516,7 +2524,7 @@ function displayFeed(items) {
         feedHTML += `
             <div class="col-lg-3 col-md-6 mb-4">
                 <div class="card">
-                    ${item.image ? `<img src="${item.image}" class="card-img-top" alt="News Image">` : ""}
+                    ${item.image ? `<img src="${item.image}" class="card-img-top" alt="News Image" style="height: 200px;">` : ""}
                      <div class="dropup d-inline">
                             <button class="btn btn-sm btn-outline-secondary " type="button" data-toggle="dropdown">
                               <i class="fas fa-share-square"></i>  Share
