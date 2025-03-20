@@ -1593,9 +1593,21 @@ padding:10px;
             </a>
             <div class="sidebar-submenu">
               <ul>
+		     <li>
+                  <a href="#" data-toggle="modal" data-target="#board">Stackboard dev</a>
+                </li> 
+		     <li>
+                  <a href="#" data-toggle="modal" data-target="#board">Crypto</a>
+                </li> 
+		      <li>
+                  <a href="#" data-toggle="modal" data-target="#board">Investments</a>
+                </li>
+		      <li>
+                  <a href="#" data-toggle="modal" data-target="#board">News/entertainment</a>
+                </li>
                 
                 <li>
-                  <a href="#" data-toggle="modal" data-target="#board">+ New board</a>
+                  <a href="#" data-toggle="modal" data-target="#board"><i class=" fas fa-plus"></i> New board</a>
                 </li>
               </ul>
             </div>
@@ -2127,8 +2139,10 @@ padding:10px;
         </button>
       </div>
       <div class="modal-body">
-        Multiple boards are not supported in this demo
-        <div id="notesContainer_MODALID" class="mt-3"></div>
+        <div class="my-4">
+      <input type="text" id="sectionTitle" class="form-control" placeholder="Name your board" required>
+      <a href="/sbdemo/v2/add/"  class="btn btn-success mt-2" >Create</a>
+    </div>
         
       </div>
       <div class="modal-footer">
