@@ -1728,7 +1728,7 @@ embedder.parentNode.appendChild(s);
         
         <!-- Modal body -->
         <div class="modal-body">
-          <script type="text/javascript">
+  <script type="text/javascript">
 baseUrl = "https://widgets.cryptocompare.com/";
 var scripts = document.getElementsByTagName("script");
 var embedder = scripts[ scripts.length - 1 ];
@@ -1738,11 +1738,12 @@ if(appName==""){appName="local";}
 var s = document.createElement("script");
 s.type = "text/javascript";
 s.async = true;
-var theUrl = baseUrl+'serve/v3/coin/chart?fsym=BTC&tsyms=EUR,CNY,GBP';
+var theUrl = baseUrl+'serve/v3/coin/chart?fsym=BTC&tsyms=USD,EUR,CNY,GBP';
 s.src = theUrl + ( theUrl.indexOf("?") >= 0 ? "&" : "?") + "app=" + appName;
 embedder.parentNode.appendChild(s);
 })();
 </script>
+
 
         </div>
         
