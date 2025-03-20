@@ -114,7 +114,7 @@
         @media (max-width: 767px) {
             div#chat.conv-form-wrapper div.wrapper-messages,
             div#chat.conv-form-wrapper div#messages {
-                max-height: 71vh;
+                max-height: 171vh;
             }
         }
 
@@ -428,7 +428,16 @@
                         <div class="card no-border">
                             <div id="chat" class="conv-form-wrapper">
                                 <form action="" method="GET" class="hidden">
-                                    <select name="programmer" data-callback="storeState" data-conv-question="Good day! would you like to create a facebook post about your recent projects?">
+                                    <select name="programmer" data-callback="storeState"  data-conv-question="Good day! would you like to create a facebook post about your recent projects?
+                                                                                                              <br>
+                                                                                                              <br>
+                                                                                                              <br>
+                                                                                                              <br>
+                                                                                                              <br>
+                                                                                                              <br>
+                                    ">
+                                     
+                                
                                     
     
     
@@ -499,7 +508,13 @@
                                     </div>
                                 </form>
                             </div>
-          
+                          <form>
+    <div class="form-group" style="margin-bottom: 100px;">
+      
+      <textarea class="form-control" rows="5" id="comment"></textarea>
+      <span class="input-group-addon" style="width: 100px; height: 30px; float: right;"><i class="glyphicon glyphicon-plus"></i></span>
+    </div>
+  </form>
                           
                         </div>
                     </div>
